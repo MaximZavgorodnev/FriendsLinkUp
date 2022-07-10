@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".AppActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -36,17 +36,17 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
                 android:src="@color/like_checkbox_tint"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
-                android:id="@+id/textView"
+                android:id="@+id/nameUser"
                 android:layout_width="277dp"
                 android:layout_height="29dp"
                 android:layout_marginStart="16dp"
@@ -56,6 +56,7 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
                 app:layout_constraintStart_toEndOf="@id/imageView"
+                app:layout_constraintEnd_toStartOf="@id/menu"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.google.android.material.button.MaterialButton
