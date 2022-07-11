@@ -3,10 +3,17 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/main/res/drawable-v24/ic_add_24dp.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable-v24/ic_north_24.xml" value="0.1685" />
+        <entry key="app/src/main/res/drawable-v24/post_avatar_drawable.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_launcher_logo_foreground.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/ic_more_vert_24.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/rounded_bottom_appbar.xml" value="0.1685" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/card_post.xml" value="0.317481884057971" />
+        <entry key="app/src/main/res/layout/fragment_authentication.xml" value="0.317481884057971" />
+        <entry key="app/src/main/res/layout/fragment_displaying_images.xml" value="0.317481884057971" />
+        <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.2005" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_logo.xml" value="0.2005" />
