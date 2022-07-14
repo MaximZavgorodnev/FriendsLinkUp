@@ -3,7 +3,7 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url='https://jitpack.io'}
-        jcenter()
+
     }
 }
 dependencyResolutionManagement {
@@ -11,8 +11,10 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+
     }
 }
 rootProject.name = "Friends Link Up"
 include ':app'
+
+//sdk.dir=/Users/admin/Library/Android/sdk

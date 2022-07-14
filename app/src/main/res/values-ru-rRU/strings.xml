@@ -38,4 +38,7 @@
     <string name="password_not_match">Пароль не соответствует</string>
     <string name="post_content">текст %1$s</string>
     <string name="notification_user_published_post">Пользователь %1$s опубликовал новый пост:</string>
+    <string name="feed_of_posts">Посты</string>
+    <string name="feed_of_jobs">Работа</string>
+    <string name="feed_of_events">События</string>
 </resources>

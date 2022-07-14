@@ -46,4 +46,7 @@
     <string name="password_not_match">Password does not match</string>
     <string name="post_content">Text %1$s</string>
     <string name="notification_user_published_post">User %1$s published new post:</string>
+    <string name="feed_of_posts">Posts</string>
+    <string name="feed_of_jobs">Jobs</string>
+    <string name="feed_of_events">Events</string>
 </resources>
