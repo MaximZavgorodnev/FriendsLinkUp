@@ -42,12 +42,12 @@
                 android:layout_width="42dp"
                 android:layout_height="42dp"
                 android:layout_marginStart="16dp"
-                android:src="@color/like_checkbox_tint"
+
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                tools:srcCompat="@tools:sample/avatars"
-                android:contentDescription="TODO" />
+                app:srcCompat="@mipmap/ic_launcher_logo"
+                tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/nameUser"
@@ -56,12 +56,14 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
-                tools:text="Иван Петров"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-                app:layout_constraintStart_toEndOf="@id/avatar"
                 app:layout_constraintEnd_toStartOf="@id/menu"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Иван Петров"
+                android:text="Иван Петров"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/menu"
@@ -104,13 +106,17 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#6431EE"
-        app:menu="@menu/menu_navigation"
+        android:background="@color/colorPrimary"
+        app:itemIconTint= "@color/navigation_bottom"
+        app:itemTextColor="@color/navigation_bottom"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/menu_navigation" />
+<!--    style="@style/Widget.Navigation"-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

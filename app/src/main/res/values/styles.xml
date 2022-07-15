@@ -24,4 +24,10 @@
         <item name="android:minHeight">@dimen/icon_button_min_size</item>
     </style>
 
+    <style name="Widget.Navigation" parent="Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="background">@color/navigation</item>
+        <item name="iconTint">@color/navigation_bottom</item>
+
+    </style>
+
 </resources>
