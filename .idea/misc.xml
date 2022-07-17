@@ -14,23 +14,29 @@
         <entry key="app/src/main/res/drawable/event_icons.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/feed_icons.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/ic_baseline_feed_24.xml" value="0.1615" />
+        <entry key="app/src/main/res/drawable/ic_gps_fixed_24.xml" value="0.3085" />
         <entry key="app/src/main/res/drawable/ic_launcher_logo_foreground.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/ic_more_vert_24.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/ic_outline_feed_24.xml" value="0.1615" />
+        <entry key="app/src/main/res/drawable/ic_sensors_32.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/ic_share_24.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/ic_work_24.xml" value="0.1615" />
+        <entry key="app/src/main/res/drawable/online_icons.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/rounded_bottom_appbar.xml" value="0.1685" />
         <entry key="app/src/main/res/drawable/work_icons.xml" value="0.1615" />
         <entry key="app/src/main/res/layout/activity_app.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_event.xml" value="0.3229166666666667" />
-        <entry key="app/src/main/res/layout/card_post.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/card_ids.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/card_jobs.xml" value="0.23136246786632392" />
+        <entry key="app/src/main/res/layout/card_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/card_work.xml" value="0.1675925925925926" />
         <entry key="app/src/main/res/layout/cart_event.xml" value="0.3229166666666667" />
         <entry key="app/src/main/res/layout/fragment_authentication.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_displaying_images.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_event.xml" value="0.3229166666666667" />
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.317481884057971" />
+        <entry key="app/src/main/res/layout/fragment_job.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_new_post.xml" value="0.184375" />
         <entry key="app/src/main/res/layout/fragment_work.xml" value="0.3229166666666667" />
         <entry key="app/src/main/res/menu/menu_main.xml" value="0.36041666666666666" />

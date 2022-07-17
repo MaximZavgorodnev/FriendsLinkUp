@@ -49,4 +49,8 @@
     <string name="feed_of_posts">Posts</string>
     <string name="feed_of_jobs">Jobs</string>
     <string name="feed_of_events">Events</string>
+    <string name="video">Video</string>
+    <string name="job_period">Work period</string>
+    <string name="from">From</string>
+    <string name="to">to</string>
 </resources>

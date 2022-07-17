@@ -70,6 +70,14 @@
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="avatar,published,menu" />
 
+        <ImageView
+            android:id="@+id/mentionedMe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_priority_high_32"
+            app:layout_constraintTop_toBottomOf="@id/header_barrier3"
+            app:layout_constraintBottom_toBottomOf="@id/content"/>
+
         <TextView
             android:id="@+id/content"
             android:layout_width="0dp"
@@ -79,8 +87,8 @@
             android:paddingTop="@dimen/common_spacing"
             android:paddingBottom="@dimen/common_spacing"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header"
+            app:layout_constraintStart_toEndOf="@id/mentionedMe"
+            app:layout_constraintTop_toBottomOf="@id/header_barrier3"
             tools:text="@sample/posts.json/data/content" />
 
         <androidx.constraintlayout.widget.Barrier
@@ -89,6 +97,44 @@
             android:layout_height="wrap_content"
             app:barrierDirection="bottom"
             app:constraint_referenced_ids="content" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="video, header_barrier3, backgroundVideo"/>
+
+
+        <ImageView
+            android:id="@+id/backgroundVideo"
+            android:layout_width="310dp"
+            android:layout_height="240dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            app:srcCompat="@drawable/img_backg"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/video"
+            android:layout_width="320dp"
+            android:layout_height="240dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:icon="@drawable/ic_play_arrow_48"
+            app:iconGravity="top"
+            android:paddingTop="88dp"
+            android:backgroundTint="#0000"
+            app:layout_constraintTop_toBottomOf="@id/header"
+            android:contentDescription="@string/video"
+            />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/header_barrier3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="bottom"
+            android:layout_marginTop="@dimen/common_spacing"
+            app:constraint_referenced_ids="video" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
@@ -115,5 +161,28 @@
             app:icon="@drawable/ic_share_24"
             style="@style/Widget.AppTheme.IconButton"
             />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/geo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:contentDescription="@string/description_post_share"
+            app:layout_constraintStart_toEndOf="@+id/share"
+            app:layout_constraintTop_toBottomOf="@id/footer"
+            app:icon="@drawable/ic_gps_fixed_24"
+            style="@style/Widget.AppTheme.IconButton"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/mentionIds"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@id/like"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/card_ids" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </com.google.android.material.card.MaterialCardView>

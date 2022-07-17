@@ -41,4 +41,8 @@
     <string name="feed_of_posts">Посты</string>
     <string name="feed_of_jobs">Работа</string>
     <string name="feed_of_events">События</string>
+    <string name="video">Видео</string>
+    <string name="job_period">Период работы</string>
+    <string name="from">С</string>
+    <string name="to">по</string>
 </resources>
