@@ -7,12 +7,11 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
 import ru.maxpek.friendslinkup.databinding.FragmentJobBinding
 
 //@ExperimentalCoroutinesApi
 //@AndroidEntryPoint
-class WorkFragment: Fragment() {
+class JobFragment: Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

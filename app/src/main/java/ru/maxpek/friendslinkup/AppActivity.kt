@@ -9,7 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding
 import ru.maxpek.friendslinkup.fragment.EventFragment
 import ru.maxpek.friendslinkup.fragment.FeedFragment
-import ru.maxpek.friendslinkup.fragment.WorkFragment
+import ru.maxpek.friendslinkup.fragment.JobFragment
 
 class AppActivity : AppCompatActivity() {
     private lateinit var bottomNavView: BottomNavigationView
@@ -26,7 +26,7 @@ class AppActivity : AppCompatActivity() {
 
         val feedFragment = FeedFragment()
         val eventFragment = EventFragment()
-        val workFragment = WorkFragment()
+        val jobFragment = JobFragment()
 
         setThatFragment(feedFragment)
 
@@ -36,7 +36,7 @@ class AppActivity : AppCompatActivity() {
                     setThatFragment(feedFragment)
                 }
                 R.id.jobs ->{
-                    setThatFragment(workFragment)
+                    setThatFragment(jobFragment)
                 }
                 R.id.events ->{
                     setThatFragment(eventFragment)

@@ -8,12 +8,11 @@ import androidx.fragment.app.Fragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.databinding.FragmentEventBinding
-import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
+
 
 //@ExperimentalCoroutinesApi
 //@AndroidEntryPoint
 class EventFragment: Fragment() {
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

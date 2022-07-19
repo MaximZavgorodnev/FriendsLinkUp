@@ -1,6 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_main">
-
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/feedFragment">
+    <fragment
+        android:id="@+id/feedFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.FeedFragment"
+        android:label="fragment_feed"
+        tools:layout="@layout/fragment_feed" >
+        <action
+            android:id="@+id/action_feedFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.EventFragment"
+        android:label="fragment_event"
+        tools:layout="@layout/fragment_event" >
+        <action
+            android:id="@+id/action_eventFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/jobFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.JobFragment"
+        android:label="fragment_job"
+        tools:layout="@layout/fragment_job" >
+        <action
+            android:id="@+id/action_jobFragment_to_newJobFragment"
+            app:destination="@id/newJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/newPostFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.NewPostFragment"
+        android:label="fragment_new_post"
+        tools:layout="@layout/fragment_new_post" >
+        <action
+            android:id="@+id/action_newPostFragment_to_listOfUsers"
+            app:destination="@id/listOfUsers" />
+        <action
+            android:id="@+id/action_newPostFragment_to_addImage"
+            app:destination="@id/addImage" />
+        <action
+            android:id="@+id/action_newPostFragment_to_addLink"
+            app:destination="@id/addLink" />
+    </fragment>
+    <dialog
+        android:id="@+id/listOfUsers"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfUsers"
+        android:label="faragmen_list_of_users"
+        tools:layout="@layout/faragmen_list_of_users" />
+    <fragment
+        android:id="@+id/newEventFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.NewEventFragment"
+        android:label="fragment_new_event"
+        tools:layout="@layout/fragment_new_event" >
+        <action
+            android:id="@+id/action_newEventFragment_to_addDate"
+            app:destination="@id/addDate" />
+        <action
+            android:id="@+id/action_newEventFragment_to_listOfUsers"
+            app:destination="@id/listOfUsers" />
+        <action
+            android:id="@+id/action_newEventFragment_to_addImage"
+            app:destination="@id/addImage" />
+        <action
+            android:id="@+id/action_newEventFragment_to_addLink"
+            app:destination="@id/addLink" />
+    </fragment>
+    <dialog
+        android:id="@+id/addImage"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddImage"
+        android:label="fragment_add_img"
+        tools:layout="@layout/fragment_add_img" />
+    <dialog
+        android:id="@+id/addLink"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddLink"
+        android:label="fragment_add_link"
+        tools:layout="@layout/fragment_add_link" />
+    <fragment
+        android:id="@+id/newJobFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.NewJobFragment"
+        android:label="fragment_new_job"
+        tools:layout="@layout/fragment_new_job" />
+    <dialog
+        android:id="@+id/addDate"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddDate"
+        android:label="fragment_add_img"
+        tools:layout="@layout/fragment_add_img" />
 </navigation>

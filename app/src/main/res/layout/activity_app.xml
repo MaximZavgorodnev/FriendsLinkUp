@@ -62,8 +62,7 @@
                 app:layout_constraintEnd_toStartOf="@id/menu"
                 app:layout_constraintStart_toEndOf="@id/avatar"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Иван Петров"
-                android:text="Иван Петров"/>
+                android:text="@string/name_author"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/menu"
@@ -107,7 +106,6 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigation"
-
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"

@@ -53,4 +53,17 @@
     <string name="job_period">Work period</string>
     <string name="from">From</string>
     <string name="to">to</string>
+    <string name="name_author">Иван Петров</string>
+    <string name="geo">Geo</string>
+    <string name="link">Link</string>
+    <string name="photo_video">Photo or Video</string>
+    <string name="description_add_menu">add menu</string>
+    <string name="mention">Mention</string>
+    <string name="add">Add</string>
+    <string name="speakers">Speakers</string>
+    <string name="date">Date</string>
+    <string name="name_of_the_organization">Name of the organization</string>
+    <string name="position">Position</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
 </resources>

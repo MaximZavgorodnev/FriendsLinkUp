@@ -45,4 +45,17 @@
     <string name="job_period">Период работы</string>
     <string name="from">С</string>
     <string name="to">по</string>
+    <string name="name_author">Иван Петров</string>
+    <string name="geo">Координаты</string>
+    <string name="link">Ссылка</string>
+    <string name="photo_video">Фото или Видео</string>
+    <string name="description_add_menu">add menu</string>
+    <string name="mention">Участники</string>
+    <string name="add">Добавить</string>
+    <string name="speakers">Ораторы</string>
+    <string name="date">Дата проведения</string>
+    <string name="name_of_the_organization">Название организации</string>
+    <string name="position">Занимаемая должность</string>
+    <string name="start_date">Дата начала работы</string>
+    <string name="end_date">Дата завершения работы</string>
 </resources>
