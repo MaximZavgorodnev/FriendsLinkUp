@@ -118,6 +118,8 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+    implementation 'com.yandex.android:maps.mobile:4.0.0-lite'
+
 
     testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test.ext:junit:$ext_junit_version"

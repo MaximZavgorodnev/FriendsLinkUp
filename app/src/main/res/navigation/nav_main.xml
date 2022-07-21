@@ -45,6 +45,9 @@
         <action
             android:id="@+id/action_newPostFragment_to_addLink"
             app:destination="@id/addLink" />
+        <action
+            android:id="@+id/action_newPostFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <dialog
         android:id="@+id/listOfUsers"
@@ -68,6 +71,9 @@
         <action
             android:id="@+id/action_newEventFragment_to_addLink"
             app:destination="@id/addLink" />
+        <action
+            android:id="@+id/action_newEventFragment_to_mapsFragment"
+            app:destination="@id/mapsFragment" />
     </fragment>
     <dialog
         android:id="@+id/addImage"
@@ -89,4 +95,15 @@
         android:name="ru.maxpek.friendslinkup.fragment.dialog.AddDate"
         android:label="fragment_add_img"
         tools:layout="@layout/fragment_add_img" />
+    <fragment
+        android:id="@+id/mapsFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.MapsFragment"
+        android:label="MapsFragment" >
+        <action
+            android:id="@+id/action_mapsFragment_to_newPostFragment"
+            app:destination="@id/newPostFragment" />
+        <action
+            android:id="@+id/action_mapsFragment_to_newEventFragment"
+            app:destination="@id/newEventFragment" />
+    </fragment>
 </navigation>

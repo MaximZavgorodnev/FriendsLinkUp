@@ -1,7 +1,11 @@
 package ru.maxpek.friendslinkup.dto
 
+import android.os.Bundle
+import com.yandex.mapkit.geometry.Point
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
+import ru.maxpek.friendslinkup.util.PointArg
+//import ru.maxpek.friendslinkup.util.StringArg
 
 sealed class FeedItem{
     abstract val id: Long
@@ -20,12 +24,12 @@ data class Post(
     val authorAvatar: String,
     val content: String,
     val published: Long,
-    val coordinates: Coordinates,
+    val coordinates: Coordinates? = null,
     val link: String,
     val likeOwnerIds: List<Int>,
     val mentionIds: List<Int>,
     val mentionedMe: Boolean,
-    val likedByMe: Boolean = false,
+    val likedByMe: Boolean,
     val attachment: Attachment? = null,
 ) : FeedItem()
 
@@ -46,7 +50,7 @@ data class Event(
     val content: String,
     val datetime: String,
     val published: Long,
-    val coordinates: Coordinates,
+    val coordinates: Coordinates?,
     val type: TypeEvent,
     val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
@@ -71,9 +75,12 @@ data class Coordinates(
 data class User(
     val id: Long,
     val login: String,
+    val password: String,
     val name: String,
     val avatar: String,
 )
+
+
 
 
 
