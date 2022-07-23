@@ -17,60 +17,49 @@ data class PostEntity(
     val authorAvatar: String,
     val content: String,
     val published: Long,
-    @Embedded
-    val coordinates: CoordinatesEmbeddable?,
+    val coordinates: Coordinates?,
     val link: String,
     @Embedded
-    var likeOwnerIds: List<Int>,
+    val likeOwnerIds: List<Int>,
     @Embedded
-    var mentionIds: List<Int>,
+    val mentionIds: List<Int>,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
-    var attachment: AttachmentEmbeddable?,
+    val attachment: AttachmentEmbeddable?,
 ) {
+//    constructor() : this(0, 0, "", "", "", 0,
+//        null,"", listOf<Int>(), listOf<Int>(),false,false, null)
+
     fun toDto() = Post(id, authorId, author, authorAvatar, content,
-        published,coordinates?.toDto(),link, likeOwnerIds,
+        published,coordinates,link, likeOwnerIds,
         mentionIds, mentionedMe, likedByMe, attachment?.toDto() )
 
     companion object {
         fun fromDto(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                dto.content, dto.published,CoordinatesEmbeddable.fromDto(dto.coordinates),
+                dto.content, dto.published,dto.coordinates,
                 dto.link, dto.likeOwnerIds,  dto.mentionIds, dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
 
         fun fromDtoFlow(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                dto.content, dto.published,CoordinatesEmbeddable.fromDto(dto.coordinates),
+                dto.content, dto.published,dto.coordinates,
                 dto.link, dto.likeOwnerIds,  dto.mentionIds, dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
-    }
-}
-
-data class CoordinatesEmbeddable(
-    val lat: Long,
-    val long: Long
-) {
-    fun toDto() = Coordinates(lat, long)
-
-    companion object {
-        fun fromDto(dto: Coordinates?) = dto?.let {
-            CoordinatesEmbeddable(it.lat, it.long)
-        }
     }
 }
 
 
 data class AttachmentEmbeddable(
     var url: String,
-    var type: AttachmentType,
+    var typeAttach: AttachmentType,
 ) {
-    fun toDto() = Attachment(url, type)
+    fun toDto() = Attachment(url, typeAttach)
 
     companion object {
         fun fromDto(dto: Attachment?) = dto?.let {
-            AttachmentEmbeddable(it.url, it.type)
+            AttachmentEmbeddable(it.url, it.typeAttachment)
         }
     }
 }

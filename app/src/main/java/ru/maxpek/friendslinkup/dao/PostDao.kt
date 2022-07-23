@@ -2,6 +2,9 @@ package ru.maxpek.friendslinkup.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
@@ -38,9 +41,25 @@ class Converters {
     fun toAttachmentType(value: String) = enumValueOf<AttachmentType>(value)
     @TypeConverter
     fun fromAttachmentType(value: AttachmentType) = value.name
-    @TypeConverter
-    fun toTypeEvent(value: String) = enumValueOf<TypeEvent>(value)
-    @TypeConverter
-    fun fromTypeEvent(value: TypeEvent) = value.name
+}
 
+class CoordinatesConverter {
+    private val gson = Gson()
+    @TypeConverter
+    fun coordinatesToJson(coordinates: Coordinates?): String? {
+        return if (coordinates == null) {
+            null } else {
+                gson.toJson(coordinates)
+            }
+    }
+
+    @TypeConverter
+    fun jsonToCoordinates(json: String?): Coordinates? {
+        return if (json.isNullOrEmpty()) {
+            null
+        } else {
+            val type = object : TypeToken<Coordinates>() {}.type
+            gson.fromJson(json, type)
+        }
+    }
 }

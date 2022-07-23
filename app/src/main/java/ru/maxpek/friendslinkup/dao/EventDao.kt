@@ -3,10 +3,12 @@ package ru.maxpek.friendslinkup.dao
 import androidx.paging.PagingSource
 import androidx.room.*
 import ru.maxpek.friendslinkup.entity.EventEntity
+import ru.maxpek.friendslinkup.enumeration.AttachmentType
+import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
 @Dao
 interface EventDao {
-    @Query("SELECT * FROM PostEntity ORDER BY id DESC")
+    @Query("SELECT * FROM EventEntity ORDER BY id DESC")
     fun getAll(): PagingSource<Int, EventEntity>
 
     @Query("SELECT COUNT(*) == 0 FROM EventEntity")
@@ -29,4 +31,13 @@ interface EventDao {
 
     @Query("DELETE FROM EventEntity")
     suspend fun removeAll()
+}
+
+
+class EventConverters {
+    @TypeConverter
+    fun toTypeEvent(value: String) = enumValueOf<TypeEvent>(value)
+    @TypeConverter
+    fun fromTypeEvent(value: TypeEvent) = value.name
+
 }

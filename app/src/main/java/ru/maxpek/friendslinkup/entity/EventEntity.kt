@@ -3,6 +3,7 @@ package ru.maxpek.friendslinkup.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.Event
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
@@ -16,35 +17,38 @@ data class EventEntity(
     val content: String,
     val datetime: String,
     val published: Long,
-    @Embedded
-    val coordinates: CoordinatesEmbeddable?,
+    val coordinates: Coordinates?,
     val type: TypeEvent,
     @Embedded
-    var likeOwnerIds: List<Int>,
+    val likeOwnerIds: List<Int>,
     val likedByMe: Boolean,
     @Embedded
-    var speakerIds: List<Int>,
+    val speakerIds: List<Int>,
     @Embedded
-    var participantsIds: List<Int>,
+    val participantsIds: List<Int>,
     val participatedByMe: Boolean,
     val link: String,
     @Embedded
-    var attachment: AttachmentEmbeddable?,
+    val attachment: AttachmentEmbeddable?,
     ) {
-        fun toDto() = Event(id, authorId, author, authorAvatar, content, datetime,
-            published, coordinates?.toDto(),type, likeOwnerIds,likedByMe, speakerIds,
+
+//    constructor() : this(0, 0, "", "", "", "",0, null,
+//        TypeEvent.OFFLINE, listOf<Int>(),false, listOf<Int>(), listOf<Int>(),false,"", null)
+
+    fun toDto() = Event(id, authorId, author, authorAvatar, content, datetime,
+            published, coordinates,type, likeOwnerIds,likedByMe, speakerIds,
             participantsIds, participatedByMe, link, attachment?.toDto() )
 
         companion object {
             fun fromDto(dto: Event) =
                 EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                    dto.content, dto.datetime, dto.published, CoordinatesEmbeddable.fromDto(dto.coordinates),
+                    dto.content, dto.datetime, dto.published, dto.coordinates,
                     dto.type, dto.likeOwnerIds, dto.likedByMe, dto.speakerIds, dto.participantsIds, dto.participatedByMe,
                     dto.link, AttachmentEmbeddable.fromDto(dto.attachment))
 
             fun fromDtoFlow(dto: Event) =
                 EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                    dto.content, dto.datetime, dto.published, CoordinatesEmbeddable.fromDto(dto.coordinates),
+                    dto.content, dto.datetime, dto.published, dto.coordinates,
                     dto.type, dto.likeOwnerIds, dto.likedByMe, dto.speakerIds, dto.participantsIds, dto.participatedByMe,
                     dto.link, AttachmentEmbeddable.fromDto(dto.attachment))
         }

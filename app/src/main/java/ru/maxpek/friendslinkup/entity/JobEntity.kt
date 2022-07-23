@@ -12,4 +12,6 @@ data class JobEntity(
     val start: String,
     val finish: String,
     val link: String,
-)
+) {
+    constructor(): this(0,"", "", "", "", "")
+}

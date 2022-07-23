@@ -12,7 +12,7 @@ interface JobDao {
     @Query("SELECT * FROM JobEntity ORDER BY id DESC")
     fun getAll(): PagingSource<Int, JobEntity>
 
-    @Query("SELECT COUNT(*) == 0 FROM EventEntity")
+    @Query("SELECT COUNT(*) == 0 FROM JobEntity")
     suspend fun isEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
