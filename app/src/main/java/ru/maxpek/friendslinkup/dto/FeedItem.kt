@@ -78,6 +78,22 @@ data class User(
     val avatar: String,
 )
 
+data class LikeOwnerIdsHolder (
+    val likeOwnerIdsList: List<Int>
+)
+
+data class MentionIdsHolder(
+    val mentionIdsList: List<Int>
+)
+
+data class SpeakerIdsHolder(
+    val speakerIdsList: List<Int>
+)
+
+data class ParticipantsIdsHolder(
+    val participantsIdsList: List<Int>
+)
+
 
 
 

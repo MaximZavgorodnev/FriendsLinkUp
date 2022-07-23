@@ -5,10 +5,13 @@ import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.maxpek.friendslinkup.dto.Coordinates
+import ru.maxpek.friendslinkup.dto.LikeOwnerIdsHolder
+import ru.maxpek.friendslinkup.dto.MentionIdsHolder
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
+private val gson = Gson()
 @Dao
 interface PostDao {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
@@ -44,7 +47,7 @@ class Converters {
 }
 
 class CoordinatesConverter {
-    private val gson = Gson()
+
     @TypeConverter
     fun coordinatesToJson(coordinates: Coordinates?): String? {
         return if (coordinates == null) {
@@ -61,5 +64,28 @@ class CoordinatesConverter {
             val type = object : TypeToken<Coordinates>() {}.type
             gson.fromJson(json, type)
         }
+    }
+}
+
+
+class ConvertersLikeOwnerIdsHolder {
+    @TypeConverter
+    fun fromLikeOwnerIdsHolder(likeOwnerIds: LikeOwnerIdsHolder): String {
+        return Gson().toJson(likeOwnerIds)
+    }
+    @TypeConverter
+    fun toLikeOwnerIdsHolder(sh: String): LikeOwnerIdsHolder {
+        return Gson().fromJson(sh,LikeOwnerIdsHolder::class.java)
+    }
+}
+
+class ConvertersMentionIdsHolder {
+    @TypeConverter
+    fun fromMentionIdsHolder(mentionIds: MentionIdsHolder): String {
+        return Gson().toJson(mentionIds)
+    }
+    @TypeConverter
+    fun toMentionIdsHolder(sh: String): MentionIdsHolder {
+        return Gson().fromJson(sh,MentionIdsHolder::class.java)
     }
 }

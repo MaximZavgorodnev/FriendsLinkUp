@@ -3,9 +3,7 @@ package ru.maxpek.friendslinkup.entity
 import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.maxpek.friendslinkup.dto.Attachment
-import ru.maxpek.friendslinkup.dto.Coordinates
-import ru.maxpek.friendslinkup.dto.Post
+import ru.maxpek.friendslinkup.dto.*
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 
 @Entity
@@ -19,10 +17,8 @@ data class PostEntity(
     val published: Long,
     val coordinates: Coordinates?,
     val link: String,
-    @Embedded
-    val likeOwnerIds: List<Int>,
-    @Embedded
-    val mentionIds: List<Int>,
+    val likeOwnerIds: LikeOwnerIdsHolder,
+    val mentionIds: MentionIdsHolder,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
@@ -32,20 +28,20 @@ data class PostEntity(
 //        null,"", listOf<Int>(), listOf<Int>(),false,false, null)
 
     fun toDto() = Post(id, authorId, author, authorAvatar, content,
-        published,coordinates,link, likeOwnerIds,
-        mentionIds, mentionedMe, likedByMe, attachment?.toDto() )
+        published,coordinates,link, likeOwnerIds.likeOwnerIdsList,
+        mentionIds.mentionIdsList, mentionedMe, likedByMe, attachment?.toDto() )
 
     companion object {
         fun fromDto(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                 dto.content, dto.published,dto.coordinates,
-                dto.link, dto.likeOwnerIds,  dto.mentionIds, dto.mentionedMe,
+                dto.link, LikeOwnerIdsHolder(dto.likeOwnerIds),  MentionIdsHolder(dto.mentionIds), dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
 
         fun fromDtoFlow(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                 dto.content, dto.published,dto.coordinates,
-                dto.link, dto.likeOwnerIds,  dto.mentionIds, dto.mentionedMe,
+                dto.link, LikeOwnerIdsHolder(dto.likeOwnerIds),  MentionIdsHolder(dto.mentionIds), dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
     }
 }

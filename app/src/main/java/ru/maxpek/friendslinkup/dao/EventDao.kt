@@ -2,8 +2,10 @@ package ru.maxpek.friendslinkup.dao
 
 import androidx.paging.PagingSource
 import androidx.room.*
+import com.google.gson.Gson
+import ru.maxpek.friendslinkup.dto.ParticipantsIdsHolder
+import ru.maxpek.friendslinkup.dto.SpeakerIdsHolder
 import ru.maxpek.friendslinkup.entity.EventEntity
-import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
 @Dao
@@ -40,4 +42,26 @@ class EventConverters {
     @TypeConverter
     fun fromTypeEvent(value: TypeEvent) = value.name
 
+}
+
+class ConvertersSpeakerIdsHolder {
+    @TypeConverter
+    fun fromSpeakerIdsHolder(speakerIds: SpeakerIdsHolder): String {
+        return Gson().toJson(speakerIds)
+    }
+    @TypeConverter
+    fun toSpeakerIdsHolder(sh: String): SpeakerIdsHolder {
+        return Gson().fromJson(sh, SpeakerIdsHolder::class.java)
+    }
+}
+
+class ConvertersParticipantsIdsHolder {
+    @TypeConverter
+    fun fromParticipantsIdsHolder(participantsIds: ParticipantsIdsHolder): String {
+        return Gson().toJson(participantsIds)
+    }
+    @TypeConverter
+    fun toParticipantsIdsHolder(sh: String): ParticipantsIdsHolder {
+        return Gson().fromJson(sh, ParticipantsIdsHolder::class.java)
+    }
 }

@@ -9,7 +9,8 @@ import ru.maxpek.friendslinkup.entity.EventRemoteKeyEntity
 
 
 @Database(entities = [EventEntity::class, EventRemoteKeyEntity::class], version = 1, exportSchema = false)
-@TypeConverters(Converters::class, CoordinatesConverter::class, EventConverters::class)
+@TypeConverters(Converters::class, CoordinatesConverter::class, EventConverters::class,
+    ConvertersLikeOwnerIdsHolder::class, ConvertersSpeakerIdsHolder::class, ConvertersParticipantsIdsHolder::class)
 abstract class EventAppDb : RoomDatabase() {
     abstract fun eventDao(): EventDao
     abstract fun eventRemoteKeyDao(): EventRemoteKeyDao
