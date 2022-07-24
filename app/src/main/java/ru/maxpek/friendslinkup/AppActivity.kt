@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -67,6 +68,7 @@ class AppActivity : AppCompatActivity() {
             }
             true
         }
+
 
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
