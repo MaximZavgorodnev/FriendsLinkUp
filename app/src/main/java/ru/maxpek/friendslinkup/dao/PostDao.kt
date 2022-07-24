@@ -5,11 +5,8 @@ import androidx.room.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import ru.maxpek.friendslinkup.dto.Coordinates
-import ru.maxpek.friendslinkup.dto.LikeOwnerIdsHolder
-import ru.maxpek.friendslinkup.dto.MentionIdsHolder
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
-import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
 private val gson = Gson()
 @Dao

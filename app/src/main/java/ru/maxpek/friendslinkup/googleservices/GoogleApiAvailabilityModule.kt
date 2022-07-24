@@ -1,4 +1,4 @@
-package ru.netology.nmedia.googleservices
+package ru.maxpek.friendslinkup.googleservices
 
 import com.google.android.gms.common.GoogleApiAvailability
 import dagger.Module

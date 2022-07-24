@@ -1,4 +1,4 @@
-package ru.netology.nmedia.googleservices
+package ru.maxpek.friendslinkup.googleservices
 
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.Module

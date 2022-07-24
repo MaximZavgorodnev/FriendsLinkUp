@@ -4,8 +4,6 @@ import androidx.paging.PagingSource
 import androidx.room.*
 import com.google.gson.Gson
 import ru.maxpek.friendslinkup.dto.ListIds
-import ru.maxpek.friendslinkup.dto.ParticipantsIdsHolder
-import ru.maxpek.friendslinkup.dto.SpeakerIdsHolder
 import ru.maxpek.friendslinkup.entity.EventEntity
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 

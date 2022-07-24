@@ -61,6 +61,11 @@ data class Event(
 
 
 data class User(
+    val login: String,
+    val password: String,
+)
+
+data class User2(
     val id: Long,
     val login: String,
     val password: String,
