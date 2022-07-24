@@ -17,31 +17,28 @@ data class PostEntity(
     val published: Long,
     val coordinates: Coordinates?,
     val link: String,
-    val likeOwnerIds: LikeOwnerIdsHolder,
-    val mentionIds: MentionIdsHolder,
+    val likeOwnerIds: ListIds,
+    val mentionIds: ListIds,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
     val attachment: AttachmentEmbeddable?,
 ) {
-//    constructor() : this(0, 0, "", "", "", 0,
-//        null,"", listOf<Int>(), listOf<Int>(),false,false, null)
-
     fun toDto() = Post(id, authorId, author, authorAvatar, content,
-        published,coordinates,link, likeOwnerIds.likeOwnerIdsList,
-        mentionIds.mentionIdsList, mentionedMe, likedByMe, attachment?.toDto() )
+        published,coordinates,link, likeOwnerIds.list,
+        mentionIds.list, mentionedMe, likedByMe, attachment?.toDto() )
 
     companion object {
         fun fromDto(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                 dto.content, dto.published,dto.coordinates,
-                dto.link, LikeOwnerIdsHolder(dto.likeOwnerIds),  MentionIdsHolder(dto.mentionIds), dto.mentionedMe,
+                dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
 
         fun fromDtoFlow(dto: Post) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                 dto.content, dto.published,dto.coordinates,
-                dto.link, LikeOwnerIdsHolder(dto.likeOwnerIds),  MentionIdsHolder(dto.mentionIds), dto.mentionedMe,
+                dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
     }
 }

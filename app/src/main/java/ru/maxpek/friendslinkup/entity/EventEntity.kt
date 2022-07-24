@@ -18,36 +18,33 @@ data class EventEntity(
     val published: Long,
     val coordinates: Coordinates?,
     val type: TypeEvent,
-    val likeOwnerIds: LikeOwnerIdsHolder,
+    val likeOwnerIds: ListIds,
     val likedByMe: Boolean,
-    val speakerIds: SpeakerIdsHolder,
-    val participantsIds: ParticipantsIdsHolder,
+    val speakerIds: ListIds,
+    val participantsIds: ListIds,
     val participatedByMe: Boolean,
     val link: String,
     @Embedded
     val attachment: AttachmentEmbeddable?,
     ) {
 
-//    constructor() : this(0, 0, "", "", "", "",0, null,
-//        TypeEvent.OFFLINE, listOf<Int>(),false, listOf<Int>(), listOf<Int>(),false,"", null)
-
     fun toDto() = Event(id, authorId, author, authorAvatar, content, datetime,
-            published, coordinates,type, likeOwnerIds.likeOwnerIdsList,likedByMe, speakerIds.speakerIdsList,
-            participantsIds.participantsIdsList, participatedByMe, link, attachment?.toDto() )
+            published, coordinates,type, likeOwnerIds.list,likedByMe, speakerIds.list,
+            participantsIds.list, participatedByMe, link, attachment?.toDto() )
 
         companion object {
             fun fromDto(dto: Event) =
                 EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                     dto.content, dto.datetime, dto.published, dto.coordinates,
-                    dto.type, LikeOwnerIdsHolder(dto.likeOwnerIds), dto.likedByMe,
-                    SpeakerIdsHolder(dto.speakerIds), ParticipantsIdsHolder(dto.participantsIds),
+                    dto.type, ListIds(dto.likeOwnerIds), dto.likedByMe,
+                    ListIds(dto.speakerIds), ListIds(dto.participantsIds),
                     dto.participatedByMe, dto.link, AttachmentEmbeddable.fromDto(dto.attachment))
 
             fun fromDtoFlow(dto: Event) =
                 EventEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
                     dto.content, dto.datetime, dto.published, dto.coordinates,
-                    dto.type, LikeOwnerIdsHolder(dto.likeOwnerIds), dto.likedByMe,
-                    SpeakerIdsHolder(dto.speakerIds), ParticipantsIdsHolder(dto.participantsIds),
+                    dto.type, ListIds(dto.likeOwnerIds), dto.likedByMe,
+                    ListIds(dto.speakerIds), ListIds(dto.participantsIds),
                     dto.participatedByMe, dto.link, AttachmentEmbeddable.fromDto(dto.attachment))
         }
     }

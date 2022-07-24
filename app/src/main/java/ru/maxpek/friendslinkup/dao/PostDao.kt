@@ -66,26 +66,3 @@ class CoordinatesConverter {
         }
     }
 }
-
-
-class ConvertersLikeOwnerIdsHolder {
-    @TypeConverter
-    fun fromLikeOwnerIdsHolder(likeOwnerIds: LikeOwnerIdsHolder): String {
-        return Gson().toJson(likeOwnerIds)
-    }
-    @TypeConverter
-    fun toLikeOwnerIdsHolder(sh: String): LikeOwnerIdsHolder {
-        return Gson().fromJson(sh,LikeOwnerIdsHolder::class.java)
-    }
-}
-
-class ConvertersMentionIdsHolder {
-    @TypeConverter
-    fun fromMentionIdsHolder(mentionIds: MentionIdsHolder): String {
-        return Gson().toJson(mentionIds)
-    }
-    @TypeConverter
-    fun toMentionIdsHolder(sh: String): MentionIdsHolder {
-        return Gson().fromJson(sh,MentionIdsHolder::class.java)
-    }
-}

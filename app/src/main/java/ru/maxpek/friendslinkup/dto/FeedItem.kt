@@ -60,6 +60,18 @@ data class Event(
 ) : FeedItem()
 
 
+data class User(
+    val id: Long,
+    val login: String,
+    val password: String,
+    val name: String,
+    val avatar: String,
+)
+
+data class ListIds(
+    val list: List<Int>
+)
+
 data class Attachment (
     val url: String,
     val typeAttachment: AttachmentType,
@@ -70,29 +82,6 @@ data class Coordinates (
     val longitude: Long
 )
 
-data class User(
-    val id: Long,
-    val login: String,
-    val password: String,
-    val name: String,
-    val avatar: String,
-)
-
-data class LikeOwnerIdsHolder (
-    val likeOwnerIdsList: List<Int>
-)
-
-data class MentionIdsHolder(
-    val mentionIdsList: List<Int>
-)
-
-data class SpeakerIdsHolder(
-    val speakerIdsList: List<Int>
-)
-
-data class ParticipantsIdsHolder(
-    val participantsIdsList: List<Int>
-)
 
 
 
