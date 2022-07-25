@@ -5,11 +5,11 @@
         android:title="@string/feed_of_posts"
         android:icon="@drawable/feed_icons" />
     <item
-        android:id="@+id/jobs"
-        android:title="@string/feed_of_jobs"
-        android:icon="@drawable/work_icons" />
-    <item
         android:id="@+id/events"
         android:title="@string/feed_of_events"
         android:icon="@drawable/event_icons" />
+    <item
+        android:id="@+id/jobs"
+        android:title="@string/feed_of_jobs"
+        android:icon="@drawable/work_icons" />
 </menu>
