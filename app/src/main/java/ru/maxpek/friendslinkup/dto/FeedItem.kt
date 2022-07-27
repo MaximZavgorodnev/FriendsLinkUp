@@ -1,6 +1,8 @@
 package ru.maxpek.friendslinkup.dto
 
 
+import android.graphics.Bitmap
+import android.media.Image
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
@@ -60,20 +62,27 @@ data class Event(
 ) : FeedItem()
 
 
-data class User(
+data class UserResponse (
     val login: String,
     val password: String,
 )
 
-data class User2(
+data class UserRequested (
     val id: Long,
     val login: String,
-    val password: String,
     val name: String,
     val avatar: String,
 )
 
-data class ListIds(
+data class UserRegistration (
+    val login: String,
+    val password: String,
+    val name: String,
+    val file: Bitmap
+)
+
+
+data class ListIds (
     val list: List<Int>
 )
 

@@ -9,7 +9,10 @@
     android:paddingTop="@dimen/fragment_vertical_margin"
     android:paddingRight="@dimen/fragment_horizontal_margin"
     android:paddingBottom="@dimen/fragment_vertical_margin"
-    tools:context=".activity.Dialog.RegistrationFragment">
+    tools:context=".fragment.dialog.RegistrationFragment">
+
+
+
 
     <EditText
         android:id="@+id/username"
@@ -72,6 +75,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="avatar"/>
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="98dp"
+        android:layout_height="98dp"
+        android:layout_marginStart="24dp"
+        android:contentDescription="@string/description_post_author_avatar"
+        app:layout_constraintTop_toBottomOf="@id/repeat_password"
+        app:layout_constraintBottom_toTopOf="@id/enter"
+        app:layout_constraintStart_toStartOf="parent"
+        android:src="@mipmap/ic_launcher"/>
+
+    <Button
+        android:id="@+id/addImage"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_avatar"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/avatar" />
+
+    <Button
+        android:id="@+id/deleteImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delete"
+        app:layout_constraintStart_toEndOf="@id/avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/addImage" />
+
+
+
     <Button
         android:id="@+id/enter"
         android:layout_width="wrap_content"
@@ -81,12 +121,11 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="48dp"
         android:layout_marginBottom="8dp"
-
         android:text="@string/action_sign_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeat_password"
+        app:layout_constraintTop_toBottomOf="@+id/avatar"
         app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

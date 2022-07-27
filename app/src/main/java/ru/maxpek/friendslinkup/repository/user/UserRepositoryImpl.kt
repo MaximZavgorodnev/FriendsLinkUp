@@ -2,7 +2,8 @@ package ru.maxpek.friendslinkup.repository.user
 
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.auth.AppAuth
-import ru.maxpek.friendslinkup.dto.User
+import ru.maxpek.friendslinkup.dto.UserRegistration
+import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.error.ApiError
 import ru.maxpek.friendslinkup.error.NetworkError
 import ru.maxpek.friendslinkup.error.UnknownError
@@ -15,9 +16,9 @@ class UserRepositoryImpl @Inject constructor(
     private  val appAuth: AppAuth
 ): UserRepository {
 
-    override suspend fun onSignIn(user: User) {
+    override suspend fun onSignIn(userResponse: UserResponse) {
         try {
-            val response = apiService.onSignIn(user.login, user.password)
+            val response = apiService.onSignIn(userResponse.login, userResponse.password)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -31,9 +32,9 @@ class UserRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun onSignUp(login: String, pass: String, name: String) {
+    override suspend fun onSignUp(user: UserRegistration) {
         try {
-            val response = apiService.onSignUp(login, pass, name)
+            val response = apiService.onSignUp(user.login, user.password, user.name, user.file)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }

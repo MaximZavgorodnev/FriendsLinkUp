@@ -11,7 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentAuthenticationBinding
-import ru.maxpek.friendslinkup.dto.User
+import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 
@@ -38,8 +38,8 @@ class AuthenticationFragment : DialogFragment() {
             if (usernameEditText=="" || passwordEditText==""){
                 Snackbar.make(binding.root, R.string.All_fields, Snackbar.LENGTH_SHORT).show()
             } else {
-                val user = User(usernameEditText, passwordEditText)
-                viewModel.onSignIn(user)
+                val userResponse = UserResponse(usernameEditText, passwordEditText)
+                viewModel.onSignIn(userResponse)
                 AndroidUtils.hideKeyboard(requireView())
                 findNavController().navigateUp()
             }

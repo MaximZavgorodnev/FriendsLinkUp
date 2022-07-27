@@ -1,8 +1,9 @@
 package ru.maxpek.friendslinkup.repository.user
 
-import ru.maxpek.friendslinkup.dto.User
+import ru.maxpek.friendslinkup.dto.UserRegistration
+import ru.maxpek.friendslinkup.dto.UserResponse
 
 interface UserRepository {
-    suspend fun onSignIn(user: User)
-    suspend fun onSignUp(login: String, pass: String, name: String)
+    suspend fun onSignIn(userResponse: UserResponse)
+    suspend fun onSignUp(user: UserRegistration)
 }

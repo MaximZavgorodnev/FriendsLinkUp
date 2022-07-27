@@ -85,38 +85,6 @@ class AppActivity : AppCompatActivity() {
             true
         }
 
-
-
-
-//        binding.menu.setOnClickListener {
-//            PopupMenu(it.context, it).apply {
-//                menuInflater.inflate(R.menu.menu_main, menu)
-//                menu.let {menuVisible ->
-//                    menuVisible.setGroupVisible(R.id.unauthenticated, !viewModel.authenticated)
-//                    menuVisible.setGroupVisible(R.id.authenticated, viewModel.authenticated)
-//            }
-////                inflate(R.menu.menu_main)
-//                setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.signin -> {
-//                            findNavController(R.id.frame).navigate(R.id.action_feedFragment_to_authenticationFragment)
-//                            true
-//                        }
-//                        R.id.signup -> {
-//                            findNavController(R.id.frame).navigate(R.id.action_feedFragment_to_registrationFragment)
-//                            true
-//                        }
-//                        R.id.signout -> {
-//                            appAuth.removeAuth()
-//                            true
-//                        }
-//
-//                        else -> false
-//                    }
-//                }
-//            }.show()
-//        }
-
         viewModel.data.observe(this) {
             invalidateOptionsMenu()
         }
@@ -158,6 +126,9 @@ class AppActivity : AppCompatActivity() {
             else -> super.onOptionsItemSelected(item)
         }
     }
+
+
+
 
     private fun checkGoogleApiAvailability() {
         with(googleApiAvailability) {

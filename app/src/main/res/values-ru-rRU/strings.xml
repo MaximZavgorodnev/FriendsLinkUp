@@ -59,4 +59,8 @@
     <string name="start_date">Дата начала работы</string>
     <string name="end_date">Дата завершения работы</string>
     <string name="addGeo">Добавить эти гео данные?</string>
+    <string name="add_avatar">Добавить аватарку</string>
+    <string name="image">Добавить из галереии</string>
+    <string name="camera">Открыть камеру</string>
+    <string name="delete">Удалить</string>
 </resources>

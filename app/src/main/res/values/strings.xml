@@ -67,4 +67,8 @@
     <string name="start_date">Start date</string>
     <string name="end_date">End date</string>
     <string name="addGeo">Add this geo data?</string>
+    <string name="add_avatar">add avatar</string>
+    <string name="camera">Open camera</string>
+    <string name="image">Add from Gallery</string>
+    <string name="delete">Delete</string>
 </resources>

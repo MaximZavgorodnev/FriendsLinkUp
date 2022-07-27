@@ -1,5 +1,6 @@
 package ru.maxpek.friendslinkup.api
 
+import android.graphics.Bitmap
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
@@ -44,7 +45,8 @@ interface ApiService {
     suspend fun onSignUp(
         @Field("login") login: String,
         @Field("pass") pass: String,
-        @Field("name") name: String
+        @Field("name") name: String,
+        @Field("file") file: Bitmap
     ): Response<AuthState>
 
     @GET("posts/latest")

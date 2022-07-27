@@ -9,7 +9,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.auth.AuthState
-import ru.maxpek.friendslinkup.dto.User
+import ru.maxpek.friendslinkup.dto.UserRegistration
+import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.repository.user.UserRepository
 import ru.maxpek.friendslinkup.error.UnknownError
 import javax.inject.Inject
@@ -29,10 +30,10 @@ class AuthViewModel @Inject constructor(
 
 
 
-    fun onSignIn(user: User){
+    fun onSignIn(userResponse: UserResponse){
         viewModelScope.launch {
             try {
-                repositoryUser.onSignIn(user)
+                repositoryUser.onSignIn(userResponse)
 
             } catch (e: Exception) {
                 throw UnknownError
@@ -41,10 +42,10 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun onSignUp(loginEditText: String, passwordEditText: String, usernameEditText: String){
+    fun onSignUp(user: UserRegistration){
         viewModelScope.launch {
             try {
-                repositoryUser.onSignUp(loginEditText, passwordEditText, usernameEditText)
+                repositoryUser.onSignUp(user)
             } catch (e: Exception) {
                 throw UnknownError
             }
