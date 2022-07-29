@@ -8,35 +8,44 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.PopupMenu
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.net.toFile
 import androidx.core.view.drawToBitmap
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MultipartBody
+import okio.ByteString.Companion.encode
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
 import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
+import java.io.File
 
+private const val FILE_NAME = "photo.jpg"
 @AndroidEntryPoint
 class RegistrationFragment : DialogFragment() {
+
     private var imageResultLauncher: ActivityResultLauncher<Intent>? = null
     private var cameraResultLauncher: ActivityResultLauncher<Intent>? = null
-    private val viewModel: AuthViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentRegistrationBinding.inflate(inflater, container, false)
+
+        var file: File? = null
 
         val enter = binding.enter
 
@@ -45,7 +54,7 @@ class RegistrationFragment : DialogFragment() {
             val loginEditText = binding.login.text.toString()
             val passwordEditText = binding.password.text.toString()
             val repeatPasswordEditText = binding.repeatPassword.text.toString()
-            val avatarImage = binding.avatar.drawToBitmap(Bitmap.Config.ARGB_8888)
+            val avatarImage = file
             if (passwordEditText != repeatPasswordEditText){
                 Snackbar.make(binding.root, R.string.password_not_match, Snackbar.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -57,16 +66,39 @@ class RegistrationFragment : DialogFragment() {
                     val user = UserRegistration(loginEditText, passwordEditText, usernameEditText, avatarImage)
                     viewModel.onSignUp(user)
                     AndroidUtils.hideKeyboard(requireView())
-                    findNavController().navigateUp()
+//                    findNavController().navigateUp()
                 }
             }
         }
         imageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val image = result?.data?.extras?.get("data") as Bitmap
-                binding.avatar.setImageBitmap(image)
+                val uri = result?.data?.data
+
+
+//                val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+//                filePhoto = getPhotoFile(FILE_NAME)
+//                val providerFile = FileProvider.getUriForFile(this,"com.example.androidcamera.fileprovider", filePhoto)
+//                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
+
+
+
+
+                if (uri != null) {
+
+                    binding.avatar.setImageURI(uri)
+
+
+                } else {
+                    binding.avatar.setImageResource(R.mipmap.ic_launcher)
+                }
             }
         }
+
+
+
+
+
 
         cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -83,6 +115,7 @@ class RegistrationFragment : DialogFragment() {
                         R.id.image -> {
                             val intent = Intent(Intent.ACTION_PICK)
                             intent.type = "image/*"
+
                             imageResultLauncher!!.launch(intent)
                             true
                         }
@@ -101,7 +134,6 @@ class RegistrationFragment : DialogFragment() {
         binding.deleteImage.setOnClickListener {
             binding.avatar.setImageResource(R.mipmap.ic_launcher)
         }
-
         return binding.root
     }
 

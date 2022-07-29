@@ -18,9 +18,7 @@ import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 @AndroidEntryPoint
 class AuthenticationFragment : DialogFragment() {
 
-    private val viewModel: AuthViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+    private val viewModel: AuthViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,7 +39,7 @@ class AuthenticationFragment : DialogFragment() {
                 val userResponse = UserResponse(usernameEditText, passwordEditText)
                 viewModel.onSignIn(userResponse)
                 AndroidUtils.hideKeyboard(requireView())
-                findNavController().navigateUp()
+//                findNavController().navigateUp()
             }
         }
 

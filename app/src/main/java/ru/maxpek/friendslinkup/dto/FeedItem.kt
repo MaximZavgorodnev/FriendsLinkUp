@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.media.Image
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
+import java.io.File
 
 
 sealed class FeedItem{
@@ -78,7 +79,7 @@ data class UserRegistration (
     val login: String,
     val password: String,
     val name: String,
-    val file: Bitmap
+    val file: File?
 )
 
 

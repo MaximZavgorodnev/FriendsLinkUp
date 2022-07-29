@@ -6,6 +6,7 @@ import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
 import ru.maxpek.friendslinkup.dto.Post
 import ru.maxpek.friendslinkup.dto.PushToken
+import java.io.File
 
 
 interface ApiService {
@@ -46,7 +47,7 @@ interface ApiService {
         @Field("login") login: String,
         @Field("pass") pass: String,
         @Field("name") name: String,
-        @Field("file") file: Bitmap
+        @Field("file") file: File?
     ): Response<AuthState>
 
     @GET("posts/latest")
