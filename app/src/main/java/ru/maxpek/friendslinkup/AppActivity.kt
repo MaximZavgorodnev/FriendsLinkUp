@@ -4,18 +4,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.ActionBar
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
-import androidx.transition.Visibility
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,17 +51,7 @@ class AppActivity : AppCompatActivity() {
         val jobFragment = JobFragment()
 
         setThatFragment(feedFragment)
-//        setSupportActionBar(findViewById(R.id.topAppBar))
-
-//        supportActionBar?.setIcon(R.drawable.ic_menu_24)
-//        supportActionBar?.setHomeActionContentDescription(R.drawable.ic_menu_24)
-//        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_24)
-
-
-//        supportActionBar.lis
-//            binding.drawerLayout.open()
-//        }
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
             // Handle menu item selected
@@ -91,6 +78,8 @@ class AppActivity : AppCompatActivity() {
 
         checkGoogleApiAvailability()
     }
+
+
 
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -148,13 +137,9 @@ class AppActivity : AppCompatActivity() {
             println(it)
         }
     }
-
-    private fun hideActionBar() {
-        supportActionBar?.hide()
-    }
-
     private fun setThatFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
         replace(R.id.frame, fragment)
         commit()
     }
 }
+

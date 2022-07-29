@@ -4,6 +4,9 @@
     package="ru.maxpek.friendslinkup">
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_logo"
@@ -13,6 +16,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FriendsLinkUp"
         android:name=".application.FriendsLinkUpApplication">
+
+
         <activity
             android:name=".AppActivity"
             android:exported="true">
@@ -32,6 +37,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
 
 <!--        <service-->
 <!--             android:name=".service.FCMService"-->

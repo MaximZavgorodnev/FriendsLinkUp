@@ -1,6 +1,7 @@
 package ru.maxpek.friendslinkup.fragment.dialog
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -12,18 +13,18 @@ import android.widget.PopupMenu
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toFile
-import androidx.core.view.drawToBitmap
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
+import com.canhub.cropper.CropImageContract
+import com.canhub.cropper.CropImageIntentChooser
+import com.canhub.cropper.CropImageView
+import com.canhub.cropper.options
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MultipartBody
-import okio.ByteString.Companion.encode
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
 import ru.maxpek.friendslinkup.dto.UserRegistration
@@ -37,6 +38,9 @@ class RegistrationFragment : DialogFragment() {
 
     private var imageResultLauncher: ActivityResultLauncher<Intent>? = null
     private var cameraResultLauncher: ActivityResultLauncher<Intent>? = null
+    //    private var cropImage: CropImageIntentChooser.ResultCallback? = null
+
+
     private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -73,6 +77,12 @@ class RegistrationFragment : DialogFragment() {
         imageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
                 val uri = result?.data?.data
+                if (uri != null) {
+                    binding.avatar.setImageURI(uri)
+                } else {
+                    binding.avatar.setImageResource(R.mipmap.ic_launcher)
+                }
+            }
 
 
 //                val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
@@ -80,20 +90,10 @@ class RegistrationFragment : DialogFragment() {
 //                filePhoto = getPhotoFile(FILE_NAME)
 //                val providerFile = FileProvider.getUriForFile(this,"com.example.androidcamera.fileprovider", filePhoto)
 //                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
-
-
-
-
-                if (uri != null) {
-
-                    binding.avatar.setImageURI(uri)
-
-
-                } else {
-                    binding.avatar.setImageResource(R.mipmap.ic_launcher)
-                }
-            }
         }
+
+
+
 
 
 
@@ -107,28 +107,51 @@ class RegistrationFragment : DialogFragment() {
             }
         }
 
+
+
+
+        val cropImage = registerForActivityResult(CropImageContract()) { result ->
+            if (result.isSuccessful) {
+                // use the returned uri
+                val uriContent = result.uriContent
+//                val uriFilePath = result.getUriFilePath(activity!!.application) // optional usage
+                file = File(uriContent.toString())
+                binding.avatar.setImageURI(uriContent)
+            } else {
+                // an error occurred
+                val exception = result.error
+            }
+        }
+
         binding.addImage.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.menu_add_image)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.image -> {
-                            val intent = Intent(Intent.ACTION_PICK)
-                            intent.type = "image/*"
-
-                            imageResultLauncher!!.launch(intent)
-                            true
-                        }
-                        R.id.camera -> {
-                            val bInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                            cameraResultLauncher!!.launch(bInt)
-                            true
-                        }
-
-                        else -> false
-                    }
+            cropImage.launch(
+                options {
+                    setMaxCropResultSize(400,400)
+                    setGuidelines(CropImageView.Guidelines.ON)
                 }
-            }.show()
+            )
+//            PopupMenu(it.context, it).apply {
+//                inflate(R.menu.menu_add_image)
+//                setOnMenuItemClickListener { item ->
+//                    when (item.itemId) {
+//                        R.id.image -> {
+////                            val intent = Intent(Intent.ACTION_PICK)
+////                            intent.type = "image/*"
+////                            imageResultLauncher!!.launch(intent)
+//
+//
+//                            true
+//                        }
+//                        R.id.camera -> {
+//                            val bInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+//                            cameraResultLauncher!!.launch(bInt)
+//                            true
+//                        }
+//
+//                        else -> false
+//                    }
+//                }
+//            }.show()
         }
 
         binding.deleteImage.setOnClickListener {
