@@ -5,16 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
+import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
+import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 
-//@ExperimentalCoroutinesApi
-//@AndroidEntryPoint
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class FeedFragment : Fragment() {
-
+    private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

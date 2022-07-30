@@ -3,9 +3,11 @@ package ru.maxpek.friendslinkup.dto
 
 import android.graphics.Bitmap
 import android.media.Image
+import android.provider.MediaStore
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 import java.io.File
+import java.nio.file.Files
 
 
 sealed class FeedItem{
@@ -69,7 +71,7 @@ data class UserResponse (
 )
 
 data class UserRequested (
-    val id: Long,
+    val id: Int,
     val login: String,
     val name: String,
     val avatar: String,

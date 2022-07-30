@@ -1,14 +1,19 @@
 package ru.maxpek.friendslinkup
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.inflate
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
+import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.google.android.gms.common.ConnectionResult
@@ -16,8 +21,11 @@ import com.google.android.gms.common.GoogleApiAvailability
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding
+import ru.maxpek.friendslinkup.databinding.ActivityAppBinding.inflate
 import ru.maxpek.friendslinkup.fragment.EventFragment
 import ru.maxpek.friendslinkup.fragment.FeedFragment
 import ru.maxpek.friendslinkup.fragment.JobFragment
@@ -39,12 +47,14 @@ class AppActivity : AppCompatActivity() {
     }
     lateinit var binding: ActivityAppBinding
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(MAPKIT_API_KEY)
         binding = ActivityAppBinding.inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         val feedFragment = FeedFragment()
         val eventFragment = EventFragment()
@@ -74,6 +84,19 @@ class AppActivity : AppCompatActivity() {
 
         viewModel.data.observe(this) {
             invalidateOptionsMenu()
+        }
+        lifecycleScope.launchWhenCreated {
+            appAuth.authStateFlow.collectLatest{
+                val header = binding.navigationView.getHeaderView(0)
+
+                Glide.with(binding.navigationView)
+                    .load(it.avatarUser)
+                    .error(R.drawable.ic_avatar_loading_error_48)
+                    .placeholder(R.drawable.ic_baseline_cruelty_free_48)
+                    .timeout(10_000)
+                    .circleCrop()
+                    .into(binding.navigationView.getHeaderView(1).ava)
+            }
         }
 
         checkGoogleApiAvailability()

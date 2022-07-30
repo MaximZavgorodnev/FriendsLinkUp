@@ -1,4 +1,9 @@
 package ru.maxpek.friendslinkup.viewmodel
 
-class PostViewModel {
+import androidx.lifecycle.ViewModel
+
+
+
+class PostViewModel : ViewModel() {
+
 }

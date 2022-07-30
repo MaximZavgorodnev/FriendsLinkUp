@@ -1,4 +1,8 @@
 package ru.maxpek.friendslinkup.viewmodel
 
-class JobViewModel {
+import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+
+
+class JobViewModel : ViewModel() {
 }

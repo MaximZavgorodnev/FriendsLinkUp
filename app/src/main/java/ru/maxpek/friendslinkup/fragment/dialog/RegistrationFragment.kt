@@ -16,6 +16,8 @@ import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageIntentChooser
 import com.canhub.cropper.CropImageView
@@ -31,15 +33,10 @@ import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import java.io.File
+import java.nio.file.Files
 
-private const val FILE_NAME = "photo.jpg"
 @AndroidEntryPoint
 class RegistrationFragment : DialogFragment() {
-
-    private var imageResultLauncher: ActivityResultLauncher<Intent>? = null
-    private var cameraResultLauncher: ActivityResultLauncher<Intent>? = null
-    //    private var cropImage: CropImageIntentChooser.ResultCallback? = null
-
 
     private val viewModel: AuthViewModel by viewModels()
     override fun onCreateView(
@@ -71,44 +68,10 @@ class RegistrationFragment : DialogFragment() {
                     viewModel.onSignUp(user)
                     AndroidUtils.hideKeyboard(requireView())
 //                    findNavController().navigateUp()
+//                    findNavController().navigate(R.id.action_registrationFragment_to_feedFragment)
                 }
             }
         }
-        imageResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val uri = result?.data?.data
-                if (uri != null) {
-                    binding.avatar.setImageURI(uri)
-                } else {
-                    binding.avatar.setImageResource(R.mipmap.ic_launcher)
-                }
-            }
-
-
-//                val takePhotoIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
-//                filePhoto = getPhotoFile(FILE_NAME)
-//                val providerFile = FileProvider.getUriForFile(this,"com.example.androidcamera.fileprovider", filePhoto)
-//                takePhotoIntent.putExtra(MediaStore.EXTRA_OUTPUT, providerFile)
-        }
-
-
-
-
-
-
-
-
-
-        cameraResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val image = result?.data?.extras?.get("data") as Bitmap
-                binding.avatar.setImageBitmap(image)
-            }
-        }
-
-
-
 
         val cropImage = registerForActivityResult(CropImageContract()) { result ->
             if (result.isSuccessful) {
@@ -116,6 +79,7 @@ class RegistrationFragment : DialogFragment() {
                 val uriContent = result.uriContent
 //                val uriFilePath = result.getUriFilePath(activity!!.application) // optional usage
                 file = File(uriContent.toString())
+//                file = uriContent.toString()
                 binding.avatar.setImageURI(uriContent)
             } else {
                 // an error occurred
@@ -123,35 +87,16 @@ class RegistrationFragment : DialogFragment() {
             }
         }
 
-        binding.addImage.setOnClickListener {
+        binding.avatar.setOnClickListener {
             cropImage.launch(
                 options {
-                    setMaxCropResultSize(400,400)
+                    setAspectRatio(1,1)
+                    setRequestedSize(600,600)
+                    setCropShape(CropImageView.CropShape.OVAL)
+//                    setMaxCropResultSize(400,400)
                     setGuidelines(CropImageView.Guidelines.ON)
                 }
             )
-//            PopupMenu(it.context, it).apply {
-//                inflate(R.menu.menu_add_image)
-//                setOnMenuItemClickListener { item ->
-//                    when (item.itemId) {
-//                        R.id.image -> {
-////                            val intent = Intent(Intent.ACTION_PICK)
-////                            intent.type = "image/*"
-////                            imageResultLauncher!!.launch(intent)
-//
-//
-//                            true
-//                        }
-//                        R.id.camera -> {
-//                            val bInt = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-//                            cameraResultLauncher!!.launch(bInt)
-//                            true
-//                        }
-//
-//                        else -> false
-//                    }
-//                }
-//            }.show()
         }
 
         binding.deleteImage.setOnClickListener {

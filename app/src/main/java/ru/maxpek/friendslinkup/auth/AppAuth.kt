@@ -10,6 +10,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dto.PushToken
+import ru.maxpek.friendslinkup.error.ApiError
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -21,6 +22,8 @@ class AppAuth @Inject constructor(
     companion object{
         const val idKey = "id"
         const val tokenKey = "token"
+        const val avatar = "avatarUser"
+        const val name = "nameUser"
     }
 
 
@@ -44,11 +47,13 @@ class AppAuth @Inject constructor(
     val authStateFlow: StateFlow<AuthState> = _authStateFlow.asStateFlow()
 
     @Synchronized
-    fun setAuth(id: Long, token: String) {
-        _authStateFlow.value = AuthState(id, token)
+    fun setAuth(id: Long, token: String, avatarUser: String?, nameUser: String?) {
+        _authStateFlow.value = AuthState(id, token, avatarUser)
         with(prefs.edit()) {
             putLong(idKey, id)
             putString(tokenKey, token)
+            putString(avatar, avatarUser)
+            putString(name, nameUser)
             apply()
         }
         sendPushToken()
@@ -77,4 +82,5 @@ class AppAuth @Inject constructor(
 
 }
 
-data class AuthState(val id: Long = 0, val token: String? = null)
+data class AuthState(val id: Long = 0, val token: String? = null,
+                     val avatarUser: String? = null, val nameUser: String? = null)

@@ -120,5 +120,13 @@
     <dialog
         android:id="@+id/registrationFragment"
         android:name="ru.maxpek.friendslinkup.fragment.dialog.RegistrationFragment"
-        android:label="RegistrationFragment" />
+        android:label="RegistrationFragment" >
+        <action
+            android:id="@+id/action_registrationFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+    </dialog>
+    <activity
+        android:id="@+id/hilt_AppActivity"
+        android:name="ru.maxpek.friendslinkup.Hilt_AppActivity"
+        android:label="Hilt_AppActivity" />
 </navigation>

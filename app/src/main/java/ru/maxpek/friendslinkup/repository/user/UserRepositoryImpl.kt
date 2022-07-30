@@ -24,7 +24,14 @@ class UserRepositoryImpl @Inject constructor(
             }
             val authState = response.body() ?: throw ApiError(response.code(), response.message())
             val token = authState.token ?: throw UnknownError
-            appAuth.setAuth(authState.id, token)
+            val idUser = authState.id.toInt()
+            val responseUser = apiService.getUser(idUser)
+            if (!responseUser.isSuccessful) {
+                throw ApiError(responseUser.code(), responseUser.message())
+            }
+            val avatarUser = responseUser.body()?.avatar
+            val name = responseUser.body()?.name
+            appAuth.setAuth(authState.id, token, avatarUser,name)
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
@@ -39,8 +46,16 @@ class UserRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             val authState = response.body() ?: throw ApiError(response.code(), response.message())
+
             val token = authState.token ?: throw UnknownError
-            appAuth.setAuth(authState.id, token)
+            val idUser = authState.id.toInt()
+            val responseUser = apiService.getUser(idUser)
+            if (!responseUser.isSuccessful) {
+                throw ApiError(responseUser.code(), responseUser.message())
+            }
+            val avatarUser = responseUser.body()?.avatar
+            val name = responseUser.body()?.name
+            appAuth.setAuth(authState.id, token, avatarUser,name)
         } catch (e: IOException) {
             throw NetworkError
         } catch (e: Exception) {
