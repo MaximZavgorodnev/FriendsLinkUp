@@ -1,31 +1,20 @@
 package ru.maxpek.friendslinkup.fragment.dialog
 
-import android.app.Activity
-import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
+
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
-import com.canhub.cropper.CropImageContract
-import com.canhub.cropper.CropImageIntentChooser
-import com.canhub.cropper.CropImageView
-import com.canhub.cropper.options
+import com.canhub.cropper.*
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.github.dhaval2404.imagepicker.util.FileUtil
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
@@ -78,6 +67,10 @@ class RegistrationFragment : DialogFragment() {
                 // use the returned uri
                 val uriContent = result.uriContent
 //                val uriFilePath = result.getUriFilePath(activity!!.application) // optional usage
+//                file = File.createTempFile("","",uriContent.toMediaType())
+
+//                val file2: File = ImagePicker.getFile(data)!!
+//                val img = uriContent?.toFile()
                 file = File(uriContent.toString())
 //                file = uriContent.toString()
                 binding.avatar.setImageURI(uriContent)
@@ -93,7 +86,6 @@ class RegistrationFragment : DialogFragment() {
                     setAspectRatio(1,1)
                     setRequestedSize(600,600)
                     setCropShape(CropImageView.CropShape.OVAL)
-//                    setMaxCropResultSize(400,400)
                     setGuidelines(CropImageView.Guidelines.ON)
                 }
             )

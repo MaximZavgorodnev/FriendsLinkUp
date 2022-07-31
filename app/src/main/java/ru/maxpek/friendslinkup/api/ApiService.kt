@@ -11,8 +11,8 @@ import java.io.File
 
 
 interface ApiService {
-    @POST("users/push-tokens")
-    suspend fun save(@Body pushToken: PushToken): Response<Unit>
+//    @POST("users/push-tokens")
+//    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
     @GET("posts")
     suspend fun getAll(): Response<List<Post>>

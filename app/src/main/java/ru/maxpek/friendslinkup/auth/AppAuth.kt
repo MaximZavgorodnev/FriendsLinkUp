@@ -32,6 +32,8 @@ class AppAuth @Inject constructor(
     init {
         val id = prefs.getLong(idKey, 0)
         val token = prefs.getString(tokenKey, null)
+        val avatar = prefs.getString(avatar, null)
+        val name = prefs.getString(name, null)
 
         if (id == 0L || token == null) {
             _authStateFlow = MutableStateFlow(AuthState())
@@ -40,7 +42,7 @@ class AppAuth @Inject constructor(
                 apply()
             }
         } else {
-            _authStateFlow = MutableStateFlow(AuthState(id, token))
+            _authStateFlow = MutableStateFlow(AuthState(id, token, avatar, name))
         }
     }
 
@@ -48,7 +50,7 @@ class AppAuth @Inject constructor(
 
     @Synchronized
     fun setAuth(id: Long, token: String, avatarUser: String?, nameUser: String?) {
-        _authStateFlow.value = AuthState(id, token, avatarUser)
+        _authStateFlow.value = AuthState(id, token, avatarUser, nameUser)
         with(prefs.edit()) {
             putLong(idKey, id)
             putString(tokenKey, token)
@@ -56,7 +58,7 @@ class AppAuth @Inject constructor(
             putString(name, nameUser)
             apply()
         }
-        sendPushToken()
+//        sendPushToken()
     }
 
     @Synchronized
@@ -66,19 +68,19 @@ class AppAuth @Inject constructor(
             clear()
             commit()
         }
-        sendPushToken()
+//        sendPushToken()
     }
 
-    fun sendPushToken(token: String? = null) {
-        CoroutineScope(Dispatchers.Default).launch {
-            try {
-                val pushToken = PushToken(token ?: Firebase.messaging.token.await())
-                apiService.save(pushToken)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
-    }
+//    fun sendPushToken(token: String? = null) {
+//        CoroutineScope(Dispatchers.Default).launch {
+//            try {
+//                val pushToken = PushToken(token ?: Firebase.messaging.token.await())
+//                apiService.save(pushToken)
+//            } catch (e: Exception) {
+//                e.printStackTrace()
+//            }
+//        }
+//    }
 
 }
 

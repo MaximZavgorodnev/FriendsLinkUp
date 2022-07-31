@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.inflate
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
@@ -87,7 +88,8 @@ class AppActivity : AppCompatActivity() {
         }
         lifecycleScope.launchWhenCreated {
             appAuth.authStateFlow.collectLatest{
-                val header = binding.navigationView.getHeaderView(0)
+                val textName: TextView = binding.navigationView.getHeaderView(0).findViewById(R.id.nameUser)
+                textName.text = it.nameUser
 
                 Glide.with(binding.navigationView)
                     .load(it.avatarUser)
@@ -95,7 +97,7 @@ class AppActivity : AppCompatActivity() {
                     .placeholder(R.drawable.ic_baseline_cruelty_free_48)
                     .timeout(10_000)
                     .circleCrop()
-                    .into(binding.navigationView.getHeaderView(1).ava)
+                    .into(binding.navigationView.getHeaderView(0).findViewById(R.id.avatarDr))
             }
         }
 
