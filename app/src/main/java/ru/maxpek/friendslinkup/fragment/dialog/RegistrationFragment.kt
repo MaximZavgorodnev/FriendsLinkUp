@@ -1,28 +1,30 @@
 package ru.maxpek.friendslinkup.fragment.dialog
 
 
+
+import android.app.Activity
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
+import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
 import com.canhub.cropper.*
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
+import ru.maxpek.friendslinkup.dto.PhotoModel
 import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
-import java.io.File
-import java.nio.file.Files
+
 
 @AndroidEntryPoint
 class RegistrationFragment : DialogFragment() {
@@ -35,7 +37,7 @@ class RegistrationFragment : DialogFragment() {
     ): View {
         val binding = FragmentRegistrationBinding.inflate(inflater, container, false)
 
-        var file: File? = null
+        var file: PhotoModel? = null
 
         val enter = binding.enter
 
@@ -66,13 +68,10 @@ class RegistrationFragment : DialogFragment() {
             if (result.isSuccessful) {
                 // use the returned uri
                 val uriContent = result.uriContent
-//                val uriFilePath = result.getUriFilePath(activity!!.application) // optional usage
-//                file = File.createTempFile("","",uriContent.toMediaType())
+                val uriFilePath = result.getUriFilePath(activity!!) // optional usage
 
-//                val file2: File = ImagePicker.getFile(data)!!
-//                val img = uriContent?.toFile()
-                file = File(uriContent.toString())
-//                file = uriContent.toString()
+                file = PhotoModel(uriContent,
+                    uriFilePath?.toUri()?.toFile())
                 binding.avatar.setImageURI(uriContent)
             } else {
                 // an error occurred
@@ -80,15 +79,47 @@ class RegistrationFragment : DialogFragment() {
             }
         }
 
-        binding.avatar.setOnClickListener {
-            cropImage.launch(
-                options {
-                    setAspectRatio(1,1)
-                    setRequestedSize(600,600)
-                    setCropShape(CropImageView.CropShape.OVAL)
-                    setGuidelines(CropImageView.Guidelines.ON)
+        val pickPhotoLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                when (it.resultCode) {
+                    ImagePicker.RESULT_ERROR -> {
+                        Snackbar.make(
+                            binding.root,
+                            ImagePicker.getError(it.data),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    Activity.RESULT_OK -> {
+                        val uri: Uri? = it.data?.data
+                        file = PhotoModel(uri, uri?.toFile())
+                        binding.avatar.setImageURI(uri)
+                        viewModel.changePhoto(uri, uri?.toFile())
+                    }
                 }
-            )
+            }
+
+
+        binding.avatar.setOnClickListener {
+//            cropImage.launch(
+//                options {
+//                    setAspectRatio(1,1)
+//                    setRequestedSize(600,600)
+//                    setCropShape(CropImageView.CropShape.OVAL)
+//                    setGuidelines(CropImageView.Guidelines.ON)
+//                }
+//            )
+
+            ImagePicker.with(this)
+                .crop()
+                .compress(2048)
+                .provider(ImageProvider.BOTH)
+                .galleryMimeTypes(
+                    arrayOf(
+                        "image/png",
+                        "image/jpeg",
+                    )
+                )
+                .createIntent(pickPhotoLauncher::launch)
         }
 
         binding.deleteImage.setOnClickListener {

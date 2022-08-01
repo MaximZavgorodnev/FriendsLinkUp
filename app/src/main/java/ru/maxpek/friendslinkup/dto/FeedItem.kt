@@ -3,6 +3,7 @@ package ru.maxpek.friendslinkup.dto
 
 import android.graphics.Bitmap
 import android.media.Image
+import android.net.Uri
 import android.provider.MediaStore
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
@@ -81,7 +82,7 @@ data class UserRegistration (
     val login: String,
     val password: String,
     val name: String,
-    val file: File?
+    val file: PhotoModel?
 )
 
 
@@ -98,6 +99,8 @@ data class Coordinates (
     val latitude: Long,
     val longitude: Long
 )
+
+data class PhotoModel(val uri: Uri? = null, val file: File? = null)
 
 
 

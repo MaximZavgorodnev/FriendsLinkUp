@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
+import ru.maxpek.friendslinkup.dto.PhotoModel
 import ru.maxpek.friendslinkup.dto.Post
 import ru.maxpek.friendslinkup.dto.PushToken
 import ru.maxpek.friendslinkup.dto.UserRequested
@@ -50,7 +51,7 @@ interface ApiService {
         @Field("login") login: String,
         @Field("password") pass: String,
         @Field("name") name: String,
-        @Field("file") file: File?
+        @Field("file") file: PhotoModel?
     ): Response<AuthState>
 
     //Получение одного пользователя
