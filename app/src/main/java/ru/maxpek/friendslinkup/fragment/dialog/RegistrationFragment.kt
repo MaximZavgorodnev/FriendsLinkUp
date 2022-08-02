@@ -80,9 +80,8 @@ class RegistrationFragment : DialogFragment() {
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
-                        val name = if (binding.login.text.toString() == "") {"file"} else {binding.username.text.toString()}
                         file = MultipartBody.Part.createFormData(
-                            name, resultFile?.name, resultFile!!.asRequestBody())
+                            "file", resultFile?.name, resultFile!!.asRequestBody())
                         binding.avatar.setImageURI(uri)
                     }
                 }

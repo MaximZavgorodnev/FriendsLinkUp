@@ -35,7 +35,7 @@
         tools:listitem="@layout/card_ids"
         android:layout_gravity="bottom"
         android:paddingBottom="96dp"
-        android:visibility="gone" />
+         />
 
 
 
@@ -47,7 +47,7 @@
         android:lineSpacingMultiplier="1.5"
         tools:text="@sample/posts.json/data/link"
         android:layout_gravity="bottom|center"
-        android:visibility="gone"
+
         android:paddingBottom="70dp"/>
 
 
@@ -57,7 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
-        android:visibility="gone"
+
         android:paddingBottom="64dp"
         android:contentDescription="@string/description_add_menu"
         app:icon="@drawable/ic_close_24" />
@@ -84,7 +84,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/geo"
         style="@style/Widget.AppTheme.IconButton"
-        android:visibility="gone"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"

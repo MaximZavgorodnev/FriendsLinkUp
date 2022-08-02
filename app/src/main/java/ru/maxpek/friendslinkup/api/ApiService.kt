@@ -71,6 +71,10 @@ interface ApiService {
         @Path("id") id: Int
     ): Response<UserRequested>
 
+    //Получения списка зарегистрированных пользователей
+    @GET("users")
+    suspend fun getUsers(): Response<List<UserRequested>>
+
 
     @GET("posts/latest")
     suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
