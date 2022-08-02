@@ -12,19 +12,24 @@ import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.repository.user.UserRepository
 import ru.maxpek.friendslinkup.error.UnknownError
+import ru.maxpek.friendslinkup.model.ErrorLive
+import ru.maxpek.friendslinkup.model.FeedModelState
 import java.io.File
 import javax.inject.Inject
 
-private val noPhoto = PhotoModel()
+//private val noPhoto = PhotoModel()
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val appAuth: AppAuth,
     private val repositoryUser : UserRepository
 ) : ViewModel() {
-    private val _photo = MutableLiveData(noPhoto)
-    val photo: LiveData<PhotoModel>
-        get() = _photo
+//    private val _photo = MutableLiveData(noPhoto)
+//    val photo: LiveData<PhotoModel>
+//        get() = _photo
+    private val _errors = MutableLiveData(ErrorLive())
+    val errors: LiveData<ErrorLive>
+        get() = _errors
     val data: LiveData<AuthState> = appAuth
         .authStateFlow
         .asLiveData(Dispatchers.Default)
@@ -38,10 +43,11 @@ class AuthViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryUser.onSignIn(userResponse)
-
-            } catch (e: Exception) {
-                throw UnknownError
+                _errors.value = ErrorLive(error = false)
+            } catch (e: RuntimeException) {
+                _errors.value = ErrorLive(error = true)
             }
+
 
         }
     }
@@ -57,8 +63,8 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-    fun changePhoto(uri: Uri?, file: File?) {
-        _photo.value = PhotoModel(uri, file)
-    }
+//    fun changePhoto(uri: Uri?, file: File?) {
+//        _photo.value = PhotoModel(uri, file)
+//    }
 
 }

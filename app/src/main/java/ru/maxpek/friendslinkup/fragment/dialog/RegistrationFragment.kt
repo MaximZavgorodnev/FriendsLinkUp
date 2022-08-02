@@ -10,21 +10,24 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
-import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
+import com.bumptech.glide.load.ImageHeaderParser
 import com.canhub.cropper.*
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
+import okhttp3.Headers
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.internal.http2.Header
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
-import ru.maxpek.friendslinkup.dto.PhotoModel
 import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
-
 
 @AndroidEntryPoint
 class RegistrationFragment : DialogFragment() {
@@ -37,7 +40,7 @@ class RegistrationFragment : DialogFragment() {
     ): View {
         val binding = FragmentRegistrationBinding.inflate(inflater, container, false)
 
-        var file: PhotoModel? = null
+        var file: MultipartBody.Part? = null
 
         val enter = binding.enter
 
@@ -64,21 +67,6 @@ class RegistrationFragment : DialogFragment() {
             }
         }
 
-        val cropImage = registerForActivityResult(CropImageContract()) { result ->
-            if (result.isSuccessful) {
-                // use the returned uri
-                val uriContent = result.uriContent
-                val uriFilePath = result.getUriFilePath(activity!!) // optional usage
-
-                file = PhotoModel(uriContent,
-                    uriFilePath?.toUri()?.toFile())
-                binding.avatar.setImageURI(uriContent)
-            } else {
-                // an error occurred
-                val exception = result.error
-            }
-        }
-
         val pickPhotoLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 when (it.resultCode) {
@@ -91,26 +79,21 @@ class RegistrationFragment : DialogFragment() {
                     }
                     Activity.RESULT_OK -> {
                         val uri: Uri? = it.data?.data
-                        file = PhotoModel(uri, uri?.toFile())
+                        val resultFile = uri?.toFile()
+                        val name = if (binding.login.text.toString() == "") {"file"} else {binding.username.text.toString()}
+                        file = MultipartBody.Part.createFormData(
+                            name, resultFile?.name, resultFile!!.asRequestBody())
                         binding.avatar.setImageURI(uri)
-                        viewModel.changePhoto(uri, uri?.toFile())
                     }
                 }
             }
 
 
         binding.avatar.setOnClickListener {
-//            cropImage.launch(
-//                options {
-//                    setAspectRatio(1,1)
-//                    setRequestedSize(600,600)
-//                    setCropShape(CropImageView.CropShape.OVAL)
-//                    setGuidelines(CropImageView.Guidelines.ON)
-//                }
-//            )
+
 
             ImagePicker.with(this)
-                .crop()
+                .crop(1F,1F)
                 .compress(2048)
                 .provider(ImageProvider.BOTH)
                 .galleryMimeTypes(

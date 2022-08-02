@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.media.Image
 import android.net.Uri
 import android.provider.MediaStore
+import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 import java.io.File
@@ -82,7 +83,7 @@ data class UserRegistration (
     val login: String,
     val password: String,
     val name: String,
-    val file: PhotoModel?
+    val file: MultipartBody.Part?
 )
 
 

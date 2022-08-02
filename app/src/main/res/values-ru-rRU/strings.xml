@@ -63,4 +63,5 @@
     <string name="image">Добавить из галереии</string>
     <string name="camera">Открыть камеру</string>
     <string name="delete">Удалить</string>
+    <string name="not_registered">Данный пользователь не зарегистрирован</string>
 </resources>

@@ -30,6 +30,12 @@ class AuthenticationFragment : DialogFragment() {
 
         val enter = binding.enter
 
+        viewModel.errors.observeForever {
+            if (it.error) {
+                Snackbar.make(binding.root, R.string.not_registered, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         enter.setOnClickListener {
             val usernameEditText = binding.username.text.toString()
             val passwordEditText = binding.password.text.toString()

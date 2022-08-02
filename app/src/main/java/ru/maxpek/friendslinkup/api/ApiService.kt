@@ -1,6 +1,7 @@
 package ru.maxpek.friendslinkup.api
 
 import android.graphics.Bitmap
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
@@ -44,14 +45,24 @@ interface ApiService {
         @Field("password") pass: String
     ): Response<AuthState>
 
-    //Регистрация пользователя
+    //Регистрация пользователя без аватарки
     @FormUrlEncoded
     @POST("users/registration")
-    suspend fun onSignUp(
+    suspend fun onSignUpNoAva(
         @Field("login") login: String,
         @Field("password") pass: String,
         @Field("name") name: String,
-        @Field("file") file: PhotoModel?
+        @Field("file") file: MultipartBody.Part?
+    ): Response<AuthState>
+
+    //Регистрация с аватаркой
+    @Multipart
+    @POST("users/registration")
+    suspend fun onSignUpHasAva(
+        @Part("login") login: String,
+        @Part("password") pass: String,
+        @Part("name") name: String,
+        @Part file: MultipartBody.Part?
     ): Response<AuthState>
 
     //Получение одного пользователя

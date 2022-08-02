@@ -34,14 +34,16 @@ class UserRepositoryImpl @Inject constructor(
             appAuth.setAuth(authState.id, token, avatarUser,name)
         } catch (e: IOException) {
             throw NetworkError
-        } catch (e: Exception) {
-            throw UnknownError
         }
     }
 
     override suspend fun onSignUp(user: UserRegistration) {
         try {
-            val response = apiService.onSignUp(user.login, user.password, user.name, user.file)
+
+            val response = if (user.file != null) {
+                apiService.onSignUpHasAva(user.login, user.password, user.name, user.file)
+            } else {
+                    apiService.onSignUpNoAva(user.login, user.password, user.name, user.file)}
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
