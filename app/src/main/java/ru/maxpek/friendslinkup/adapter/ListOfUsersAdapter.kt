@@ -12,7 +12,6 @@ import ru.maxpek.friendslinkup.dto.UserRequested
 
 interface AdapterCallback {
     fun onRemove(id: Long) {}
-    fun outputToTheScreen (id: Long) {}
 }
 
 class ListOfUsersAdapter (private val callback: AdapterCallback) :

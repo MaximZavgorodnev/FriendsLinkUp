@@ -73,10 +73,10 @@ data class UserResponse (
 )
 
 data class UserRequested (
-    val id: Int,
-    val login: String,
-    val name: String,
-    val avatar: String,
+    val id: Int = 0,
+    val login: String = "",
+    val name: String = "",
+    val avatar: String = "",
 )
 
 data class UserRegistration (
