@@ -1,5 +1,8 @@
 package ru.maxpek.friendslinkup.repository.user
 
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.UserRegistration
@@ -38,10 +41,13 @@ class UserRepositoryImpl @Inject constructor(
     }
 
     override suspend fun onSignUp(user: UserRegistration) {
+        val login = user.login.toRequestBody()
+        val password = user.password.toRequestBody()
+        val nameUser = user.name.toRequestBody()
         try {
 
             val response = if (user.file != null) {
-                apiService.onSignUpHasAva(user.login, user.password, user.name, user.file)
+                apiService.onSignUpHasAva(login, password, nameUser, user.file)
             } else {
                     apiService.onSignUpNoAva(user.login, user.password, user.name, user.file)}
             if (!response.isSuccessful) {

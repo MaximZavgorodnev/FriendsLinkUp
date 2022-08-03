@@ -21,7 +21,7 @@ class ListOfUserRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            users = response.body() ?: throw ApiError(response.code(), response.message())
+//            users = response.body() ?: throw ApiError(response.code(), response.message())
 
         } catch (e: IOException) {
             throw NetworkError

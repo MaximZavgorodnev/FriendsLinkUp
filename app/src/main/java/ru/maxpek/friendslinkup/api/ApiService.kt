@@ -2,6 +2,7 @@ package ru.maxpek.friendslinkup.api
 
 import android.graphics.Bitmap
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
@@ -59,9 +60,9 @@ interface ApiService {
     @Multipart
     @POST("users/registration")
     suspend fun onSignUpHasAva(
-        @Part("login") login: String,
-        @Part("password") pass: String,
-        @Part("name") name: String,
+        @Part("login") login: RequestBody,
+        @Part("password") pass: RequestBody,
+        @Part("name") name: RequestBody,
         @Part file: MultipartBody.Part?
     ): Response<AuthState>
 
