@@ -11,7 +11,7 @@ import ru.maxpek.friendslinkup.databinding.CardMentionsBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 
 interface AdapterCallback {
-    fun onRemove(id: Long) {}
+    fun onChecked(id: Long) {}
 }
 
 class ListOfUsersAdapter (private val callback: AdapterCallback) :

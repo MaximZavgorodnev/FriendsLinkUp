@@ -13,36 +13,28 @@ import ru.maxpek.friendslinkup.repository.listOfUsers.ListOfUserRepository
 import java.io.IOException
 import javax.inject.Inject
 
-val emptyList = listOf<UserRequested>()
+
 @HiltViewModel
 class ListOfUserViewModel@Inject constructor(
-    private val repositoryListOfUser : ListOfUserRepository,
-    private val apiService: ApiService
+    private val repositoryListOfUser : ListOfUserRepository): ViewModel() {
 
-): ViewModel() {
-//    private val _data: MutableLiveData<List<UserRequested>>
-//    get() = MutableLiveData(emptyList)
+    var listChecked = listOf<Int>()
 
-    var data: LiveData<List<UserRequested>>
-    set() = LiveData(emptyList)
+
+
+    val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
+
+    private val _dataState = MutableLiveData<FeedModelState>()
+    val dataState: LiveData<FeedModelState>
+        get() = _dataState
 
     fun getUsers() {
         viewModelScope.launch {
             try {
-                try {
-                    val response = apiService.getUsers()
-                    if (!response.isSuccessful) {
-                        throw ApiError(response.code(), response.message())
-                    }
-                    data.value = response.body() ?: throw ApiError(response.code(), response.message())
-
-                } catch (e: IOException) {
-                    throw NetworkError
-                }
+                repositoryListOfUser.loadUsers()
             } catch (e: Exception) {
-//            _dataState.value = FeedModelState(error = true)
+                _dataState.value = FeedModelState(error = true)
             }
-
         }
     }
 

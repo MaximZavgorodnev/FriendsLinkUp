@@ -94,7 +94,6 @@
 
     <ImageView
         android:id="@+id/image"
-        android:visibility="gone"
         android:layout_width="112dp"
         android:layout_height="48dp"
         app:srcCompat="@drawable/img_backg"

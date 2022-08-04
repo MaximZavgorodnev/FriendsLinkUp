@@ -6,9 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.yandex.mapkit.geometry.Point
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
+import ru.maxpek.friendslinkup.util.ArrayInt
+import ru.maxpek.friendslinkup.util.PointArg
+import ru.maxpek.friendslinkup.viewmodel.ListOfUserViewModel
 
 class NewPostFragment : Fragment() {
     override fun onCreateView(
@@ -21,6 +26,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
+        val listOfUserViewModel : ListOfUserViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
@@ -51,5 +57,10 @@ class NewPostFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    companion object {
+        var Bundle.arrayInt: List<Int>? by ArrayInt
+        var Bundle.pointArg: Point by PointArg
     }
 }
