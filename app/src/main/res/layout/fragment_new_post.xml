@@ -13,8 +13,11 @@
         android:layout_height="match_parent"
         android:background="@android:color/transparent"
         app:layout_anchor="@+id/edit"
-        app:layout_anchorGravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/mentionIds" />
+        android:gravity="start|top"
+        android:inputType="textMultiLine"
+        app:layout_constraintTop_toBottomOf="@+id/mentionIds"
+        android:autoLink="web"
+        android:linksClickable="true"/>
 
     <com.google.android.material.bottomappbar.BottomAppBar
         android:id="@+id/bottomAppBar"
@@ -34,71 +37,101 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/card_ids"
         android:layout_gravity="bottom"
-        android:paddingBottom="96dp"
-         />
+        android:layout_marginBottom="60dp"
+        />
 
 
-
-    <TextView
-        android:id="@+id/link"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:autoLink="web"
-        android:lineSpacingMultiplier="1.5"
-        tools:text="@sample/posts.json/data/link"
-        android:layout_gravity="bottom|center"
-
-        android:paddingBottom="70dp"/>
-
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/close"
-        style="@style/Widget.AppTheme.IconButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-
-        android:paddingBottom="64dp"
-        android:contentDescription="@string/description_add_menu"
-        app:icon="@drawable/ic_close_24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/ok"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/description_post_save"
-        app:srcCompat="@drawable/ic_ok_24dp"
-        app:layout_anchor="@id/bottomAppBar"
-        />
+        android:layout_margin="@dimen/fab_margin"
+        android:clickable="true"
+        android:contentDescription="@string/add_post"
+        android:focusable="true"
+        android:layout_gravity="top|end"
+        app:srcCompat="@drawable/ic_rrow_24" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/menu"
+        android:id="@+id/menuAdd"
+        android:checkable="true"
         style="@style/Widget.AppTheme.IconButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:paddingBottom="8dp"
         android:contentDescription="@string/description_add_menu"
-        app:icon="@drawable/ic_menu_24" />
+        app:icon="@drawable/ic_add_24dp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/geo"
+        android:id="@+id/mentionAdd"
+        android:checkable="true"
         style="@style/Widget.AppTheme.IconButton"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom"
+        android:paddingBottom="8dp"
+        android:layout_marginStart="50dp"
+        android:contentDescription="@string/description_add_menu"
+        app:icon="@drawable/ic_mention_24"
+        tools:ignore="RtlSymmetry" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/geoAdd"
+        android:checkable="true"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="100dp"
         android:paddingBottom="8dp"
         android:contentDescription="@string/description_add_menu"
         app:icon="@drawable/ic_gps_fixed_24" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/linkAdd"
+        android:checkable="true"
+        style="@style/Widget.AppTheme.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="150dp"
+        android:paddingBottom="8dp"
+        android:contentDescription="@string/description_add_menu"
+        app:icon="@drawable/ic_link_24" />
+
     <ImageView
         android:id="@+id/image"
+        android:checkable="true"
         android:layout_width="112dp"
         android:layout_height="48dp"
         app:srcCompat="@drawable/img_backg"
         android:paddingEnd="64dp"
         android:layout_gravity="bottom|right"
-        tools:ignore="RtlSymmetry" />
+        tools:ignore="RtlHardcoded,RtlSymmetry" />
+
+
+
+    <EditText
+        android:id="@+id/editLink"
+        android:layout_width="170dp"
+        android:layout_height="36dp"
+        android:inputType="textPostalAddress"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="95dp"
+        android:visibility="gone"
+        />
+
+    <Button
+        android:id="@+id/okAdd"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/ava_size"
+        android:layout_gravity="bottom|right"
+        android:layout_marginBottom="100dp"
+        android:text="@string/add"
+        android:visibility="gone"
+        android:textSize="8sp"
+         />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

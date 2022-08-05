@@ -1,14 +1,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/geo"
-        android:title="@string/geo" />
+        android:id="@+id/audio"
+        android:title="@string/audio" />
     <item
-        android:id="@+id/link"
-        android:title="@string/link"/>
+        android:id="@+id/image"
+        android:title="@string/images"/>
     <item
-        android:id="@+id/photoVideo"
-        android:title="@string/photo_video"/>
-    <item
-        android:id="@+id/mention"
-        android:title="@string/mention"/>
+        android:id="@+id/video"
+        android:title="@string/video"/>
 </menu>

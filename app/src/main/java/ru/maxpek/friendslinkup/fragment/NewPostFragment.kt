@@ -28,25 +28,21 @@ class NewPostFragment : Fragment() {
         )
         val listOfUserViewModel : ListOfUserViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
-        binding.menu.setOnClickListener {
+        binding.menuAdd.setOnClickListener {
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.menu_add_post)
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
-                        R.id.mention -> {
-                            findNavController().navigate(R.id.action_newPostFragment_to_listOfUsers)
-                            true
-                        }
-                        R.id.photoVideo -> {
+                        R.id.audio -> {
 
                             true
                         }
-                        R.id.geo -> {
-                            findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
+                        R.id.video -> {
+
                             true
                         }
-                        R.id.link -> {
-                            findNavController().navigate(R.id.action_newPostFragment_to_addLink)
+                        R.id.image -> {
+
                             true
                         }
 
@@ -55,6 +51,26 @@ class NewPostFragment : Fragment() {
                 }
             }.show()
         }
+
+        binding.mentionAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_newPostFragment_to_listOfUsers)
+        }
+
+        binding.geoAdd.setOnClickListener {
+            findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
+        }
+
+        binding.linkAdd.setOnClickListener {
+            binding.editLink.visibility = View.VISIBLE
+            binding.okAdd.visibility = View.VISIBLE
+        }
+
+        binding.okAdd.setOnClickListener {
+            binding.editLink.visibility = View.GONE
+            binding.okAdd.visibility = View.GONE
+        }
+
+
 
         return binding.root
     }

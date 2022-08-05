@@ -72,4 +72,6 @@
     <string name="image">Add from Gallery</string>
     <string name="delete">Delete</string>
     <string name="not_registered">The user is not registered</string>
+    <string name="audio">Audio</string>
+    <string name="images">Image</string>
 </resources>
