@@ -118,7 +118,7 @@ data class UserRequested (
     val login: String = "",
     val name: String = "",
     val avatar: String = "",
-    val checked: Boolean = false
+    var checked: Boolean = false
 )
 
 data class UserRegistration (

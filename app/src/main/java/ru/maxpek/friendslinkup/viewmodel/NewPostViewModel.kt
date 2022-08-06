@@ -5,33 +5,25 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.dto.Attachment
 import ru.maxpek.friendslinkup.dto.Coordinates
+import ru.maxpek.friendslinkup.dto.PostCreateRequest
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import javax.inject.Inject
 
-//val edited = Post(
-//    id = 0,
-//    authorId = 0,
-//    author = "",
-//    authorAvatar = "",
-//    content = "",
-//    published = 0,
-//    coordinates = null,
-//    link = null,
-//val likeOwnerIds: List<Int>,
-//val mentionIds: List<Int>,
-//val mentionedMe: Boolean,
-//val likedByMe: Boolean,
-//val attachment: Attachment?,
-//)
+val edited = PostCreateRequest(
+    id = 0,
+    content = "",
+    coords = null,
+    link = null,
+    attachment = null,
+    mentionIds = listOf())
 
 @HiltViewModel
 class NewPostViewModel@Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
 
-//    val newPost : MutableLiveData<Post()>
-
+    val newPost = MutableLiveData(edited)
 
 
 
@@ -55,6 +47,40 @@ class NewPostViewModel@Inject constructor(
         }
     }
 
+    fun isChecked(id: Int){
+        data.value?.forEach {
+            if (it.id == id) {
+                it.checked = true
+            }
+        }
+    }
 
+    fun unChecked(id: Int){
+        data.value?.forEach {
+            if (it.id == id) {
+                it.checked = false
+            }
+        }
+    }
+
+    fun addContent(){
+
+    }
+
+    fun addCoords(){
+
+    }
+
+    fun addLink(){
+
+    }
+
+    fun addAttachment(){
+
+    }
+
+    fun addMentionIds(){
+
+    }
 
 }

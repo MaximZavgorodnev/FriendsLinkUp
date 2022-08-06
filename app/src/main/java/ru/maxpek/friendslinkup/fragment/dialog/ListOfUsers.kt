@@ -11,6 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
+import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
@@ -23,19 +24,25 @@ class ListOfUsers: DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
-        val viewModel: NewPostViewModel by viewModels()
-        val usersListChecked: List<Int>?
-        if (arguments != null){
-            usersListChecked = arguments?.arrayInt
+        val newPostViewModel: NewPostViewModel by viewModels()
 
-        }
-        viewModel.getUsers()
+//        val usersListChecked: List<Int>?
+//        if (arguments != null){
+//            usersListChecked = arguments?.arrayInt
+//
+//        }
+        newPostViewModel.getUsers()
         val adapter = ListOfUsersAdapter(object : AdapterCallback {
-            override fun onChecked(id: Long) {}
+            override fun isChecked(id: Int) {
+                newPostViewModel.isChecked(id)
+            }
+            override fun unChecked(id: Int) {
+                newPostViewModel.unChecked(id)
+            }
         })
         binding.list.adapter = adapter
 
-        viewModel.data.observe(viewLifecycleOwner) {
+        newPostViewModel.data.observe(viewLifecycleOwner) {
             val newUser = adapter.itemCount < it.size
             adapter.submitList(it) {
                 if (newUser) {

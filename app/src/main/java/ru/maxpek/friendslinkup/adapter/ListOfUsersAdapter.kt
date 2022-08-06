@@ -11,7 +11,8 @@ import ru.maxpek.friendslinkup.databinding.CardMentionsBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 
 interface AdapterCallback {
-    fun onChecked(id: Long) {}
+    fun isChecked(id: Int) {}
+    fun unChecked(id: Int) {}
 }
 
 class ListOfUsersAdapter (private val callback: AdapterCallback) :
@@ -43,6 +44,19 @@ class UsersListOfViewHolder
                 .into(avatar)
 
             author.text = user.name
+
+            checkbox.apply {
+                isChecked = user.checked
+            }
+
+            checkbox.setOnClickListener {
+                if (checkbox.isChecked) {
+                    callback.isChecked(user.id)
+                } else {
+                    callback.unChecked(user.id)
+                }
+
+            }
         }
     }
 }

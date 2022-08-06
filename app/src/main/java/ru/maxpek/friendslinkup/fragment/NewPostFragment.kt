@@ -26,7 +26,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-        val newPostViewModel : NewPostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val newPostViewModel : NewPostViewModel by viewModels()
 
         binding.menuAdd.setOnClickListener {
             PopupMenu(it.context, it).apply {
