@@ -1,8 +1,6 @@
-package ru.maxpek.friendslinkup.repository.listOfUsers
+package ru.maxpek.friendslinkup.repository.newPost
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.liveData
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.error.ApiError
@@ -11,8 +9,10 @@ import java.io.IOException
 import javax.inject.Inject
 
 val emptyList = listOf<UserRequested>()
-class ListOfUserRepositoryImpl @Inject constructor(
-    private val apiService: ApiService): ListOfUserRepository {
+class NewPostRepositoryImpl @Inject constructor(
+    private val apiService: ApiService): NewPostRepository {
+
+
 
     override val dataUsers: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
 

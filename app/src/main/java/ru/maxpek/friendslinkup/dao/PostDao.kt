@@ -48,7 +48,8 @@ class CoordinatesConverter {
     @TypeConverter
     fun coordinatesToJson(coordinates: Coordinates?): String? {
         return if (coordinates == null) {
-            null } else {
+            null
+        } else {
                 gson.toJson(coordinates)
             }
     }
@@ -63,3 +64,5 @@ class CoordinatesConverter {
         }
     }
 }
+
+

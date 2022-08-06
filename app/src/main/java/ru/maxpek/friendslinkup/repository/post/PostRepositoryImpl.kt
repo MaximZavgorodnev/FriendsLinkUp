@@ -2,10 +2,10 @@ package ru.maxpek.friendslinkup.repository.post
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import ru.maxpek.friendslinkup.dto.Post
+import ru.maxpek.friendslinkup.dto.PostResponse
 
 class PostRepositoryImpl : PostRepository {
-    override val data: Flow<PagingData<Post>>
+    override val data: Flow<PagingData<PostResponse>>
         get() = TODO("Not yet implemented")
 
     override suspend fun getAll() {
@@ -16,7 +16,7 @@ class PostRepositoryImpl : PostRepository {
         TODO("Not yet implemented")
     }
 
-    override suspend fun save(post: Post) {
+    override suspend fun save(postResponse: PostResponse) {
         TODO("Not yet implemented")
     }
 

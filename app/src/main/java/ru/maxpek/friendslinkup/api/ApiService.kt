@@ -1,16 +1,12 @@
 package ru.maxpek.friendslinkup.api
 
-import android.graphics.Bitmap
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
-import ru.maxpek.friendslinkup.dto.PhotoModel
-import ru.maxpek.friendslinkup.dto.Post
-import ru.maxpek.friendslinkup.dto.PushToken
+import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
-import java.io.File
 
 
 interface ApiService {
@@ -18,25 +14,25 @@ interface ApiService {
 //    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
     @GET("posts")
-    suspend fun getAll(): Response<List<Post>>
+    suspend fun getAll(): Response<List<PostResponse>>
 
     @GET("posts/{id}/newer")
-    suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
+    suspend fun getNewer(@Path("id") id: Long): Response<List<PostResponse>>
 
     @GET("posts/{id}")
-    suspend fun getById(@Path("id") id: Long): Response<Post>
+    suspend fun getById(@Path("id") id: Long): Response<PostResponse>
 
     @POST("posts")
-    suspend fun save(@Body post: Post): Response<Post>
+    suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
 
     @DELETE("posts/{id}")
     suspend fun removeById(@Path("id") id: Long): Response<Unit>
 
     @POST("posts/{id}/likes")
-    suspend fun likeById(@Path("id") id: Long): Response<Post>
+    suspend fun likeById(@Path("id") id: Long): Response<PostResponse>
 
     @DELETE("posts/{id}/likes")
-    suspend fun dislikeById(@Path("id") id: Long): Response<Post>
+    suspend fun dislikeById(@Path("id") id: Long): Response<PostResponse>
 
     //Аунтетификация пользователя
     @FormUrlEncoded
@@ -78,17 +74,17 @@ interface ApiService {
 
 
     @GET("posts/latest")
-    suspend fun getLatest(@Query("count") count: Int): Response<List<Post>>
+    suspend fun getLatest(@Query("count") count: Int): Response<List<PostResponse>>
 
     @GET("posts/{id}/before")
     suspend fun getBefore(
         @Path("id") id: Long,
         @Query("count") count: Int
-    ): Response<List<Post>>
+    ): Response<List<PostResponse>>
 
     @GET("posts/{id}/after")
     suspend fun getAfter(
         @Path("id") id: Long,
         @Query("count") count: Int
-    ): Response<List<Post>>
+    ): Response<List<PostResponse>>
 }

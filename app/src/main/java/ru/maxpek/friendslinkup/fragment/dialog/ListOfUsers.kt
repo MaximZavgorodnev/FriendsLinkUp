@@ -7,14 +7,12 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
-import ru.maxpek.friendslinkup.viewmodel.ListOfUserViewModel
-import java.util.*
+import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -25,7 +23,7 @@ class ListOfUsers: DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
-        val viewModel: ListOfUserViewModel by viewModels()
+        val viewModel: NewPostViewModel by viewModels()
         val usersListChecked: List<Int>?
         if (arguments != null){
             usersListChecked = arguments?.arrayInt

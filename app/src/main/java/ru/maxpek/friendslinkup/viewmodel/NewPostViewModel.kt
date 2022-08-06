@@ -3,20 +3,37 @@ package ru.maxpek.friendslinkup.viewmodel
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.auth.AuthState
+import ru.maxpek.friendslinkup.dto.Attachment
+import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.UserRequested
-import ru.maxpek.friendslinkup.error.ApiError
-import ru.maxpek.friendslinkup.error.NetworkError
 import ru.maxpek.friendslinkup.model.FeedModelState
-import ru.maxpek.friendslinkup.repository.listOfUsers.ListOfUserRepository
-import java.io.IOException
+import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import javax.inject.Inject
 
+//val edited = Post(
+//    id = 0,
+//    authorId = 0,
+//    author = "",
+//    authorAvatar = "",
+//    content = "",
+//    published = 0,
+//    coordinates = null,
+//    link = null,
+//val likeOwnerIds: List<Int>,
+//val mentionIds: List<Int>,
+//val mentionedMe: Boolean,
+//val likedByMe: Boolean,
+//val attachment: Attachment?,
+//)
 
 @HiltViewModel
-class ListOfUserViewModel@Inject constructor(
-    private val repositoryListOfUser : ListOfUserRepository): ViewModel() {
+class NewPostViewModel@Inject constructor(
+    private val repositoryListOfUser : NewPostRepository): ViewModel() {
+
+//    val newPost : MutableLiveData<Post()>
+
+
+
 
     var listChecked = listOf<Int>()
 

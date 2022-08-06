@@ -1,4 +1,4 @@
-package ru.maxpek.friendslinkup.repository.listOfUsers
+package ru.maxpek.friendslinkup.repository.newPost
 
 import dagger.Binds
 import dagger.Module
@@ -9,8 +9,8 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-interface ListOfUserRepositoryModule {
+interface NewPostRepositoryModule {
     @Binds
     @Singleton
-    fun bindListOfUserRepository(impl: ListOfUserRepositoryImpl): ListOfUserRepository
+    fun bindListOfUserRepository(impl: NewPostRepositoryImpl): NewPostRepository
 }

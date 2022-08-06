@@ -3,10 +3,16 @@ package ru.maxpek.friendslinkup.dao
 import androidx.paging.PagingSource
 import androidx.room.*
 import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.ListIds
+import ru.maxpek.friendslinkup.dto.ListUserPreview
+import ru.maxpek.friendslinkup.dto.UserPreview
 import ru.maxpek.friendslinkup.entity.EventEntity
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 
+
+private val gson = Gson()
 @Dao
 interface EventDao {
     @Query("SELECT * FROM EventEntity ORDER BY id DESC")
@@ -51,5 +57,19 @@ class ConvertersListIds {
     @TypeConverter
     fun toListIds(sh: String): ListIds {
         return Gson().fromJson(sh, ListIds::class.java)
+    }
+}
+class UserPreviewConverter {
+    @TypeConverter
+    fun userPreviewToJson(users: ListUserPreview): String {
+
+        return Gson().toJson(users)
+
+    }
+
+    @TypeConverter
+    fun jsonToUserPreview(sh: String): ListUserPreview {
+        val type = object : TypeToken<ListUserPreview>() {}.type
+        return gson.fromJson(sh, type)
     }
 }

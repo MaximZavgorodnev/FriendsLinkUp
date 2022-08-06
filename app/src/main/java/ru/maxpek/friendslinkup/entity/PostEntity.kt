@@ -9,37 +9,43 @@ import ru.maxpek.friendslinkup.enumeration.AttachmentType
 @Entity
 data class PostEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Long,
-    val authorId: Long,
+    val id: Int,
+    val authorId: Int,
     val author: String,
     val authorAvatar: String,
+    val authorJob: String?,
     val content: String,
-    val published: Long,
-    val coordinates: Coordinates?,
-    val link: String,
+    val published: String,
+    val coords: Coordinates?,
+    val link: String?,
     val likeOwnerIds: ListIds,
     val mentionIds: ListIds,
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     @Embedded
     val attachment: AttachmentEmbeddable?,
+    val ownerByMe: Boolean,
+    val users: ListUserPreview
 ) {
-    fun toDto() = Post(id, authorId, author, authorAvatar, content,
-        published,coordinates,link, likeOwnerIds.list,
-        mentionIds.list, mentionedMe, likedByMe, attachment?.toDto() )
+    fun toDto() = PostResponse(id, authorId, author, authorAvatar, authorJob, content,
+        published,coords,link, likeOwnerIds.list, mentionIds.list, mentionedMe,
+        likedByMe, attachment?.toDto(), ownerByMe, users.list )
 
     companion object {
-        fun fromDto(dto: Post) =
-            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                dto.content, dto.published,dto.coordinates,
+        fun fromDto(dto: PostResponse) =
+            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
+                dto.content, dto.published,dto.coords,
                 dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
-                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
+                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment), dto.ownerByMe,
+                ListUserPreview(dto.users)
+            )
 
-        fun fromDtoFlow(dto: Post) =
-            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar,
-                dto.content, dto.published,dto.coordinates,
+        fun fromDtoFlow(dto: PostResponse) =
+            PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
+                dto.content, dto.published,dto.coords,
                 dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
-                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment))
+                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment), dto.ownerByMe,
+                ListUserPreview(dto.users))
     }
 }
 
@@ -57,6 +63,6 @@ data class AttachmentEmbeddable(
     }
 }
 
-fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
-fun List<Post>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
-fun List<Post>.toEntityFlow(): List<PostEntity> = map(PostEntity::fromDtoFlow)
+fun List<PostEntity>.toDto(): List<PostResponse> = map(PostEntity::toDto)
+fun List<PostResponse>.toEntity(): List<PostEntity> = map(PostEntity::fromDto)
+fun List<PostResponse>.toEntityFlow(): List<PostEntity> = map(PostEntity::fromDtoFlow)

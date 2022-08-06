@@ -13,7 +13,7 @@ import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
-import ru.maxpek.friendslinkup.viewmodel.ListOfUserViewModel
+import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 class NewPostFragment : Fragment() {
     override fun onCreateView(
@@ -26,7 +26,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-        val listOfUserViewModel : ListOfUserViewModel by viewModels(ownerProducer = ::requireParentFragment)
+        val newPostViewModel : NewPostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
         binding.menuAdd.setOnClickListener {
             PopupMenu(it.context, it).apply {
