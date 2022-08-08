@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
@@ -15,16 +17,20 @@ import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
+
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ListOfUsers: DialogFragment() {
+class ListOfUsers: Fragment() {
+    private val newPostViewModel: NewPostViewModel by viewModels(
+        ownerProducer = ::requireParentFragment
+    )
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
-        val newPostViewModel: NewPostViewModel by viewModels()
+//        val newPostViewModel: NewPostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
 //        val newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = ::requireParentFragment)
 //        val  newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = { requireParentFragment().requireParentFragment() })
@@ -58,6 +64,7 @@ class ListOfUsers: DialogFragment() {
 
         binding.enter.setOnClickListener {
             newPostViewModel.addMentionIds()
+            findNavController().navigateUp()
         }
         return binding.root
     }

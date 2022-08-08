@@ -21,7 +21,7 @@ import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
-    val newPostViewModel : NewPostViewModel by viewModels()
+//    val newPostViewModel : NewPostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -55,8 +55,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/menuAdd"
-        android:checkable="true"
-        style="@style/Widget.AppTheme.IconButton"
+        style="@style/Widget.AppTheme.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -66,8 +65,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/mentionAdd"
-        android:checkable="true"
-        style="@style/Widget.AppTheme.IconButton"
+        style="@style/Widget.AppTheme.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -79,8 +77,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/geoAdd"
-        android:checkable="true"
-        style="@style/Widget.AppTheme.IconButton"
+        style="@style/Widget.AppTheme.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
@@ -91,8 +88,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/linkAdd"
-        android:checkable="true"
-        style="@style/Widget.AppTheme.IconButton"
+        style="@style/Widget.AppTheme.CheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"

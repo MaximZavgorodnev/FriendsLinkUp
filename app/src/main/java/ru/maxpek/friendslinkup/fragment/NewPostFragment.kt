@@ -20,7 +20,7 @@ import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
-    private val newPostViewModel : NewPostViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +31,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-
+        val newPostViewModel : NewPostViewModel by viewModels()
 
 
         binding.menuAdd.setOnClickListener {
@@ -74,6 +74,10 @@ class NewPostFragment : Fragment() {
         binding.okAdd.setOnClickListener {
             binding.editLink.visibility = View.GONE
             binding.okAdd.visibility = View.GONE
+        }
+
+        newPostViewModel.newPost.observe(viewLifecycleOwner) {
+            binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
         }
 
 

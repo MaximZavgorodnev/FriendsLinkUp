@@ -24,12 +24,8 @@ class NewPostViewModel@Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
 
     private val _newPost = MutableLiveData(edited)
-
-
-
-
-
-
+    val newPost: LiveData<PostCreateRequest>
+        get() = _newPost
 
     val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
 
