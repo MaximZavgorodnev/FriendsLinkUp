@@ -23,11 +23,11 @@ val edited = PostCreateRequest(
 class NewPostViewModel@Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
 
-    val newPost = MutableLiveData(edited)
+    private val _newPost = MutableLiveData(edited)
 
 
 
-    var listChecked = listOf<Int>()
+
 
 
 
@@ -80,7 +80,13 @@ class NewPostViewModel@Inject constructor(
     }
 
     fun addMentionIds(){
-
+        val listChecked = mutableListOf<Int>()
+        data.value?.forEach { user ->
+            if (user.checked){
+                listChecked.add(user.id)
+            }
+        }
+        _newPost.value = _newPost.value?.copy(mentionIds = listChecked)
     }
 
 }

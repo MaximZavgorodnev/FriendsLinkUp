@@ -125,8 +125,4 @@
             android:id="@+id/action_registrationFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
     </dialog>
-    <activity
-        android:id="@+id/hilt_AppActivity"
-        android:name="ru.maxpek.friendslinkup.Hilt_AppActivity"
-        android:label="Hilt_AppActivity" />
 </navigation>

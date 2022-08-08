@@ -14,12 +14,14 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
+import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(ownerProducer = ::requireParentFragment)
+    val newPostViewModel : NewPostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,

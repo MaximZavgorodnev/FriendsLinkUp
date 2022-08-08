@@ -9,13 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.geometry.Point
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class NewPostFragment : Fragment() {
+    private val newPostViewModel : NewPostViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +31,8 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-        val newPostViewModel : NewPostViewModel by viewModels()
+
+
 
         binding.menuAdd.setOnClickListener {
             PopupMenu(it.context, it).apply {

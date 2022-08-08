@@ -26,12 +26,17 @@ class ListOfUsers: DialogFragment() {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
         val newPostViewModel: NewPostViewModel by viewModels()
 
+//        val newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = ::requireParentFragment)
+//        val  newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = { requireParentFragment().requireParentFragment() })
 //        val usersListChecked: List<Int>?
 //        if (arguments != null){
 //            usersListChecked = arguments?.arrayInt
 //
 //        }
-        newPostViewModel.getUsers()
+        if (newPostViewModel.data.value!!.isEmpty()) {
+            newPostViewModel.getUsers()
+        }
+
         val adapter = ListOfUsersAdapter(object : AdapterCallback {
             override fun isChecked(id: Int) {
                 newPostViewModel.isChecked(id)
@@ -49,6 +54,10 @@ class ListOfUsers: DialogFragment() {
                     binding.list.smoothScrollToPosition(0)
                 }
             }
+        }
+
+        binding.enter.setOnClickListener {
+            newPostViewModel.addMentionIds()
         }
         return binding.root
     }

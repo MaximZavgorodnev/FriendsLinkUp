@@ -61,7 +61,6 @@ class AppActivity : AppCompatActivity() {
         val eventFragment = EventFragment()
         val jobFragment = JobFragment()
 
-//        setThatFragment(feedFragment)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_24)
 
         binding.navigationView.setNavigationItemSelectedListener { menuItem ->
