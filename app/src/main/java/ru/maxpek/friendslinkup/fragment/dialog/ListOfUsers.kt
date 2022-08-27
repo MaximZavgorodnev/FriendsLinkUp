@@ -15,10 +15,11 @@ import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
+import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
+import javax.inject.Inject
 
-
-
+@ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class ListOfUsers: DialogFragment() {
     override fun onCreateView(

@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -35,12 +36,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentMapsBinding
 import ru.maxpek.friendslinkup.util.PointArg
+import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MapsFragment : Fragment() {
     private var binding: FragmentMapsBinding? = null
+    val newPostViewModel: NewPostViewModel by viewModels()
+
 
     var mapObjects: MapObject? = null
     private var mapView: MapView? = null
@@ -90,8 +94,8 @@ class MapsFragment : Fragment() {
                 binding?.root!!, R.string.addGeo,
                 BaseTransientBottomBar.LENGTH_INDEFINITE
             ).setAction(R.string.add)
-                { findNavController().navigate(R.id.action_mapsFragment_to_newPostFragment, ///Передача даннных для сохранения
-                    Bundle().apply { pointArg = point })}.show()
+                { newPostViewModel.addCoords(point)
+                    findNavController().navigateUp()}.show()
 
         }
     }
@@ -180,12 +184,6 @@ class MapsFragment : Fragment() {
                     permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
 
                 }
-
-
-//            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
-//
-//            val locTarget = userLocation.cameraPosition()?.target
-
 
             }
         }

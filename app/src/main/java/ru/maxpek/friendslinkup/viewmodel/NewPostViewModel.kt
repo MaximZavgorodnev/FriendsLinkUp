@@ -1,7 +1,9 @@
 package ru.maxpek.friendslinkup.viewmodel
 
 import androidx.lifecycle.*
+import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.dto.Attachment
 import ru.maxpek.friendslinkup.dto.Coordinates
@@ -19,6 +21,7 @@ val edited = PostCreateRequest(
     attachment = null,
     mentionIds = listOf())
 
+@ExperimentalCoroutinesApi
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
@@ -63,8 +66,9 @@ class NewPostViewModel @Inject constructor(
 
     }
 
-    fun addCoords(){
-
+    fun addCoords(point: Point){
+        val coordinates = Coordinates(point.latitude.toString(), point.longitude.toString())
+        _newPost.value = _newPost.value?.copy(coords = coordinates)
     }
 
     fun addLink(link: String){

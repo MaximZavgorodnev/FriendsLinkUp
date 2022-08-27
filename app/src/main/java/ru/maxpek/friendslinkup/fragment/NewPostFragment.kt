@@ -63,6 +63,10 @@ class NewPostFragment : Fragment() {
         }
 
         binding.geoAdd.setOnClickListener {
+            findNavController().navigate(
+                R.id.action_newPostFragment_to_mapsFragment,
+//                Bundle().apply { pointArg = Point(newPostViewModel.newPost.value?.coords.latitude.toS, marker.pointLongitude) })
+            )
             findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
         }
 
