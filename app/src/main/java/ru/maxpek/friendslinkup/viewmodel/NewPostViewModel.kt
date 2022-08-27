@@ -20,7 +20,7 @@ val edited = PostCreateRequest(
     mentionIds = listOf())
 
 @HiltViewModel
-class NewPostViewModel@Inject constructor(
+class NewPostViewModel @Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
 
     private val _newPost = MutableLiveData(edited)
@@ -67,8 +67,10 @@ class NewPostViewModel@Inject constructor(
 
     }
 
-    fun addLink(){
-
+    fun addLink(link: String){
+        if (link != ""){
+            _newPost.value = _newPost.value?.copy(link = link)
+        }
     }
 
     fun addAttachment(){

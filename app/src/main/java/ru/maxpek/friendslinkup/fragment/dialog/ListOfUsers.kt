@@ -18,27 +18,18 @@ import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 
-@ExperimentalCoroutinesApi
+
 @AndroidEntryPoint
-class ListOfUsers: Fragment() {
-    private val newPostViewModel: NewPostViewModel by viewModels(
-        ownerProducer = ::requireParentFragment
-    )
+class ListOfUsers: DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
-//        val newPostViewModel: NewPostViewModel by viewModels(ownerProducer = ::requireParentFragment)
 
-//        val newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = ::requireParentFragment)
-//        val  newPostViewModel by viewModels<NewPostViewModel>(ownerProducer = { requireParentFragment().requireParentFragment() })
-//        val usersListChecked: List<Int>?
-//        if (arguments != null){
-//            usersListChecked = arguments?.arrayInt
-//
-//        }
+        val newPostViewModel: NewPostViewModel by viewModels()
+
         if (newPostViewModel.data.value!!.isEmpty()) {
             newPostViewModel.getUsers()
         }

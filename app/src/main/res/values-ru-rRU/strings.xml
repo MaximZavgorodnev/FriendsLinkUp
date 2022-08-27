@@ -66,4 +66,5 @@
     <string name="not_registered">Данный пользователь не зарегистрирован</string>
     <string name="audio">Аудио</string>
     <string name="images">Картина</string>
+    <string name="need_permission">Требуется разрешение на местоположение</string>
 </resources>

@@ -72,6 +72,8 @@ class NewPostFragment : Fragment() {
         }
 
         binding.okAdd.setOnClickListener {
+            val link: String = binding.editLink.text.toString()
+            newPostViewModel.addLink(link)
             binding.editLink.visibility = View.GONE
             binding.okAdd.visibility = View.GONE
         }

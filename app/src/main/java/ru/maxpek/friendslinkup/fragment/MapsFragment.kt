@@ -1,10 +1,17 @@
 package ru.maxpek.friendslinkup.fragment
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.graphics.PointF
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 
@@ -14,8 +21,13 @@ import com.yandex.mapkit.Animation
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.layers.GeoObjectTapListener
+import com.yandex.mapkit.layers.ObjectEvent
 import com.yandex.mapkit.map.*
 import com.yandex.mapkit.map.Map
+import com.yandex.mapkit.mapview.MapView
+import com.yandex.mapkit.user_location.UserLocationLayer
+import com.yandex.mapkit.user_location.UserLocationObjectListener
+import com.yandex.mapkit.user_location.UserLocationView
 
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +43,8 @@ class MapsFragment : Fragment() {
     private var binding: FragmentMapsBinding? = null
 
     var mapObjects: MapObject? = null
+    private var mapView: MapView? = null
+    private lateinit var userLocation: UserLocationLayer
 
     private val objectTapListener = GeoObjectTapListener { geo ->
         val selectionMetadata : GeoObjectSelectionMetadata =
@@ -39,6 +53,21 @@ class MapsFragment : Fragment() {
         binding?.map?.map?.selectGeoObject(selectionMetadata.id, selectionMetadata.layerId)
 
         true
+    }
+
+    private val locationObjectListener = object : UserLocationObjectListener {
+        override fun onObjectAdded(view: UserLocationView) = Unit
+
+        override fun onObjectRemoved(view: UserLocationView) = Unit
+
+        override fun onObjectUpdated(view: UserLocationView, event: ObjectEvent) {
+            userLocation.cameraPosition()?.target?.let {
+                mapView?.map?.move(CameraPosition(it, 14F, 0F, 0F)
+                    , Animation(Animation.Type.SMOOTH, 5F),
+                    null)
+            }
+            userLocation.setObjectListener(null)
+        }
     }
 
     private val inputListener = object : InputListener {
@@ -67,6 +96,36 @@ class MapsFragment : Fragment() {
         }
     }
 
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            when {
+                granted -> {
+                    userLocation.isVisible = true
+                    userLocation.isHeadingEnabled = false
+                    userLocation.cameraPosition()?.target?.apply {
+                        val map = mapView?.map ?: return@registerForActivityResult
+                        val cameraPosition = map.cameraPosition
+                        map.move(
+                            CameraPosition(
+                                this,
+                                cameraPosition.zoom,
+                                cameraPosition.azimuth,
+                                cameraPosition.tilt,
+                            ), Animation(Animation.Type.SMOOTH, 5F),
+                            null
+                        )
+                    }
+                }
+                else -> {
+                    Toast.makeText(
+                        requireContext(),
+                        getString(R.string.need_permission),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+
     companion object{
         private val TARGET_LOCATION = Point(59.945933, 30.320045)
         var Bundle.pointArg: Point by PointArg
@@ -75,10 +134,11 @@ class MapsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MapKitFactory.initialize(this.context)
+        MapKitFactory.initialize(requireContext())
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -87,33 +147,58 @@ class MapsFragment : Fragment() {
 
         val binding = FragmentMapsBinding.inflate(inflater, container, false)
         this.binding = binding
-        val mapView = binding.map.apply {
+        mapView = binding.map.apply {
+            userLocation = MapKitFactory.getInstance().createUserLocationLayer(mapWindow)
+            if (requireActivity()
+                    .checkSelfPermission(
+                        Manifest.permission.ACCESS_FINE_LOCATION
+                    ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                userLocation.isVisible = true
+                userLocation.isHeadingEnabled = false
+            }
+
             map.addInputListener(inputListener)
             map.addTapListener(objectTapListener)
+            userLocation.setObjectListener(locationObjectListener)
+
+            if (arguments?.pointArg != null) {
+                mapView?.map?.move(CameraPosition(arguments?.pointArg!!, 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 5F),
+                    null)
+                mapView?.map?.mapObjects?.addPlacemark(
+                    arguments?.pointArg!!,
+                    ImageProvider.fromResource(context, R.drawable.search_result)
+                )
+
+            } else {
+                if (requireActivity()
+                        .checkSelfPermission(
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                        ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+
+                }
+
+
+//            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+//
+//            val locTarget = userLocation.cameraPosition()?.target
+
+
+            }
         }
 
 
-        if (arguments?.pointArg != null) {
-            mapView.map.move(CameraPosition(arguments?.pointArg!!, 14.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 5F),
-                null)
-            mapView.map?.mapObjects?.addPlacemark(
-                arguments?.pointArg!!,
-                ImageProvider.fromResource(context, R.drawable.search_result)
-            )
 
-        } else {
-            mapView.map.move(
-                CameraPosition(TARGET_LOCATION, 14.0f, 0.0f, 0.0f),
-                Animation(Animation.Type.SMOOTH, 5F),
-                null
-            )
-        }
+
+
 
 
 
         binding.plus.setOnClickListener {
-            mapView.map.move(CameraPosition(mapView.map.cameraPosition.target,mapView.map.cameraPosition.zoom+1,
+            binding.map.map.move(CameraPosition(binding.map.map.cameraPosition.target,binding.map.map.cameraPosition.zoom+1,
                 0.0f, 0.0f),
                 Animation(Animation.Type.LINEAR, 0.5F),
                 null)
@@ -121,11 +206,16 @@ class MapsFragment : Fragment() {
         }
 
         binding.minus.setOnClickListener {
-            mapView.map.move(CameraPosition(mapView.map.cameraPosition.target,mapView.map.cameraPosition.zoom-1,
+            binding.map.map.move(CameraPosition(binding.map.map.cameraPosition.target,binding.map.map.cameraPosition.zoom-1,
                 0.0f, 0.0f),
                 Animation(Animation.Type.LINEAR, 0.5F),
                 null)
         }
+
+        binding.location.setOnClickListener {
+            permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+
         return binding.root
 
 
