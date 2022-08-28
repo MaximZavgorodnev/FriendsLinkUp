@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,7 +30,7 @@ class ListOfUsers: DialogFragment() {
     ): View {
         val binding = FaragmenListOfUsersBinding.inflate(inflater, container, false)
 
-        val newPostViewModel: NewPostViewModel by viewModels()
+        val newPostViewModel: NewPostViewModel by activityViewModels()
 
         if (newPostViewModel.data.value!!.isEmpty()) {
             newPostViewModel.getUsers()

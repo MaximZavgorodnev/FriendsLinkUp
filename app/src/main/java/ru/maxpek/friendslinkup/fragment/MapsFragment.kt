@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 
@@ -43,7 +44,7 @@ import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 @AndroidEntryPoint
 class MapsFragment : Fragment() {
     private var binding: FragmentMapsBinding? = null
-    val newPostViewModel: NewPostViewModel by viewModels()
+    val newPostViewModel: NewPostViewModel by activityViewModels()
 
 
     var mapObjects: MapObject? = null

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.yandex.mapkit.geometry.Point
@@ -31,7 +32,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
-        val newPostViewModel : NewPostViewModel by viewModels()
+        val newPostViewModel : NewPostViewModel by activityViewModels()
 
 
         binding.menuAdd.setOnClickListener {
@@ -63,10 +64,10 @@ class NewPostFragment : Fragment() {
         }
 
         binding.geoAdd.setOnClickListener {
-            findNavController().navigate(
-                R.id.action_newPostFragment_to_mapsFragment,
-//                Bundle().apply { pointArg = Point(newPostViewModel.newPost.value?.coords.latitude.toS, marker.pointLongitude) })
-            )
+//            findNavController().navigate(
+//                R.id.action_newPostFragment_to_mapsFragment,
+////                Bundle().apply { pointArg = Point(newPostViewModel.newPost.value?.coords.latitude.toS, marker.pointLongitude) })
+//            )
             findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
         }
 
@@ -84,6 +85,7 @@ class NewPostFragment : Fragment() {
 
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
+            println(it)
         }
 
 
