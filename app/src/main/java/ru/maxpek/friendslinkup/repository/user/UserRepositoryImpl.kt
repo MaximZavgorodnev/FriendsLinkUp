@@ -45,7 +45,6 @@ class UserRepositoryImpl @Inject constructor(
         val password = user.password.toRequestBody()
         val nameUser = user.name.toRequestBody()
         try {
-
             val response = if (user.file != null) {
                 apiService.onSignUpHasAva(login, password, nameUser, user.file)
             } else {

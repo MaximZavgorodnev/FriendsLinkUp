@@ -5,20 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
+import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
-import ru.maxpek.friendslinkup.dto.UserRequested
-import ru.maxpek.friendslinkup.fragment.NewPostFragment.Companion.arrayInt
-import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
-import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint

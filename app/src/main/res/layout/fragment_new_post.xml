@@ -31,7 +31,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/mentionIds"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
@@ -73,6 +73,7 @@
         android:layout_marginStart="50dp"
         android:contentDescription="@string/description_add_menu"
         app:icon="@drawable/ic_mention_24"
+        android:checkable="true"
         tools:ignore="RtlSymmetry" />
 
     <com.google.android.material.button.MaterialButton
@@ -84,6 +85,7 @@
         android:layout_marginStart="100dp"
         android:paddingBottom="8dp"
         android:contentDescription="@string/description_add_menu"
+        android:checkable="true"
         app:icon="@drawable/ic_gps_fixed_24" />
 
     <com.google.android.material.button.MaterialButton
@@ -94,6 +96,7 @@
         android:layout_gravity="bottom"
         android:layout_marginStart="150dp"
         android:paddingBottom="8dp"
+        android:checkable="true"
         android:contentDescription="@string/description_add_menu"
         app:icon="@drawable/ic_link_24" />
 

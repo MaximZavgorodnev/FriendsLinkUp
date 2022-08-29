@@ -16,7 +16,7 @@ interface AdapterCallback {
 }
 
 class ListOfUsersAdapter (private val callback: AdapterCallback) :
-    ListAdapter<UserRequested, UsersListOfViewHolder>(MarkerDiffCallback()) {
+    ListAdapter<UserRequested, UsersListOfViewHolder>(UsersDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListOfViewHolder {
         val binding = CardMentionsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -61,7 +61,7 @@ class UsersListOfViewHolder
     }
 }
 
-class MarkerDiffCallback : DiffUtil.ItemCallback<UserRequested>() {
+class UsersDiffCallback : DiffUtil.ItemCallback<UserRequested>() {
     override fun areItemsTheSame(oldItem: UserRequested, newItem: UserRequested): Boolean {
         return oldItem.id == newItem.id
     }

@@ -63,8 +63,5 @@ class AuthViewModel @Inject constructor(
         }
     }
 
-//    fun changePhoto(uri: Uri?, file: File?) {
-//        _photo.value = PhotoModel(uri, file)
-//    }
 
 }

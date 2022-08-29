@@ -31,6 +31,9 @@ class NewPostViewModel @Inject constructor(
         get() = _newPost
 
     val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
+    private val mentions = mutableListOf<UserRequested>()
+    val mentionsLive : LiveData<List<UserRequested>> = MutableLiveData(mentions)
+
 
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
@@ -74,6 +77,8 @@ class NewPostViewModel @Inject constructor(
     fun addLink(link: String){
         if (link != ""){
             _newPost.value = _newPost.value?.copy(link = link)
+        } else {
+            _newPost.value = _newPost.value?.copy(link = null)
         }
     }
 
@@ -82,10 +87,12 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addMentionIds(){
+        mentions.clear()
         val listChecked = mutableListOf<Int>()
         data.value?.forEach { user ->
             if (user.checked){
                 listChecked.add(user.id)
+                mentions.add(user)
             }
         }
         _newPost.value = _newPost.value?.copy(mentionIds = listChecked)
