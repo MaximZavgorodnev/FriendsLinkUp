@@ -5,12 +5,16 @@ import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.dto.Attachment
 import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.PostCreateRequest
 import ru.maxpek.friendslinkup.dto.UserRequested
+import ru.maxpek.friendslinkup.enumeration.AttachmentType
+import ru.maxpek.friendslinkup.model.ErrorLive
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
+import ru.maxpek.friendslinkup.repository.newPost.attachment
 import javax.inject.Inject
 
 val edited = PostCreateRequest(
@@ -33,6 +37,8 @@ class NewPostViewModel @Inject constructor(
     val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
     private val mentions = mutableListOf<UserRequested>()
     val mentionsLive : LiveData<List<UserRequested>> = MutableLiveData(mentions)
+    val dataAttachment = repositoryListOfUser.dataAttachment
+
 
 
     private val _dataState = MutableLiveData<FeedModelState>()
@@ -65,7 +71,7 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addContent(){
+    fun addPost(){
 
     }
 
@@ -82,8 +88,19 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addAttachment(){
+    fun addPictureToThePost(image: MultipartBody.Part){
+        viewModelScope.launch {
+            try {
+                repositoryListOfUser.addPictureToThePost(AttachmentType.IMAGE, image)
+                _dataState.value = FeedModelState(error = false)
+            } catch (e: RuntimeException) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
 
+    fun addAttachment(){
+        _newPost.value = _newPost.value?.copy(attachment = dataAttachment.value)
     }
 
     fun addMentionIds(){

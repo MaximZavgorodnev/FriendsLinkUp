@@ -61,6 +61,7 @@
         android:layout_gravity="bottom"
         android:paddingBottom="8dp"
         android:contentDescription="@string/description_add_menu"
+        android:checkable="true"
         app:icon="@drawable/ic_add_24dp" />
 
     <com.google.android.material.button.MaterialButton
@@ -105,7 +106,7 @@
         android:checkable="true"
         android:layout_width="112dp"
         android:layout_height="48dp"
-        app:srcCompat="@drawable/img_backg"
+        android:visibility="gone"
         android:paddingEnd="64dp"
         android:layout_gravity="bottom|right"
         tools:ignore="RtlHardcoded,RtlSymmetry" />

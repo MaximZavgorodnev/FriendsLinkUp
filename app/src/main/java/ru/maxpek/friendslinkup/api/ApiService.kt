@@ -5,6 +5,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
+import ru.maxpek.friendslinkup.dto.MediaResponse
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
 
@@ -71,6 +72,14 @@ interface ApiService {
     //Получения списка зарегистрированных пользователей
     @GET("users")
     suspend fun getUsers(): Response<List<UserRequested>>
+
+    //Добавление мультимедии(картинка, видео, музыка)
+    @Multipart
+    @POST("media")
+    suspend fun addMultimedia(
+        @Part("Authorization") token: String,
+        @Part file: MultipartBody.Part?
+    ): Response<MediaResponse>
 
 
     @GET("posts/latest")

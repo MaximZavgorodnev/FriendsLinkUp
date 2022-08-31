@@ -2,6 +2,7 @@ package ru.maxpek.friendslinkup.fragment
 
 import android.app.Activity
 import android.net.Uri
+import android.opengl.Visibility
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -44,7 +46,7 @@ class NewPostFragment : Fragment() {
             false
         )
         val newPostViewModel : NewPostViewModel by activityViewModels()
-        var file: MultipartBody.Part? = null
+        var file: MultipartBody.Part
 
         val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser() {}
@@ -65,6 +67,7 @@ class NewPostFragment : Fragment() {
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
                             "file", resultFile?.name, resultFile!!.asRequestBody())
+                        newPostViewModel.addPictureToThePost(file)
                         binding.image.setImageURI(uri)
                     }
                 }
@@ -72,6 +75,7 @@ class NewPostFragment : Fragment() {
 
 
         binding.menuAdd.setOnClickListener {
+            binding.menuAdd.isChecked = binding.image.isVisible
             PopupMenu(it.context, it).apply {
                 inflate(R.menu.menu_add_post)
                 setOnMenuItemClickListener { item ->
@@ -138,7 +142,16 @@ class NewPostFragment : Fragment() {
             adapter.submitList(newPostViewModel.mentionsLive.value)
             binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != null
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
-            println(it)
+        }
+
+        newPostViewModel.dataAttachment.observe(viewLifecycleOwner) {
+            newPostViewModel.addAttachment()
+            if (it.url != "") {
+                binding.image.visibility = View.VISIBLE
+                binding.menuAdd.isChecked = true
+            } else {
+                binding.menuAdd.isChecked = false
+            }
         }
 
 
