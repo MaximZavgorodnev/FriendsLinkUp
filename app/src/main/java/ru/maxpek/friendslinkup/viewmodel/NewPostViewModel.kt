@@ -20,7 +20,7 @@ import javax.inject.Inject
 val edited = PostCreateRequest(
     id = 0,
     content = "",
-    coords = null,
+    coords = Coordinates("0", "0"),
     link = null,
     attachment = null,
     mentionIds = listOf())
@@ -71,11 +71,23 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addPost(){
-
+    fun addPost(content: String){
+        _newPost.value = _newPost.value?.copy(content = content)
+        val post = _newPost.value!!
+        println(post)
+        viewModelScope.launch {
+            try {
+                repositoryListOfUser.addPost(post)
+                _dataState.value = FeedModelState(error = false)
+                println(post)
+            } catch (e: RuntimeException) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
 
     fun addCoords(point: Point){
+        point.latitude.
         val coordinates = Coordinates(point.latitude.toString(), point.longitude.toString())
         _newPost.value = _newPost.value?.copy(coords = coordinates)
     }

@@ -6,6 +6,7 @@ import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
 import ru.maxpek.friendslinkup.dto.MediaResponse
+import ru.maxpek.friendslinkup.dto.PostCreateRequest
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
 
@@ -14,26 +15,26 @@ interface ApiService {
 //    @POST("users/push-tokens")
 //    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
-    @GET("posts")
-    suspend fun getAll(): Response<List<PostResponse>>
-
-    @GET("posts/{id}/newer")
-    suspend fun getNewer(@Path("id") id: Long): Response<List<PostResponse>>
-
-    @GET("posts/{id}")
-    suspend fun getById(@Path("id") id: Long): Response<PostResponse>
-
+//    @GET("posts")
+//    suspend fun getAll(): Response<List<PostResponse>>
+//
+//    @GET("posts/{id}/newer")
+//    suspend fun getNewer(@Path("id") id: Long): Response<List<PostResponse>>
+//
+//    @GET("posts/{id}")
+//    suspend fun getById(@Path("id") id: Long): Response<PostResponse>
+//
     @POST("posts")
     suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
-
-    @DELETE("posts/{id}")
-    suspend fun removeById(@Path("id") id: Long): Response<Unit>
-
-    @POST("posts/{id}/likes")
-    suspend fun likeById(@Path("id") id: Long): Response<PostResponse>
-
-    @DELETE("posts/{id}/likes")
-    suspend fun dislikeById(@Path("id") id: Long): Response<PostResponse>
+//
+//    @DELETE("posts/{id}")
+//    suspend fun removeById(@Path("id") id: Long): Response<Unit>
+//
+//    @POST("posts/{id}/likes")
+//    suspend fun likeById(@Path("id") id: Long): Response<PostResponse>
+//
+//    @DELETE("posts/{id}/likes")
+//    suspend fun dislikeById(@Path("id") id: Long): Response<PostResponse>
 
     //Аунтетификация пользователя
     @FormUrlEncoded
@@ -80,6 +81,19 @@ interface ApiService {
         @Part("Authorization") token: String,
         @Part file: MultipartBody.Part?
     ): Response<MediaResponse>
+
+    //Добавление нового поста
+
+    @POST("posts")
+    suspend fun addPost(
+        @Body post: PostCreateRequest,
+        @Header("Authorization") token: String,
+    ): Response<PostResponse>
+
+
+
+
+
 
 
     @GET("posts/latest")

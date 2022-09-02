@@ -154,6 +154,12 @@ class NewPostFragment : Fragment() {
             }
         }
 
+        binding.ok.setOnClickListener {
+            val content = binding.edit.text.toString()
+            newPostViewModel.addPost(content)
+
+        }
+
 
 
         return binding.root

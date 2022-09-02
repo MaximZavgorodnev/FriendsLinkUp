@@ -144,12 +144,12 @@ data class ListUserPreview (
 
 data class Attachment (
     val url: String,
-    val typeAttachment: AttachmentType,
+    val type: AttachmentType,
 )
 
 data class Coordinates (
-    val latitude: String,
-    val longitude: String
+    val lat: String,
+    val long: String
 )
 
 data class MediaResponse(
