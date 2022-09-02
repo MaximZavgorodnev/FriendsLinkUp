@@ -87,7 +87,7 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addCoords(point: Point){
-        point.latitude.
+//        point.latitude.
         val coordinates = Coordinates(point.latitude.toString(), point.longitude.toString())
         _newPost.value = _newPost.value?.copy(coords = coordinates)
     }
