@@ -15,7 +15,9 @@ import ru.maxpek.friendslinkup.model.ErrorLive
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import ru.maxpek.friendslinkup.repository.newPost.attachment
+import java.text.DecimalFormat
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
 val edited = PostCreateRequest(
     id = 0,
@@ -74,7 +76,6 @@ class NewPostViewModel @Inject constructor(
     fun addPost(content: String){
         _newPost.value = _newPost.value?.copy(content = content)
         val post = _newPost.value!!
-        println(post)
         viewModelScope.launch {
             try {
                 repositoryListOfUser.addPost(post)
@@ -87,8 +88,12 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addCoords(point: Point){
-//        point.latitude.
-        val coordinates = Coordinates(point.latitude.toString(), point.longitude.toString())
+//        println(DecimalFormat("#.######F").format(point.latitude))
+//        println(DecimalFormat("#.######F").format(point.longitude))
+//        val coordinates = Coordinates(DecimalFormat("#.######").format(point.latitude),DecimalFormat("#.######").format(point.longitude))
+//        val coordinates = Coordinates(String.format("%.5f", point.latitude), String.format("%.5f", point.longitude))
+        val coordinates = Coordinates(((point.latitude * 1000000.0).roundToInt() /1000000.0).toString(),
+            ((point.longitude * 1000000.0).roundToInt() /1000000.0).toString())
         _newPost.value = _newPost.value?.copy(coords = coordinates)
     }
 

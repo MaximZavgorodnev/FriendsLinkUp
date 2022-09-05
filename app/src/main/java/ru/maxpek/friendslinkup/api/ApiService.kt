@@ -86,8 +86,9 @@ interface ApiService {
 
     @POST("posts")
     suspend fun addPost(
-        @Body post: PostCreateRequest,
         @Header("Authorization") token: String,
+        @Body post: PostCreateRequest,
+
     ): Response<PostResponse>
 
 

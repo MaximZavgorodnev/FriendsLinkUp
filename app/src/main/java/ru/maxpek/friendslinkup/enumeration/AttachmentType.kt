@@ -1,7 +1,7 @@
 package ru.maxpek.friendslinkup.enumeration
 
 enum class AttachmentType {
-    IMAGE
+    IMAGE, VIDEO, AUDIO
 }
 
 enum class TypeEvent{

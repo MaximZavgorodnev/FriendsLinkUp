@@ -27,6 +27,7 @@ import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
 import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
+import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
@@ -140,7 +141,7 @@ class NewPostFragment : Fragment() {
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
             adapter.submitList(newPostViewModel.mentionsLive.value)
-            binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != null
+            binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != Coordinates("0", "0")
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
         }
 

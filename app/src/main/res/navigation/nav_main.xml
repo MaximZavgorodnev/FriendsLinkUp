@@ -18,6 +18,9 @@
         <action
             android:id="@+id/action_feedFragment_to_registrationFragment"
             app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_displayingImagesFragment2"
+            app:destination="@id/displayingImagesFragment2" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -27,6 +30,9 @@
         <action
             android:id="@+id/action_eventFragment_to_newEventFragment"
             app:destination="@id/newEventFragment" />
+        <action
+            android:id="@+id/action_eventFragment_to_displayingImagesFragment2"
+            app:destination="@id/displayingImagesFragment2" />
     </fragment>
     <fragment
         android:id="@+id/jobFragment"
@@ -46,12 +52,6 @@
             android:id="@+id/action_newPostFragment_to_listOfUsers"
             app:destination="@id/listOfUsers" />
         <action
-            android:id="@+id/action_newPostFragment_to_addImage"
-            app:destination="@id/addImage" />
-        <action
-            android:id="@+id/action_newPostFragment_to_addLink"
-            app:destination="@id/addLink" />
-        <action
             android:id="@+id/action_newPostFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
@@ -66,41 +66,17 @@
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" >
         <action
-            android:id="@+id/action_newEventFragment_to_addDate"
-            app:destination="@id/addDate" />
-        <action
             android:id="@+id/action_newEventFragment_to_listOfUsers"
             app:destination="@id/listOfUsers" />
-        <action
-            android:id="@+id/action_newEventFragment_to_addImage"
-            app:destination="@id/addImage" />
-        <action
-            android:id="@+id/action_newEventFragment_to_addLink"
-            app:destination="@id/addLink" />
         <action
             android:id="@+id/action_newEventFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
     </fragment>
-    <dialog
-        android:id="@+id/addImage"
-        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddImage"
-        android:label="fragment_add_img"
-        tools:layout="@layout/fragment_add_img" />
-    <dialog
-        android:id="@+id/addLink"
-        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddLink"
-        android:label="fragment_add_link"
-        tools:layout="@layout/fragment_add_link" />
     <fragment
         android:id="@+id/newJobFragment"
         android:name="ru.maxpek.friendslinkup.fragment.NewJobFragment"
         android:label="fragment_new_job"
         tools:layout="@layout/fragment_new_job" />
-    <dialog
-        android:id="@+id/addDate"
-        android:name="ru.maxpek.friendslinkup.fragment.dialog.AddDate"
-        android:label="fragment_add_img"
-        tools:layout="@layout/fragment_add_img" />
     <fragment
         android:id="@+id/mapsFragment"
         android:name="ru.maxpek.friendslinkup.fragment.MapsFragment"
@@ -125,4 +101,8 @@
             android:id="@+id/action_registrationFragment_to_feedFragment"
             app:destination="@id/feedFragment" />
     </dialog>
+    <fragment
+        android:id="@+id/displayingImagesFragment2"
+        android:name="ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment"
+        android:label="DisplayingImagesFragment" />
 </navigation>
