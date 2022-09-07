@@ -21,7 +21,6 @@ val emptyList = listOf<UserRequested>()
 val attachment = Attachment("", AttachmentType.IMAGE)
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val appAuth: AppAuth,
     private val dao: PostDao
 ): NewPostRepository {
 
@@ -48,8 +47,7 @@ class NewPostRepositoryImpl @Inject constructor(
     override suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part) {
 
         try {
-            val token = appAuth.authStateFlow.value.token ?: throw UnknownError()
-            val response = token.let { apiService.addMultimedia(it, image) }
+            val response = apiService.addMultimedia(image)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -63,8 +61,7 @@ class NewPostRepositoryImpl @Inject constructor(
 
     override suspend fun addPost(post: PostCreateRequest) {
         try {
-            val token = appAuth.authStateFlow.value.token ?: throw UnknownError()
-            val response = apiService.addPost(token,post)
+            val response = apiService.addPost(post)
 
 
             if (!response.isSuccessful) {

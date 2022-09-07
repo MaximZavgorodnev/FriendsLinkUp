@@ -33,7 +33,7 @@ data class PostCreateRequest(
 
 
 data class PostResponse(
-    override val id: Int,
+    val id: Int,
     val authorId: Int,
     val author: String,
     val authorAvatar: String,
@@ -49,8 +49,7 @@ data class PostResponse(
     val attachment: Attachment?,
     val ownerByMe: Boolean,
     val users: List<UserPreview>,
-    val ownedByMe: Boolean = false,
-) : FeedItem()
+)
 
 data class EventCreateRequest(
     val id: Int,

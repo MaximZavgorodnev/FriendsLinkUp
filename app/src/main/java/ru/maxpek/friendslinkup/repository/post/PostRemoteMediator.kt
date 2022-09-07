@@ -22,22 +22,19 @@ class PostRemoteMediator @Inject constructor(
     private val postDao: PostDao,
     private val postRemoteKeyDao: PostRemoteKeyDao,
     private val db: PostAppDb,
-    appAuth: AppAuth
 
 ): RemoteMediator<Int, PostEntity>() {
-    val token = appAuth.authStateFlow.value.token ?: throw UnknownError()
-
     override suspend fun load(loadType: LoadType, state: PagingState<Int, PostEntity>): MediatorResult {
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> {
                     if (postDao.isEmpty()){
-                        apiService.getLatest(token, state.config.pageSize)
+                        apiService.getLatest(state.config.pageSize)
                     } else {
                         val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(
                             endOfPaginationReached = false
                         )
-                        apiService.getAfter(token, id, state.config.pageSize)
+                        apiService.getAfter(id, state.config.pageSize)
                     }
                 }
                 LoadType.PREPEND -> null
@@ -45,9 +42,10 @@ class PostRemoteMediator @Inject constructor(
                     val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(
                         endOfPaginationReached = false
                     )
-                    apiService.getBefore(token, id, state.config.pageSize)
+                    apiService.getBefore(id, state.config.pageSize)
                 }
             }
+
             if (response != null) {
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())

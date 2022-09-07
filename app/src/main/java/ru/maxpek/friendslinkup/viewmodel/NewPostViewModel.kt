@@ -15,6 +15,7 @@ import ru.maxpek.friendslinkup.model.ErrorLive
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import ru.maxpek.friendslinkup.repository.newPost.attachment
+import ru.maxpek.friendslinkup.util.SingleLiveEvent
 import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -42,7 +43,9 @@ class NewPostViewModel @Inject constructor(
     val dataAttachment = repositoryListOfUser.dataAttachment
 
 
-
+    private val _postCreated = SingleLiveEvent<Unit>()
+    val postCreated: LiveData<Unit>
+        get() = _postCreated
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
@@ -76,6 +79,7 @@ class NewPostViewModel @Inject constructor(
     fun addPost(content: String){
         _newPost.value = _newPost.value?.copy(content = content)
         val post = _newPost.value!!
+        _postCreated.value = Unit
         viewModelScope.launch {
             try {
                 repositoryListOfUser.addPost(post)

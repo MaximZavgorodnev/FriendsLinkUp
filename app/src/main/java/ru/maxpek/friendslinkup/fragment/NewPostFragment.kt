@@ -159,6 +159,20 @@ class NewPostFragment : Fragment() {
 
         }
 
+        newPostViewModel.postCreated.observe(viewLifecycleOwner) {
+            findNavController().navigateUp()
+        }
+        ///Нужно доработать ошибку
+        newPostViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.retry_loading) {
+//                        newPostViewModel.retry()
+                    }
+                    .show()
+            }
+        }
+
 
 
         return binding.root
