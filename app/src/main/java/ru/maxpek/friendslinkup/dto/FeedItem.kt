@@ -48,7 +48,8 @@ data class PostResponse(
     val likedByMe: Boolean,
     val attachment: Attachment?,
     val ownerByMe: Boolean,
-    val users: List<UserPreview>
+    val users: List<UserPreview>,
+    val ownedByMe: Boolean = false,
 ) : FeedItem()
 
 data class EventCreateRequest(

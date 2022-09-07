@@ -10,8 +10,7 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
-import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
-import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
+import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
@@ -31,7 +30,7 @@ class ListOfUsers: DialogFragment() {
             newPostViewModel.getUsers()
         }
 
-        val adapter = ListOfUsersAdapter(object : AdapterCallback {
+        val adapter = ListOfUsersChoiceAdapter(object : AdapterCallback {
             override fun isChecked(id: Int) {
                 newPostViewModel.isChecked(id)
             }

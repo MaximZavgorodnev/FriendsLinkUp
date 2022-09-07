@@ -46,16 +46,11 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    private val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
-        override fun goToPageUser() {}
-    })
-
     fun bind(post: PostResponse) {
         binding.apply {
             group.visibility = View.GONE
             mentionedMe.visibility = View.GONE
-            mentionIds.adapter = adapter
-            onInteractionListener.loadingTheListOfMentioned(post.mentionIds)
+
 
                 Glide.with(itemView)
                 .load(post.authorAvatar)
@@ -88,6 +83,7 @@ class PostViewHolder(
             geo.isChecked = post.coords != null
             mentionedMe.visibility = if (post.mentionedMe) View.VISIBLE else View.INVISIBLE
             menu.visibility = if (post.ownerByMe) View.VISIBLE else View.INVISIBLE
+            mentions.text = "${post.mentionIds.size}"
 
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
@@ -120,6 +116,9 @@ class PostViewHolder(
             backgroundVideo.setOnClickListener{
                 it.findNavController().navigate(R.id.action_eventFragment_to_displayingImagesFragment2,
                     Bundle().apply { textArg = post.attachment?.url ?: " "})
+            }
+            mentions.setOnClickListener {
+                onInteractionListener.loadingTheListOfMentioned(post.mentionIds)
             }
 
         }

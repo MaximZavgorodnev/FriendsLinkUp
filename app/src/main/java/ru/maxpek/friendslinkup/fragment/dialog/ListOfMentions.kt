@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package ru.maxpek.friendslinkup.fragment.dialog
 
 import android.os.Bundle
@@ -6,12 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
-import ru.maxpek.friendslinkup.adapter.AdapterCallback
-import ru.maxpek.friendslinkup.adapter.ListOfUsersAdapter
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
+import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
+import ru.maxpek.friendslinkup.adapter.UsersListAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 
+@ExperimentalCoroutinesApi
+@AndroidEntryPoint
 class ListOfMentions : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,17 +29,12 @@ class ListOfMentions : DialogFragment() {
         val postViewModel: PostViewModel by activityViewModels()
 
 
-        val adapter = ListOfUsersAdapter(object : AdapterCallback {
-            override fun isChecked(id: Int) {
-
-            }
-            override fun unChecked(id: Int) {
-
-            }
+        val adapter = UsersListAdapter(object : AdapterUsersIdCallback {
+            override fun goToPageUser() {}
         })
         binding.list.adapter = adapter
 
-        postViewModel.data.observe(viewLifecycleOwner) {
+        postViewModel.dataUserMentions.observe(viewLifecycleOwner) {
             val newUser = adapter.itemCount < it.size
             adapter.submitList(it) {
                 if (newUser) {
@@ -42,10 +43,6 @@ class ListOfMentions : DialogFragment() {
             }
         }
 
-        binding.enter.setOnClickListener {
-            newPostViewModel.addMentionIds()
-            findNavController().navigateUp()
-        }
         return binding.root
     }
 

@@ -15,8 +15,7 @@ interface ApiService {
 //    @POST("users/push-tokens")
 //    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
-//    @GET("posts")
-//    suspend fun getAll(): Response<List<PostResponse>>
+
 //
 //    @GET("posts/{id}/newer")
 //    suspend fun getNewer(@Path("id") id: Long): Response<List<PostResponse>>
@@ -83,31 +82,33 @@ interface ApiService {
     ): Response<MediaResponse>
 
     //Добавление нового поста
-
     @POST("posts")
     suspend fun addPost(
         @Header("Authorization") token: String,
         @Body post: PostCreateRequest,
-
     ): Response<PostResponse>
 
-
-
-
+    //Загрузка всех постов
+    @GET("posts")
+    suspend fun getAll(): Response<List<PostResponse>>
 
 
 
     @GET("posts/latest")
-    suspend fun getLatest(@Query("count") count: Int): Response<List<PostResponse>>
+    suspend fun getLatest(
+        @Header("Authorization") token: String,
+        @Query("count") count: Int): Response<List<PostResponse>>
 
     @GET("posts/{id}/before")
     suspend fun getBefore(
+        @Header("Authorization") token: String,
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<PostResponse>>
 
     @GET("posts/{id}/after")
     suspend fun getAfter(
+        @Header("Authorization") token: String,
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<PostResponse>>

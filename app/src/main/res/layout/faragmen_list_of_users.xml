@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/enter"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/card_mentions" />
+        tools:listitem="@layout/card_mentions_checked" />
 
     <Button
         android:id="@+id/enter"

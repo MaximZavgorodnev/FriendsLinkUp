@@ -7,31 +7,28 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.maxpek.friendslinkup.R
-import ru.maxpek.friendslinkup.databinding.CardMentionsBinding
+import ru.maxpek.friendslinkup.databinding.CardIdsBinding
+import ru.maxpek.friendslinkup.databinding.CardMentionBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 
-interface AdapterCallback {
-    fun isChecked(id: Int) {}
-    fun unChecked(id: Int) {}
-}
 
-class ListOfUsersAdapter (private val callback: AdapterCallback) :
-    ListAdapter<UserRequested, UsersListOfViewHolder>(UsersDiffCallback()) {
+class UsersListAdapter (private val callback: AdapterUsersIdCallback) :
+    ListAdapter<UserRequested, UsersListViewHolder>(UsersListIdDiffCallback()) {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListOfViewHolder {
-        val binding = CardMentionsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UsersListOfViewHolder (binding, callback)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListViewHolder {
+        val binding = CardMentionBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UsersListViewHolder (binding, callback)
     }
 
-    override fun onBindViewHolder(holder: UsersListOfViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: UsersListViewHolder, position: Int) {
         val post = getItem(position)
         holder.bind(post)
     }
 }
 
-class UsersListOfViewHolder
-    (private val binding: CardMentionsBinding,
-     private val callback: AdapterCallback)  : RecyclerView.ViewHolder(binding.root) {
+class UsersListViewHolder
+    (private val binding: CardMentionBinding,
+     private val callback: AdapterUsersIdCallback)  : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: UserRequested) {
         binding.apply {
@@ -42,26 +39,18 @@ class UsersListOfViewHolder
                 .timeout(10_000)
                 .circleCrop()
                 .into(avatar)
-
             author.text = user.name
-
-            checkbox.apply {
-                isChecked = user.checked
+            avatar.setOnClickListener {
+                callback.goToPageUser()
             }
-
-            checkbox.setOnClickListener {
-                if (checkbox.isChecked) {
-                    callback.isChecked(user.id)
-                } else {
-                    callback.unChecked(user.id)
-                }
-
+            author.setOnClickListener {
+                callback.goToPageUser()
             }
         }
     }
 }
 
-class UsersDiffCallback : DiffUtil.ItemCallback<UserRequested>() {
+class UsersListIdDiffCallback : DiffUtil.ItemCallback<UserRequested>() {
     override fun areItemsTheSame(oldItem: UserRequested, newItem: UserRequested): Boolean {
         return oldItem.id == newItem.id
     }
