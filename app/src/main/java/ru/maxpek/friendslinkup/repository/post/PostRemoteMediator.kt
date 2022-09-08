@@ -45,7 +45,6 @@ class PostRemoteMediator @Inject constructor(
                     apiService.getBefore(id, state.config.pageSize)
                 }
             }
-
             if (response != null) {
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())
@@ -105,6 +104,7 @@ class PostRemoteMediator @Inject constructor(
         catch (e: Exception){
             return MediatorResult.Error(e)
         }
+
     }
 
 

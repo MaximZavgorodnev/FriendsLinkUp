@@ -89,8 +89,7 @@ interface ApiService {
 
 
     @GET("posts/latest")
-    suspend fun getLatest(
-        @Query("count") count: Int): Response<List<PostResponse>>
+    suspend fun getLatest(@Query("count") count: Int): Response<List<PostResponse>>
 
     @GET("posts/{id}/before")
     suspend fun getBefore(

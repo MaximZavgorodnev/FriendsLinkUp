@@ -29,6 +29,7 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
     private val memoryPosts = mutableListOf<PostResponse>()
 
+    val nnnn = mediator
     @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<PostResponse>> = Pager(
         config = PagingConfig(pageSize = 10, enablePlaceholders = false),
