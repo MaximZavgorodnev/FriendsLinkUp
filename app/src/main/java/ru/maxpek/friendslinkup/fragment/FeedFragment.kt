@@ -1,5 +1,6 @@
 package ru.maxpek.friendslinkup.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
@@ -44,23 +46,49 @@ class FeedFragment : Fragment() {
         }
 
         val adapter = PostsAdapter(object : OnInteractionListener {
-            override fun onLike(post: PostResponse) {}
+            override fun onLike(post: PostResponse) {
+                if (authViewModel.authenticated) {
+                    if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.disLikeById(post.id)
+                } else {
+                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                }
+            }
             override fun onEdit(post: PostResponse) {}
-            override fun onRemove(post: PostResponse) {}
-            override fun onShare(post: PostResponse) {}
-            override fun loadingTheListOfMentioned(mentionIds: List<Int>) {}
+            override fun onRemove(post: PostResponse) {
+                viewModel.removeById(post.id)
+            }
+            override fun onShare(post: PostResponse) {
+                if (authViewModel.authenticated) {
+                    val intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT, post.content)
+                        type = "text/plain"
+                    }
+
+                    val shareIntent =
+                        Intent.createChooser(intent, getString(R.string.chooser_share_post))
+                    startActivity(shareIntent)
+                } else {
+                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                }
+            }
+            override fun loadingTheListOfMentioned(mentionIds: List<Int>) {
+
+            }
 
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
                 override fun onRetry() {
-//                    adapter.retry()
+                    adapter.retry()
                 }
             }),
             footer = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
                 override fun onRetry() {
-//                    adapter.retry()
+                    adapter.retry()
                 }
             }),
         )

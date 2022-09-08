@@ -26,14 +26,11 @@ interface ApiService {
     @POST("posts")
     suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
 //
-//    @DELETE("posts/{id}")
-//    suspend fun removeById(@Path("id") id: Long): Response<Unit>
+
 //
-//    @POST("posts/{id}/likes")
-//    suspend fun likeById(@Path("id") id: Long): Response<PostResponse>
+
 //
-//    @DELETE("posts/{id}/likes")
-//    suspend fun dislikeById(@Path("id") id: Long): Response<PostResponse>
+
 
     //Аунтетификация пользователя
     @FormUrlEncoded
@@ -82,10 +79,17 @@ interface ApiService {
     @POST("posts")
     suspend fun addPost(@Body post: PostCreateRequest): Response<PostResponse>
 
-    //Загрузка всех постов
-    @GET("posts")
-    suspend fun getAll(): Response<List<PostResponse>>
+    //Удаление поста
+    @DELETE("posts/{id}")
+    suspend fun removeById(@Path("id") id: Int): Response<Unit>
 
+    //Лайк посту
+    @POST("posts/{id}/likes")
+    suspend fun likeById(@Path("id") id: Int): Response<PostResponse>
+
+    //Дизлайк посту
+    @DELETE("posts/{id}/likes")
+    suspend fun dislikeById(@Path("id") id: Int): Response<PostResponse>
 
 
     @GET("posts/latest")
@@ -102,4 +106,15 @@ interface ApiService {
         @Path("id") id: Long,
         @Query("count") count: Int
     ): Response<List<PostResponse>>
+
+
+
+
+    //Загрузка всех постов
+    @GET("posts")
+    suspend fun getAll(): Response<List<PostResponse>>
+
+
+
+
 }

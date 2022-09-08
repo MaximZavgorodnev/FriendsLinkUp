@@ -60,41 +60,10 @@ class PostRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getAll() {
-//        try {
-//            if (memoryPosts.isNotEmpty()) {
-//                coroutineScope {
-//                    memoryPosts.map { post ->
-//                        async {
-//                            val response = apiService.save(post)
-//                            if (!response.isSuccessful) {
-//                                memoryPosts.add(post)
-//                            }
-//                            memoryPosts.remove(post)
-//                            val body =
-//                                response.body() ?: throw ApiError(
-//                                    response.code(),
-//                                    response.message()
-//                                )
-//                            dao.insert(PostEntity.fromDto(body))
-//                        }
-//                    }.awaitAll()
-//                }
-//            }
-//            val response = apiService.getAll()
-//            if (!response.isSuccessful) {
-//                throw ApiError(response.code(), response.message())
-//            }
-//            val body = response.body() ?: throw ApiError(response.code(), response.message())
-//            dao.insert(body.toEntity())
-//
-//        } catch (e: IOException) {
-//            throw NetworkError
-//        } catch (e: Exception) {
-//            throw UnknownError
-//        }
+
     }
 
-    override fun getNewerCount(id: Long): Flow<Int> {
+    override fun getNewerCount(id: Int): Flow<Int> {
         TODO("Not yet implemented")
     }
 
@@ -102,23 +71,49 @@ class PostRepositoryImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override suspend fun removeById(id: Long) {
-        TODO("Not yet implemented")
+    override suspend fun removeById(id: Int) {
+        try {
+            val response = apiService.removeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            dao.removeById(id)
+        } catch (e: IOException) {
+            throw NetworkError
+        }
     }
 
-    override suspend fun likeById(id: Long) {
-        TODO("Not yet implemented")
+    override suspend fun likeById(id:Int) {
+        try {
+            val response = apiService.likeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        }
     }
 
-    override suspend fun disLikeById(id: Long) {
-        TODO("Not yet implemented")
+    override suspend fun disLikeById(id: Int) {
+        try {
+            val response = apiService.dislikeById(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            val body = response.body() ?: throw ApiError(response.code(), response.message())
+            dao.insert(PostEntity.fromDto(body))
+        } catch (e: IOException) {
+            throw NetworkError
+        }
     }
 
     override suspend fun update() {
         TODO("Not yet implemented")
     }
 
-    override suspend fun isSize(): Long {
+    override suspend fun isSize(): Int {
         TODO("Not yet implemented")
     }
 }

@@ -18,13 +18,13 @@ interface PostDao {
     suspend fun isEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(post: PostEntity) : Long
+    suspend fun insert(post: PostEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(posts: List<PostEntity>)
 
     @Query("DELETE FROM PostEntity WHERE id = :id")
-    suspend fun removeById(id: Long)
+    suspend fun removeById(id: Int)
 
 //    @Query("UPDATE PostEntity SET read = 1")
 //    suspend fun update()
