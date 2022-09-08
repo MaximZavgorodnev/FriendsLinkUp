@@ -21,6 +21,7 @@ import javax.inject.Inject
 
 
 val emptyList = listOf<UserRequested>()
+@OptIn(ExperimentalPagingApi::class)
 class PostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mediator: PostRemoteMediator,
@@ -29,10 +30,8 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
     private val memoryPosts = mutableListOf<PostResponse>()
 
-    val nnnn = mediator
-    @OptIn(ExperimentalPagingApi::class)
     override val data: Flow<PagingData<PostResponse>> = Pager(
-        config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+        config = PagingConfig(pageSize = 2, enablePlaceholders = false),
         pagingSourceFactory = {dao.getAll()},
         remoteMediator = mediator
     ).flow.map{

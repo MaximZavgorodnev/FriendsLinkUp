@@ -29,7 +29,9 @@ class PostRemoteMediator @Inject constructor(
             val response = when (loadType) {
                 LoadType.REFRESH -> {
                     if (postDao.isEmpty()){
-                        apiService.getLatest(state.config.pageSize)
+                        val n = apiService.getLatest(state.config.pageSize)
+                        println(n)
+                        n
                     } else {
                         val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(
                             endOfPaginationReached = false

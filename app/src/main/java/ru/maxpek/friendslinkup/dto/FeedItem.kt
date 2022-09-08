@@ -47,7 +47,7 @@ data class PostResponse(
     val mentionedMe: Boolean,
     val likedByMe: Boolean,
     val attachment: Attachment?,
-    val ownerByMe: Boolean,
+    val ownerByMe: Boolean = false,
     val users: List<UserPreview>,
 )
 

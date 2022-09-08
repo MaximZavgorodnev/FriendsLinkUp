@@ -32,7 +32,7 @@ class PostViewModel @Inject constructor(
             val cached = repositoryPost.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
-                    it.copy(ownedByMe = it.authorId.toLong() == myId)
+                    it.copy(ownerByMe = it.authorId.toLong() == myId )
                 }
             }
         }

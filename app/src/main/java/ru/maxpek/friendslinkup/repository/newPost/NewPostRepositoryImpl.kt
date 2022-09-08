@@ -62,13 +62,12 @@ class NewPostRepositoryImpl @Inject constructor(
     override suspend fun addPost(post: PostCreateRequest) {
         try {
             val response = apiService.addPost(post)
-
-
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
-            val nnnn = dao.insert(PostEntity.fromDto(body))
+            dao.insert(PostEntity.fromDto(body))
+
 
         } catch (e: IOException) {
             throw NetworkError

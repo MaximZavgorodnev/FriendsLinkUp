@@ -55,12 +55,12 @@ class FeedFragment : Fragment() {
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
                 override fun onRetry() {
-                    adapter.retry()
+//                    adapter.retry()
                 }
             }),
             footer = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
                 override fun onRetry() {
-                    adapter.retry()
+//                    adapter.retry()
                 }
             }),
         )
