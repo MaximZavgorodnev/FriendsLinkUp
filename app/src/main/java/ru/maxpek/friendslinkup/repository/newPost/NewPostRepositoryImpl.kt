@@ -64,9 +64,11 @@ class NewPostRepositoryImpl @Inject constructor(
             val response = apiService.addPost(post)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
+            } else {
+                println(response)
+                val body = response.body() ?: throw ApiError(response.code(), response.message())
+                dao.insert(PostEntity.fromDto(body))
             }
-            val body = response.body() ?: throw ApiError(response.code(), response.message())
-            dao.insert(PostEntity.fromDto(body))
 
 
         } catch (e: IOException) {

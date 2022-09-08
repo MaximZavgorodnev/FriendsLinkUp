@@ -36,7 +36,7 @@ data class PostResponse(
     val id: Int,
     val authorId: Int,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val authorJob: String?,
     val content: String,
     val published: String,
@@ -48,7 +48,7 @@ data class PostResponse(
     val likedByMe: Boolean,
     val attachment: Attachment?,
     val ownerByMe: Boolean = false,
-    val users: List<UserPreview>,
+
 )
 
 data class EventCreateRequest(

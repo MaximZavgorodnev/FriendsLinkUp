@@ -14,6 +14,7 @@ import kotlinx.coroutines.flow.map
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
+import ru.maxpek.friendslinkup.error.NetworkError
 import ru.maxpek.friendslinkup.repository.post.PostRepository
 import javax.inject.Inject
 
@@ -27,13 +28,13 @@ class PostViewModel @Inject constructor(
 
     val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
     val data: Flow<PagingData<PostResponse>> = appAuth
-        .authStateFlow
-        .flatMapLatest { (myId, _) ->
-            val cached = repositoryPost.data.cachedIn(viewModelScope)
-            cached.map { pagingData ->
-                pagingData.map {
-                    it.copy(ownerByMe = it.authorId.toLong() == myId )
+            .authStateFlow
+            .flatMapLatest { (myId, _) ->
+                val cached = repositoryPost.data.cachedIn(viewModelScope)
+                cached.map { pagingData ->
+                    pagingData.map {
+                        it.copy(ownerByMe = it.authorId.toLong() == myId )
+                    }
                 }
             }
-        }
 }

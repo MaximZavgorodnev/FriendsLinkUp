@@ -30,13 +30,16 @@ class PostRepositoryImpl @Inject constructor(
 ) : PostRepository {
     private val memoryPosts = mutableListOf<PostResponse>()
 
-    override val data: Flow<PagingData<PostResponse>> = Pager(
-        config = PagingConfig(pageSize = 2, enablePlaceholders = false),
-        pagingSourceFactory = {dao.getAll()},
-        remoteMediator = mediator
-    ).flow.map{
-        it.map(PostEntity::toDto)
-    }
+    override val data: Flow<PagingData<PostResponse>> =
+        Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = {dao.getAll()},
+            remoteMediator = mediator
+        ).flow.map{
+            it.map(PostEntity::toDto)
+        }
+
+
     override val dataUsersMentions: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
 
 

@@ -10,10 +10,13 @@ import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dao.PostDao
 import ru.maxpek.friendslinkup.dao.PostRemoteKeyDao
 import ru.maxpek.friendslinkup.db.PostAppDb
+import ru.maxpek.friendslinkup.dto.PostResponse
+import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
 import ru.maxpek.friendslinkup.entity.toEntity
 import ru.maxpek.friendslinkup.error.ApiError
+import ru.maxpek.friendslinkup.error.NetworkError
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -25,13 +28,13 @@ class PostRemoteMediator @Inject constructor(
 
 ): RemoteMediator<Int, PostEntity>() {
     override suspend fun load(loadType: LoadType, state: PagingState<Int, PostEntity>): MediatorResult {
+        val postsList: List<PostResponse>
         try {
             val response = when (loadType) {
                 LoadType.REFRESH -> {
                     if (postDao.isEmpty()){
-                        val n = apiService.getLatest(state.config.pageSize)
-                        println(n)
-                        n
+                        postsList = apiService.getLatest(state.config.pageSize).body() ?: throw NetworkError
+                        apiService.getLatest(state.config.pageSize)
                     } else {
                         val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(
                             endOfPaginationReached = false
@@ -104,6 +107,7 @@ class PostRemoteMediator @Inject constructor(
             } else return MediatorResult.Success(endOfPaginationReached = false)
         }
         catch (e: Exception){
+            println(e)
             return MediatorResult.Error(e)
         }
 

@@ -12,7 +12,7 @@ data class PostEntity(
     val id: Int,
     val authorId: Int,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val authorJob: String?,
     val content: String,
     val published: String,
@@ -25,19 +25,18 @@ data class PostEntity(
     @Embedded
     val attachment: AttachmentEmbeddable?,
     val ownerByMe: Boolean,
-    val users: ListUserPreview
+//    val users: ListUserPreview
 ) {
     fun toDto() = PostResponse(id, authorId, author, authorAvatar, authorJob, content,
         published,coords,link, likeOwnerIds.list, mentionIds.list, mentionedMe,
-        likedByMe, attachment?.toDto(), ownerByMe, users.list )
+        likedByMe, attachment?.toDto(), ownerByMe )
 
     companion object {
         fun fromDto(dto: PostResponse) =
             PostEntity(dto.id, dto.authorId, dto.author, dto.authorAvatar, dto.authorJob,
                 dto.content, dto.published,dto.coords,
                 dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
-                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment), dto.ownerByMe,
-                ListUserPreview(dto.users)
+                dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment), dto.ownerByMe
             )
 
         fun fromDtoFlow(dto: PostResponse) =
@@ -45,7 +44,7 @@ data class PostEntity(
                 dto.content, dto.published,dto.coords,
                 dto.link, ListIds(dto.likeOwnerIds),  ListIds(dto.mentionIds), dto.mentionedMe,
                 dto.likedByMe, AttachmentEmbeddable.fromDto(dto.attachment), dto.ownerByMe,
-                ListUserPreview(dto.users))
+               )
     }
 }
 
