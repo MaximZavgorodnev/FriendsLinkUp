@@ -74,8 +74,18 @@ class FeedFragment : Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
-            override fun loadingTheListOfMentioned(mentionIds: List<Int>) {
-
+            override fun loadingTheListOfMentioned(post: PostResponse) {
+                if (authViewModel.authenticated) {
+                    if (post.mentionIds.isEmpty()){
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.loadUsersMentions(post.mentionIds)
+                        findNavController().navigate(R.id.action_feedFragment_to_listOfMentions)
+                    }
+                } else {
+                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                }
             }
 
         })

@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
 import ru.maxpek.friendslinkup.adapter.UsersListAdapter
@@ -42,7 +43,7 @@ class ListOfMentions : DialogFragment() {
                 }
             }
         }
-
+        binding.enter.visibility = View.GONE
         return binding.root
     }
 

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -45,7 +46,12 @@ class AuthenticationFragment : DialogFragment() {
                 val userResponse = UserResponse(usernameEditText, passwordEditText)
                 viewModel.onSignIn(userResponse)
                 AndroidUtils.hideKeyboard(requireView())
-//                findNavController().navigateUp()
+
+            }
+        }
+        viewModel.data.observeForever {
+            if (it.token != null) {
+                findNavController().navigateUp()
             }
         }
 

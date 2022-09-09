@@ -48,6 +48,16 @@ class PostViewModel @Inject constructor(
                 }
             }
 
+    fun loadUsersMentions(mentionIds: List<Int>) {
+        viewModelScope.launch {
+            try {
+                repositoryPost.loadUsersMentions(mentionIds)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
     fun removeById(id: Int) {
         lastAction = REMOVE
         viewModelScope.launch {

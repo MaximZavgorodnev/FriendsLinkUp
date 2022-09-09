@@ -89,7 +89,7 @@ class NewPostFragment : Fragment() {
                         }
                         R.id.image -> {
                             ImagePicker.with(this@NewPostFragment)
-                                .crop(1F,1F)
+                                .crop()
                                 .compress(2048)
                                 .provider(ImageProvider.BOTH)
                                 .galleryMimeTypes(
@@ -101,7 +101,6 @@ class NewPostFragment : Fragment() {
                                 .createIntent(pickPhotoLauncher::launch)
                             true
                         }
-
                         else -> false
                     }
                 }

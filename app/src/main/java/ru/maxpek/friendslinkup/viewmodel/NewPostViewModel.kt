@@ -92,10 +92,6 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addCoords(point: Point){
-//        println(DecimalFormat("#.######F").format(point.latitude))
-//        println(DecimalFormat("#.######F").format(point.longitude))
-//        val coordinates = Coordinates(DecimalFormat("#.######").format(point.latitude),DecimalFormat("#.######").format(point.longitude))
-//        val coordinates = Coordinates(String.format("%.5f", point.latitude), String.format("%.5f", point.longitude))
         val coordinates = Coordinates(((point.latitude * 1000000.0).roundToInt() /1000000.0).toString(),
             ((point.longitude * 1000000.0).roundToInt() /1000000.0).toString())
         _newPost.value = _newPost.value?.copy(coords = coordinates)

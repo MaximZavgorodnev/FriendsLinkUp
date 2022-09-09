@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_feedFragment_to_displayingImagesFragment2"
             app:destination="@id/displayingImagesFragment2" />
+        <action
+            android:id="@+id/action_feedFragment_to_listOfMentions"
+            app:destination="@id/listOfMentions" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -105,4 +108,8 @@
         android:id="@+id/displayingImagesFragment2"
         android:name="ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment"
         android:label="DisplayingImagesFragment" />
+    <dialog
+        android:id="@+id/listOfMentions"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfMentions"
+        android:label="ListOfMentions" />
 </navigation>

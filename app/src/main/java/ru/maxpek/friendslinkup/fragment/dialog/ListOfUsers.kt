@@ -9,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding

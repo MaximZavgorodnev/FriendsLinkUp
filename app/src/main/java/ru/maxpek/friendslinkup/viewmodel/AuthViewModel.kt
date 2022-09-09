@@ -1,23 +1,20 @@
 package ru.maxpek.friendslinkup.viewmodel
 
-import android.net.Uri
+
 import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.auth.AuthState
-import ru.maxpek.friendslinkup.dto.PhotoModel
+
 import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.repository.user.UserRepository
 import ru.maxpek.friendslinkup.error.UnknownError
 import ru.maxpek.friendslinkup.model.ErrorLive
-import ru.maxpek.friendslinkup.model.FeedModelState
-import java.io.File
-import javax.inject.Inject
 
-//private val noPhoto = PhotoModel()
+import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(

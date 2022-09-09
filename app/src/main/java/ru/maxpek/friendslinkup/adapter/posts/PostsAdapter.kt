@@ -24,7 +24,7 @@ interface OnInteractionListener {
     fun onEdit(post: PostResponse) {}
     fun onRemove(post: PostResponse) {}
     fun onShare(post: PostResponse) {}
-    fun loadingTheListOfMentioned(mentionIds: List<Int>) {}
+    fun loadingTheListOfMentioned(post: PostResponse) {}
 }
 
 class PostsAdapter(
@@ -48,9 +48,9 @@ class PostViewHolder(
 
     fun bind(post: PostResponse) {
         binding.apply {
-            group.visibility = View.GONE
             mentionedMe.visibility = View.GONE
-
+            video.visibility = View.GONE
+            backgroundVideo.visibility = View.GONE
 
                 Glide.with(itemView)
                 .load(post.authorAvatar)
@@ -64,14 +64,18 @@ class PostViewHolder(
             if (post.attachment?.url != "") {
                 when (post.attachment?.type) {
                     IMAGE -> {
-                        group.visibility = View.VISIBLE
-                        video.visibility = View.GONE
+                        backgroundVideo.visibility = View.VISIBLE
                     }
-                    VIDEO ->{group.visibility = View.VISIBLE}
+                    VIDEO ->{
+                        video.visibility = View.VISIBLE
+                        backgroundVideo.visibility = View.VISIBLE
+                    }
                     AUDIO ->{}
-                    null -> {group.visibility = View.GONE}
+                    null -> {
+                        video.visibility = View.GONE
+                        backgroundVideo.visibility = View.GONE
+                    }
                 }
-                group.visibility = View.VISIBLE
                 Glide.with(itemView).load(post.attachment?.url).timeout(10_000).into(backgroundVideo)
             }
 
@@ -80,7 +84,7 @@ class PostViewHolder(
             content.text = post.content
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
-            geo.isChecked = post.coords != null
+            geo.visibility = if (post.coords != null) View.VISIBLE else View.INVISIBLE
             mentionedMe.visibility = if (post.mentionedMe) View.VISIBLE else View.INVISIBLE
             menu.visibility = if (post.ownerByMe) View.VISIBLE else View.INVISIBLE
             mentions.text = "${post.mentionIds.size}"
@@ -114,11 +118,11 @@ class PostViewHolder(
             }
 
             backgroundVideo.setOnClickListener{
-                it.findNavController().navigate(R.id.action_eventFragment_to_displayingImagesFragment2,
+                it.findNavController().navigate(R.id.action_feedFragment_to_displayingImagesFragment2,
                     Bundle().apply { textArg = post.attachment?.url ?: " "})
             }
             mentions.setOnClickListener {
-                onInteractionListener.loadingTheListOfMentioned(post.mentionIds)
+                onInteractionListener.loadingTheListOfMentioned(post)
             }
 
         }

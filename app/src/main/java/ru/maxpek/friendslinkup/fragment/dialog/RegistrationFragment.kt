@@ -11,7 +11,9 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.load.ImageHeaderParser
 import com.canhub.cropper.*
 import com.github.dhaval2404.imagepicker.ImagePicker
@@ -61,8 +63,6 @@ class RegistrationFragment : DialogFragment() {
                     val user = UserRegistration(loginEditText, passwordEditText, usernameEditText, avatarImage)
                     viewModel.onSignUp(user)
                     AndroidUtils.hideKeyboard(requireView())
-//                    findNavController().navigateUp()
-//                    findNavController().navigate(R.id.action_registrationFragment_to_feedFragment)
                 }
             }
         }
@@ -106,6 +106,12 @@ class RegistrationFragment : DialogFragment() {
 
         binding.deleteImage.setOnClickListener {
             binding.avatar.setImageResource(R.mipmap.ic_launcher)
+        }
+
+        viewModel.data.observeForever {
+            if (it.token != null) {
+                findNavController().navigateUp()
+            }
         }
         return binding.root
     }

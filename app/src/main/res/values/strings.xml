@@ -76,4 +76,7 @@
     <string name="images">Image</string>
 
     <string name="need_permission">Location permission required</string>
+    <string name="which_mention">Which of the users should I mention?</string>
+    <string name="list_of_mentioned">List of mentioned users</string>
+    <string name="mention_anyone">The user didn t mention anyone</string>
 </resources>
