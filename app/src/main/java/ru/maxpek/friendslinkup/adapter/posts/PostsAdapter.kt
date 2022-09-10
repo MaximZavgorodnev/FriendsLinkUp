@@ -25,6 +25,7 @@ interface OnInteractionListener {
     fun onRemove(post: PostResponse) {}
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
+    fun goToPageUser(){}
 }
 
 class PostsAdapter(
@@ -123,6 +124,10 @@ class PostViewHolder(
             }
             mentions.setOnClickListener {
                 onInteractionListener.loadingTheListOfMentioned(post)
+            }
+
+            author.setOnClickListener {
+                it.findNavController().navigate(R.id.action_feedFragment_to_myWall2)
             }
 
         }

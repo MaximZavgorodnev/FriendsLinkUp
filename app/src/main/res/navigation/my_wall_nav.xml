@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_wall_nav"
+    app:startDestination="@id/myPostFragment2">
+    <fragment
+        android:id="@+id/myPostFragment2"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment"
+        android:label="fragment_my_wall_post"
+        tools:layout="@layout/fragment_my_wall_post" >
+        <action
+            android:id="@+id/action_myPostFragment2_to_myEventFragment"
+            app:destination="@id/myEventFragment" />
+        <action
+            android:id="@+id/action_myPostFragment2_to_myJobFragment2"
+            app:destination="@id/myJobFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/myEventFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyEventFragment"
+        android:label="fragment_my_wall_event"
+        tools:layout="@layout/fragment_my_wall_event" />
+    <fragment
+        android:id="@+id/myJobFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
+        android:label="fragment_my_wall_job"
+        tools:layout="@layout/fragment_my_wall_job" >
+        <action
+            android:id="@+id/action_myJobFragment_to_myPostFragment22"
+            app:destination="@id/myPostFragment2" />
+    </fragment>
+</navigation>

@@ -1,4 +1,6 @@
 package ru.maxpek.friendslinkup.fragment.wall.users
 
-class UserJobFragment {
+import androidx.fragment.app.Fragment
+
+class UserJobFragment: Fragment() {
 }

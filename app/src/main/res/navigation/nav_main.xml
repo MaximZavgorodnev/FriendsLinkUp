@@ -24,6 +24,9 @@
         <action
             android:id="@+id/action_feedFragment_to_listOfMentions"
             app:destination="@id/listOfMentions" />
+        <action
+            android:id="@+id/action_feedFragment_to_myWall2"
+            app:destination="@id/myWall2" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -112,4 +115,8 @@
         android:id="@+id/listOfMentions"
         android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfMentions"
         android:label="ListOfMentions" />
+    <fragment
+        android:id="@+id/myWall2"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyWall"
+        android:label="MyWall" />
 </navigation>
