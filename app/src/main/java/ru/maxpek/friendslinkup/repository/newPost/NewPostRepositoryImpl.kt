@@ -69,8 +69,6 @@ class NewPostRepositoryImpl @Inject constructor(
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
                 dao.insert(PostEntity.fromDto(body))
             }
-
-
         } catch (e: IOException) {
             throw NetworkError
         }
