@@ -20,32 +20,39 @@ class MyWall: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
         val binding = FragmentUserBinding.inflate(inflater, container, false)
 
-        val postFragment = MyPostFragment()
-        val eventFragment = MyEventFragment()
-        val jobFragment = MyJobFragment()
+//        val postFragment = MyPostFragment()
+//        val eventFragment = MyEventFragment()
+//        val jobFragment = MyJobFragment()
+        binding.appBarLayout
 
-        binding.bottomNavigation.setOnItemSelectedListener {
-            when(it.itemId){
-                R.id.posts -> {
-                    binding.
-                    binding.frame.setThatFragment(postFragment)
-                }
-                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-//                    findNavController().navigate(R.id.action_myJobFragment_to_myPostFragment22)
-                }
-                R.id.events -> {
-                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-//                    findNavController().navigate(R.id.action_myPostFragment2_to_myEventFragment)
-                }
-                R.id.jobs -> {
-                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-//                    findNavController().navigate(R.id.action_myPostFragment2_to_myJobFragment2)
-                }
-            }
-            true
-        }
+//        binding.bottomNavigation.setOnItemSelectedListener {
+//            when(it.itemId) {
+//                R.id.posts -> {
+////                    binding.frame.setThatFragment(postFragment)
+//
+////                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+//                    findNavController().navigate(R.id.action_myWall2_to_myPostFragment)
+//                    true
+//                }
+//                R.id.events -> {
+////                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+//                    findNavController().navigate(R.id.action_myWall2_to_myEventFragment2)
+//                    true
+//                }
+//                R.id.jobs -> {
+////                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+////                    findNavController().navigate(R.id.action_myPostFragment2_to_myJobFragment2)
+//                    true
+//                }
+//                else -> false
+//            }
+//
+//        }
+
+
 
 
 

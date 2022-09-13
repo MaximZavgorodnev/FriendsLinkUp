@@ -25,8 +25,8 @@
             android:id="@+id/action_feedFragment_to_listOfMentions"
             app:destination="@id/listOfMentions" />
         <action
-            android:id="@+id/action_feedFragment_to_myWall2"
-            app:destination="@id/myWall2" />
+            android:id="@+id/action_feedFragment_to_myPostFragment"
+            app:destination="@id/myPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -116,7 +116,21 @@
         android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfMentions"
         android:label="ListOfMentions" />
     <fragment
-        android:id="@+id/myWall2"
-        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyWall"
-        android:label="MyWall" />
+        android:id="@+id/myPostFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment"
+        android:label="fragment_my_wall_post"
+        tools:layout="@layout/fragment_my_wall_post" >
+        <action
+            android:id="@+id/action_myPostFragment_to_myEventFragment2"
+            app:destination="@id/myEventFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/myEventFragment2"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyEventFragment"
+        android:label="fragment_my_wall_event"
+        tools:layout="@layout/fragment_my_wall_event" >
+        <action
+            android:id="@+id/action_myEventFragment2_to_myPostFragment"
+            app:destination="@id/myPostFragment" />
+    </fragment>
 </navigation>

@@ -127,7 +127,7 @@ class PostViewHolder(
             }
 
             author.setOnClickListener {
-                it.findNavController().navigate(R.id.action_feedFragment_to_myWall2)
+                it.findNavController().navigate(R.id.action_feedFragment_to_myPostFragment)
             }
 
         }

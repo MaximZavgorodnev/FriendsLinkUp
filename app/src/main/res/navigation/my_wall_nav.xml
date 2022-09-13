@@ -8,14 +8,7 @@
         android:id="@+id/myPostFragment2"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment"
         android:label="fragment_my_wall_post"
-        tools:layout="@layout/fragment_my_wall_post" >
-        <action
-            android:id="@+id/action_myPostFragment2_to_myEventFragment"
-            app:destination="@id/myEventFragment" />
-        <action
-            android:id="@+id/action_myPostFragment2_to_myJobFragment2"
-            app:destination="@id/myJobFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_my_wall_post" />
     <fragment
         android:id="@+id/myEventFragment"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyEventFragment"
@@ -25,9 +18,20 @@
         android:id="@+id/myJobFragment"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
         android:label="fragment_my_wall_job"
-        tools:layout="@layout/fragment_my_wall_job" >
+        tools:layout="@layout/fragment_my_wall_job" />
+    <fragment
+        android:id="@+id/myWall"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyWall"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" >
         <action
-            android:id="@+id/action_myJobFragment_to_myPostFragment22"
+            android:id="@+id/action_myWall_to_myEventFragment"
+            app:destination="@id/myEventFragment" />
+        <action
+            android:id="@+id/action_myWall_to_myPostFragment2"
             app:destination="@id/myPostFragment2" />
+        <action
+            android:id="@+id/action_myWall_to_myJobFragment"
+            app:destination="@id/myJobFragment" />
     </fragment>
 </navigation>

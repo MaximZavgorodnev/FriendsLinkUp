@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AppActivity">
+    tools:context=".fragment.wall.myWall.MyWall">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -17,7 +17,6 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/appBarLayout2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp">
@@ -67,37 +66,22 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="80dp">
 
         <fragment
             android:id="@+id/frame"
+            android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:defaultNavHost="true"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="80dp"
-            app:layout_constraintVertical_bias="0.1"
-            tools:/>
+            app:navGraph="@navigation/my_wall_nav" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <fragment-->
-<!--        android:id="@+id/frame"-->
-<!--        android:name="androidx.navigation.fragment.NavHostFragment"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        app:defaultNavHost="true"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.0"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toTopOf="parent"-->
-<!--        android:layout_marginTop="80dp"-->
-<!--        app:layout_constraintVertical_bias="0.1"-->
-<!--        app:navGraph="@navigation/my_wall_nav" />-->
 
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
