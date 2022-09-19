@@ -1,12 +1,9 @@
 package ru.maxpek.friendslinkup
 
-import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View.inflate
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -19,6 +16,7 @@ import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +28,7 @@ import ru.maxpek.friendslinkup.databinding.ActivityAppBinding.inflate
 import ru.maxpek.friendslinkup.fragment.EventFragment
 import ru.maxpek.friendslinkup.fragment.FeedFragment
 import ru.maxpek.friendslinkup.fragment.JobFragment
+import ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import javax.inject.Inject
 
@@ -52,7 +51,7 @@ class AppActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(MAPKIT_API_KEY)
-        binding = ActivityAppBinding.inflate(layoutInflater)
+        binding = inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -60,6 +59,7 @@ class AppActivity : AppCompatActivity() {
         val feedFragment = FeedFragment()
         val eventFragment = EventFragment()
         val jobFragment = JobFragment()
+        val myWallFragment = MyPostFragment(appAuth.authStateFlow.value.id.toInt())
 
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_24)
 
@@ -98,6 +98,11 @@ class AppActivity : AppCompatActivity() {
                     .circleCrop()
                     .into(binding.navigationView.getHeaderView(0).findViewById(R.id.avatarDr))
             }
+        }
+
+        binding.navigationView.getHeaderView(0).setOnClickListener {
+            setThatFragment(myWallFragment)
+            binding.drawer.closeDrawer(GravityCompat.START)
         }
 
         checkGoogleApiAvailability()

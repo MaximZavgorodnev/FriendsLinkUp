@@ -35,12 +35,12 @@ class MyEventFragment: Fragment() {
                             true
                         }
                         R.id.events -> {
-//                            findNavController().navigate(R.id.action_myPostFragment_to_myEventFragment2)
+                            Snackbar.make(binding.root, R.string.you_are_where, Snackbar.LENGTH_SHORT).show()
                             true
                         }
 
                         R.id.jobs -> {
-//                            findNavController().navigate(R.id.action_myEventFragment2_to_myPostFragment)
+                            findNavController().navigate(R.id.action_myEventFragment2_to_myJobFragment2)
                             true
                         }
 
@@ -48,6 +48,10 @@ class MyEventFragment: Fragment() {
                     }
                 }
             }.show()
+        }
+
+        binding.home.setOnClickListener {
+            findNavController().navigate(R.id.action_myEventFragment2_to_feedFragment)
         }
 
         return binding.root

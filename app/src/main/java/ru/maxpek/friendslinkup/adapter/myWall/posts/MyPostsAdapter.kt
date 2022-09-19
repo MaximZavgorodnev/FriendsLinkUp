@@ -1,4 +1,4 @@
-package ru.maxpek.friendslinkup.adapter.posts
+package ru.maxpek.friendslinkup.adapter.myWall.posts
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,15 +11,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import ru.maxpek.friendslinkup.R
-import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
-import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
 import ru.maxpek.friendslinkup.databinding.CardPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
-import ru.maxpek.friendslinkup.enumeration.AttachmentType.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 
-interface OnInteractionListener {
+interface MyWallOnInteractionListener {
     fun onLike(post: PostResponse) {}
     fun onEdit(post: PostResponse) {}
     fun onRemove(post: PostResponse) {}
@@ -28,23 +25,24 @@ interface OnInteractionListener {
     fun goToPageUser(){}
 }
 
-class PostsAdapter(
-    private val onInteractionListener: OnInteractionListener,
-) : PagingDataAdapter<PostResponse, PostViewHolder>(PostDiffCallback()) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
+class MyPostsAdapter (
+    private val onInteractionListener: MyWallOnInteractionListener,
+) : PagingDataAdapter<PostResponse, MyWallPostViewHolder>(MyWallPostDiffCallback()) {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyWallPostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onInteractionListener)
+        return MyWallPostViewHolder(binding, onInteractionListener)
     }
 
-    override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MyWallPostViewHolder, position: Int) {
         val post = getItem(position) ?: return
         holder.bind(post)
     }
 }
 
-class PostViewHolder(
+
+class MyWallPostViewHolder(
     private val binding: CardPostBinding,
-    private val onInteractionListener: OnInteractionListener,
+    private val onInteractionListener: MyWallOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(post: PostResponse) {
@@ -53,7 +51,7 @@ class PostViewHolder(
             video.visibility = View.GONE
             backgroundVideo.visibility = View.GONE
 
-                Glide.with(itemView)
+            Glide.with(itemView)
                 .load(post.authorAvatar)
                 .error(R.drawable.ic_avatar_loading_error_48)
                 .placeholder(R.drawable.ic_baseline_cruelty_free_48)
@@ -64,14 +62,14 @@ class PostViewHolder(
 
             if (post.attachment?.url != "") {
                 when (post.attachment?.type) {
-                    IMAGE -> {
+                    AttachmentType.IMAGE -> {
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    VIDEO ->{
+                    AttachmentType.VIDEO ->{
                         video.visibility = View.VISIBLE
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    AUDIO ->{}
+                    AttachmentType.AUDIO ->{}
                     null -> {
                         video.visibility = View.GONE
                         backgroundVideo.visibility = View.GONE
@@ -119,7 +117,8 @@ class PostViewHolder(
             }
 
             backgroundVideo.setOnClickListener{
-                it.findNavController().navigate(R.id.action_feedFragment_to_displayingImagesFragment2,
+                it.findNavController().navigate(
+                    R.id.action_feedFragment_to_displayingImagesFragment2,
                     Bundle().apply { textArg = post.attachment?.url ?: " "})
             }
             mentions.setOnClickListener {
@@ -134,7 +133,7 @@ class PostViewHolder(
     }
 }
 
-class PostDiffCallback : DiffUtil.ItemCallback<PostResponse>() {
+class MyWallPostDiffCallback : DiffUtil.ItemCallback<PostResponse>() {
     override fun areItemsTheSame(oldItem: PostResponse, newItem: PostResponse): Boolean {
         return oldItem.id == newItem.id
     }

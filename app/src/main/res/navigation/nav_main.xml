@@ -24,9 +24,6 @@
         <action
             android:id="@+id/action_feedFragment_to_listOfMentions"
             app:destination="@id/listOfMentions" />
-        <action
-            android:id="@+id/action_feedFragment_to_myPostFragment"
-            app:destination="@id/myPostFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -123,6 +120,12 @@
         <action
             android:id="@+id/action_myPostFragment_to_myEventFragment2"
             app:destination="@id/myEventFragment2" />
+        <action
+            android:id="@+id/action_myPostFragment_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_myPostFragment_to_myJobFragment2"
+            app:destination="@id/myJobFragment2" />
     </fragment>
     <fragment
         android:id="@+id/myEventFragment2"
@@ -132,5 +135,26 @@
         <action
             android:id="@+id/action_myEventFragment2_to_myPostFragment"
             app:destination="@id/myPostFragment" />
+        <action
+            android:id="@+id/action_myEventFragment2_to_feedFragment"
+            app:destination="@id/feedFragment" />
+        <action
+            android:id="@+id/action_myEventFragment2_to_myJobFragment2"
+            app:destination="@id/myJobFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/myJobFragment2"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
+        android:label="fragment_my_wall_job"
+        tools:layout="@layout/fragment_my_wall_job" >
+        <action
+            android:id="@+id/action_myJobFragment2_to_myPostFragment"
+            app:destination="@id/myPostFragment" />
+        <action
+            android:id="@+id/action_myJobFragment2_to_myEventFragment2"
+            app:destination="@id/myEventFragment2" />
+        <action
+            android:id="@+id/action_myJobFragment2_to_feedFragment"
+            app:destination="@id/feedFragment" />
     </fragment>
 </navigation>

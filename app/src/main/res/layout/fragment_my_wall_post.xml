@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/nameUser"
-                android:layout_width="277dp"
+                android:layout_width="226dp"
                 android:layout_height="29dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
@@ -57,8 +57,22 @@
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/toolbar"
                 app:layout_constraintStart_toEndOf="@id/avatar"
+                app:layout_constraintEnd_toStartOf="@id/home"
                 app:layout_constraintTop_toTopOf="parent"
                 android:text="@string/name_author"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/common_spacing"
+                android:contentDescription="@string/description_post_menu"
+                app:icon="@drawable/ic_arrow_circle_left_24"
+                app:layout_constraintEnd_toStartOf="@id/menu"
+                app:layout_constraintStart_toEndOf="@id/nameUser"
+                app:layout_constraintTop_toTopOf="parent"
+                style="@style/Widget.AppTheme.IconButton"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/menu"

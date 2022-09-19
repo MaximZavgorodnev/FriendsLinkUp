@@ -79,4 +79,5 @@
     <string name="which_mention">Which of the users should I mention?</string>
     <string name="list_of_mentioned">List of mentioned users</string>
     <string name="mention_anyone">The user didn t mention anyone</string>
+    <string name="you_are_where">You are where you need to be</string>
 </resources>

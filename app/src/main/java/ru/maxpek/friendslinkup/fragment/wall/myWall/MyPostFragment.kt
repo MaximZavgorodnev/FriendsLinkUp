@@ -15,7 +15,7 @@ import ru.maxpek.friendslinkup.databinding.FragmentMyWallPostBinding
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MyPostFragment: Fragment() {
+class MyPostFragment(id: Int): Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,11 +25,12 @@ class MyPostFragment: Fragment() {
 
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
+
                 inflate(R.menu.menu_navigation)
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.posts -> {
-//                            findNavController().navigate(R.id.action_myEventFragment2_to_myPostFragment)
+                            Snackbar.make(binding.root, R.string.you_are_where, Snackbar.LENGTH_SHORT).show()
                             true
                         }
                         R.id.events -> {
@@ -38,7 +39,7 @@ class MyPostFragment: Fragment() {
                         }
 
                         R.id.jobs -> {
-//                            findNavController().navigate(R.id.action_myEventFragment2_to_myPostFragment)
+                            findNavController().navigate(R.id.action_myPostFragment_to_myJobFragment2)
                             true
                         }
 
@@ -46,6 +47,10 @@ class MyPostFragment: Fragment() {
                     }
                 }
             }.show()
+        }
+
+        binding.home.setOnClickListener {
+            findNavController().navigate(R.id.action_myPostFragment_to_feedFragment)
         }
 
 

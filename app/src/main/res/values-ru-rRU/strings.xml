@@ -70,4 +70,5 @@
     <string name="which_mention">Кого из пользователей упомянуть?</string>
     <string name="list_of_mentioned">Список упомянутых пользователей</string>
     <string name="mention_anyone">"Пользователь никого не упомянул "</string>
+    <string name="you_are_where">Вы там где нужно</string>
 </resources>
