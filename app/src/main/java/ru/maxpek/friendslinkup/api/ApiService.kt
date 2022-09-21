@@ -115,6 +115,24 @@ interface ApiService {
     suspend fun getAll(): Response<List<PostResponse>>
 
 
+    //Переход на мою страницу и загрузку постов
+    @GET("my/wall/latest/")
+    suspend fun getPostMyWallLatest(@Query("count") count: Int): Response<List<PostResponse>>
+
+    @GET("my/wall/{id}/before")
+    suspend fun getPostMyWallBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<PostResponse>>
+
+    @GET("my/wall/{id}/after")
+    suspend fun getPostMyWallAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<PostResponse>>
+
+
+
 
 
 }

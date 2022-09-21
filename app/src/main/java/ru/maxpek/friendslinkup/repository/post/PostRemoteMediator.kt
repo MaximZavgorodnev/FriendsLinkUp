@@ -148,6 +148,7 @@ class PostRemoteMediator @Inject constructor(
                 }
                 postDao.insert(body.toEntity())
             }
+
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
         }
         catch (e: Exception){
