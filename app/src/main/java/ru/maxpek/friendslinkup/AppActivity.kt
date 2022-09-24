@@ -1,5 +1,6 @@
 package ru.maxpek.friendslinkup
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -10,6 +11,7 @@ import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
@@ -47,6 +49,7 @@ class AppActivity : AppCompatActivity() {
     }
     lateinit var binding: ActivityAppBinding
 
+    @SuppressLint("ResourceType")
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,7 +62,7 @@ class AppActivity : AppCompatActivity() {
         val feedFragment = FeedFragment()
         val eventFragment = EventFragment()
         val jobFragment = JobFragment()
-        val myWallFragment = MyPostFragment(appAuth.authStateFlow.value.id.toInt())
+        val myWallFragment = MyPostFragment()
 
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_24)
 
@@ -101,6 +104,8 @@ class AppActivity : AppCompatActivity() {
         }
 
         binding.navigationView.getHeaderView(0).setOnClickListener {
+
+//            NavController(this).navigate(R.id.action_feedFragment_to_myPostFragment)
             setThatFragment(myWallFragment)
             binding.drawer.closeDrawer(GravityCompat.START)
         }
@@ -166,7 +171,7 @@ class AppActivity : AppCompatActivity() {
             println(it)
         }
     }
-    private fun setThatFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
+    fun setThatFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
         replace(R.id.frame, fragment)
         commit()
     }

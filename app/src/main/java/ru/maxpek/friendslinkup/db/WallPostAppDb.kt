@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ru.maxpek.friendslinkup.dao.*
+import ru.maxpek.friendslinkup.dao.myWall.MyWallPostDao
+import ru.maxpek.friendslinkup.dao.myWall.MyWallRemoteKeyDao
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
 
@@ -12,6 +14,6 @@ import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
     Converters::class, CoordinatesConverter::class,
     ConvertersListIds::class)
 abstract class WallPostAppDb : RoomDatabase() {
-    abstract fun postDao(): PostDao
-    abstract fun postRemoteKeyDao(): PostRemoteKeyDao
+    abstract fun myWallPostDao(): MyWallPostDao
+    abstract fun myWallPostRemoteKeyDao(): MyWallRemoteKeyDao
 }

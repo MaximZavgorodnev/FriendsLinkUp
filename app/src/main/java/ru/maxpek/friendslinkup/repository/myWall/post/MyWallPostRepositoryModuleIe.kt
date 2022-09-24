@@ -12,5 +12,5 @@ import javax.inject.Singleton
 interface MyWallPostRepositoryModuleIe {
     @Binds
     @Singleton
-    fun bindMyWallPostRepository(impl: MyWallPostRepositoryImpl): PostRepository
+    fun bindMyWallPostRepository(impl: MyWallPostRepositoryImpl): MyWallPostRepository
 }

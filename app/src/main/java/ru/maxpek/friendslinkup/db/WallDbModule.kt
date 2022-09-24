@@ -7,8 +7,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.maxpek.friendslinkup.dao.PostDao
-import ru.maxpek.friendslinkup.dao.PostRemoteKeyDao
+import ru.maxpek.friendslinkup.dao.myWall.MyWallPostDao
+import ru.maxpek.friendslinkup.dao.myWall.MyWallRemoteKeyDao
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -23,8 +23,8 @@ class WallDbModule {
         .build()
 
     @Provides
-    fun provideWallPostAppDb(appDb: WallPostAppDb): PostDao = appDb.postDao()
+    fun provideWallPostAppDb(appDb: WallPostAppDb): MyWallPostDao = appDb.myWallPostDao()
 
     @Provides
-    fun providePostRemoteKeyDao(appDb: WallPostAppDb): PostRemoteKeyDao = appDb.postRemoteKeyDao()
+    fun provideWallPostRemoteKeyDao(appDb: WallPostAppDb): MyWallRemoteKeyDao = appDb.myWallPostRemoteKeyDao()
 }

@@ -8,6 +8,8 @@ import androidx.room.withTransaction
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.PostDao
 import ru.maxpek.friendslinkup.dao.PostRemoteKeyDao
+import ru.maxpek.friendslinkup.dao.myWall.MyWallPostDao
+import ru.maxpek.friendslinkup.dao.myWall.MyWallRemoteKeyDao
 import ru.maxpek.friendslinkup.db.WallPostAppDb
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
@@ -18,8 +20,8 @@ import javax.inject.Inject
 @OptIn(ExperimentalPagingApi::class)
 class MyWallPostRemoteMediator @Inject constructor(
     private val apiService: ApiService,
-    private val postDao: PostDao,
-    private val postRemoteKeyDao: PostRemoteKeyDao,
+    private val postDao: MyWallPostDao,
+    private val postRemoteKeyDao: MyWallRemoteKeyDao,
     private val db: WallPostAppDb
 ) : RemoteMediator<Int, PostEntity>() {
     override suspend fun load(loadType: LoadType, state: PagingState<Int, PostEntity>): MediatorResult {

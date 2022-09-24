@@ -17,13 +17,14 @@ import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.model.FeedModelState
+import ru.maxpek.friendslinkup.repository.myWall.post.MyWallPostRepository
 import ru.maxpek.friendslinkup.repository.post.PostRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class MyWallPostViewModel @Inject constructor(
-    private val repositoryPost: PostRepository,
+    private val repositoryPost: MyWallPostRepository,
     appAuth: AppAuth
 ): ViewModel() {
     var lastAction: ActionType? = null
@@ -32,7 +33,9 @@ class MyWallPostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
+
+
+//    val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
     val data: Flow<PagingData<PostResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
@@ -86,6 +89,16 @@ class MyWallPostViewModel @Inject constructor(
                 repositoryPost.disLikeById(id)
 
 
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
+    fun removeAll(){
+        viewModelScope.launch {
+            try {
+                repositoryPost.removeAll()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
