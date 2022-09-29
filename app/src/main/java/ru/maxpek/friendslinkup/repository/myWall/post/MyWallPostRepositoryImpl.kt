@@ -99,4 +99,8 @@ class MyWallPostRepositoryImpl@Inject constructor(
     override suspend fun removeAll() {
         dao.removeAll()
     }
+
+    override suspend fun getUser(id: Int) {
+        TODO("Not yet implemented")
+    }
 }

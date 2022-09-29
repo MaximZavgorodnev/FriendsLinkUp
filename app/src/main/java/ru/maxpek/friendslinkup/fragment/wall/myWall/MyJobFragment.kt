@@ -29,11 +29,11 @@ class MyJobFragment: Fragment() {
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.posts -> {
-                            findNavController().navigate(R.id.action_myJobFragment2_to_myPostFragment)
+                            findNavController().navigate(R.id.myPostFragment)
                             true
                         }
                         R.id.events -> {
-                            findNavController().navigate(R.id.action_myJobFragment2_to_myEventFragment2)
+                            findNavController().navigate(R.id.myEventFragment2)
                             true
                         }
 
@@ -49,7 +49,7 @@ class MyJobFragment: Fragment() {
         }
 
         binding.home.setOnClickListener {
-            findNavController().navigate(R.id.action_myJobFragment2_to_feedFragment)
+            findNavController().navigate(R.id.feedFragment)
         }
 
         return binding.root

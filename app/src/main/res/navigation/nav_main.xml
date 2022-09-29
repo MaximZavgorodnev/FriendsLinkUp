@@ -116,45 +116,15 @@
         android:id="@+id/myPostFragment"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment"
         android:label="fragment_my_wall_post"
-        tools:layout="@layout/fragment_my_wall_post" >
-        <action
-            android:id="@+id/action_myPostFragment_to_myEventFragment2"
-            app:destination="@id/myEventFragment2" />
-        <action
-            android:id="@+id/action_myPostFragment_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
-            android:id="@+id/action_myPostFragment_to_myJobFragment2"
-            app:destination="@id/myJobFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_my_wall_post" />
     <fragment
         android:id="@+id/myEventFragment2"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyEventFragment"
         android:label="fragment_my_wall_event"
-        tools:layout="@layout/fragment_my_wall_event" >
-        <action
-            android:id="@+id/action_myEventFragment2_to_myPostFragment"
-            app:destination="@id/myPostFragment" />
-        <action
-            android:id="@+id/action_myEventFragment2_to_feedFragment"
-            app:destination="@id/feedFragment" />
-        <action
-            android:id="@+id/action_myEventFragment2_to_myJobFragment2"
-            app:destination="@id/myJobFragment2" />
-    </fragment>
+        tools:layout="@layout/fragment_my_wall_event" />
     <fragment
         android:id="@+id/myJobFragment2"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
         android:label="fragment_my_wall_job"
-        tools:layout="@layout/fragment_my_wall_job" >
-        <action
-            android:id="@+id/action_myJobFragment2_to_myPostFragment"
-            app:destination="@id/myPostFragment" />
-        <action
-            android:id="@+id/action_myJobFragment2_to_myEventFragment2"
-            app:destination="@id/myEventFragment2" />
-        <action
-            android:id="@+id/action_myJobFragment2_to_feedFragment"
-            app:destination="@id/feedFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_my_wall_job" />
 </navigation>

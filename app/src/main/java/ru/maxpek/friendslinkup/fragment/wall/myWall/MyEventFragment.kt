@@ -7,19 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.paging.LoadState
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.R
-import ru.maxpek.friendslinkup.adapter.myWall.posts.MyPostsAdapter
-import ru.maxpek.friendslinkup.adapter.myWall.posts.MyWallOnInteractionListener
-import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentMyWallEventBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
@@ -45,7 +38,7 @@ class MyEventFragment: Fragment() {
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {
                         R.id.posts -> {
-                            findNavController().navigate(R.id.action_myEventFragment2_to_myPostFragment)
+                            findNavController().navigate(R.id.myPostFragment)
                             true
                         }
                         R.id.events -> {
@@ -54,7 +47,7 @@ class MyEventFragment: Fragment() {
                         }
 
                         R.id.jobs -> {
-                            findNavController().navigate(R.id.action_myEventFragment2_to_myJobFragment2)
+                            findNavController().navigate(R.id.myJobFragment2)
                             true
                         }
 
@@ -65,7 +58,7 @@ class MyEventFragment: Fragment() {
         }
 
         binding.home.setOnClickListener {
-            findNavController().navigate(R.id.action_myEventFragment2_to_feedFragment)
+            findNavController().navigate(R.id.feedFragment)
         }
 
         return binding.root

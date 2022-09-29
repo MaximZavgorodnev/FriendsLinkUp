@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
+import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.myWall.post.MyWallPostRepository
 import ru.maxpek.friendslinkup.repository.post.PostRepository
@@ -27,6 +28,7 @@ class MyWallPostViewModel @Inject constructor(
     private val repositoryPost: MyWallPostRepository,
     appAuth: AppAuth
 ): ViewModel() {
+//    val user: UserResponse = appAuth.
     var lastAction: ActionType? = null
     var lastId = 0
     private val _dataState = MutableLiveData<FeedModelState>()

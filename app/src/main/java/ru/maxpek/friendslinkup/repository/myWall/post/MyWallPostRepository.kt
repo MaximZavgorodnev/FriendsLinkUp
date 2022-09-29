@@ -15,4 +15,5 @@ interface MyWallPostRepository {
     suspend fun likeById(id: Int)
     suspend fun disLikeById(id: Int)
     suspend fun removeAll()
+    suspend fun getUser(id:Int)
 }

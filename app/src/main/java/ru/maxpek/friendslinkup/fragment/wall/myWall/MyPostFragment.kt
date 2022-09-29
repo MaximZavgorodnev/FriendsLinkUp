@@ -120,12 +120,12 @@ class MyPostFragment: Fragment() {
                             true
                         }
                         R.id.events -> {
-                            findNavController().navigate(R.id.action_myPostFragment_to_myEventFragment2)
+                            findNavController().navigate(R.id.myEventFragment2)
                             true
                         }
 
                         R.id.jobs -> {
-                            findNavController().navigate(R.id.action_myPostFragment_to_myJobFragment2)
+                            findNavController().navigate(R.id.myJobFragment2)
                             true
                         }
 
@@ -137,11 +137,7 @@ class MyPostFragment: Fragment() {
 
         binding.home.setOnClickListener {
             viewModel.removeAll()
-            findNavController().setGraph(R.id.myPostFragment)
-//            if (findNavController().currentDestination?.id == R.id.feedFragment) {
-//                findNavController().navigate(R.id.action_myPostFragment_to_feedFragment)
-//            }
-            findNavController().navigate(R.id.action_myPostFragment_to_feedFragment)
+            findNavController().navigate(R.id.feedFragment)
         }
 
         return binding.root

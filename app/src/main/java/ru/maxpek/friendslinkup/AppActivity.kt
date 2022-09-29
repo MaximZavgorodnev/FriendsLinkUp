@@ -11,8 +11,10 @@ import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavAction
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.canhub.cropper.CropImageContract
 import com.canhub.cropper.CropImageView
@@ -71,13 +73,13 @@ class AppActivity : AppCompatActivity() {
 
             when(menuItem.itemId){
                 R.id.posts ->{
-                    setThatFragment(feedFragment)
+                    findNavController(R.id.frame).navigate(R.id.feedFragment)
                 }
                 R.id.jobs ->{
-                    setThatFragment(jobFragment)
+                    findNavController(R.id.frame).navigate(R.id.jobFragment)
                 }
                 R.id.events ->{
-                    setThatFragment(eventFragment)
+                    findNavController(R.id.frame).navigate(R.id.eventFragment)
                 }
             }
             binding.drawer.closeDrawer(GravityCompat.START)
@@ -104,9 +106,7 @@ class AppActivity : AppCompatActivity() {
         }
 
         binding.navigationView.getHeaderView(0).setOnClickListener {
-
-//            NavController(this).navigate(R.id.action_feedFragment_to_myPostFragment)
-            setThatFragment(myWallFragment)
+            findNavController(R.id.frame).navigate(R.id.myPostFragment)
             binding.drawer.closeDrawer(GravityCompat.START)
         }
 
