@@ -12,6 +12,7 @@ import ru.maxpek.friendslinkup.dto.UserRequested
 
 
 interface ApiService {
+    var idUser: Int
 //    @POST("users/push-tokens")
 //    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
@@ -129,6 +130,27 @@ interface ApiService {
     suspend fun getPostMyWallAfter(
         @Path("id") id: Long,
         @Query("count") count: Int
+    ): Response<List<PostResponse>>
+
+    //Переход на страницу пользователя
+    @GET("{author_id}/wall/latest/")
+    suspend fun getPostUserWallLatest(
+        @Query("count") count: Int,
+        @Path("author_id") author_id: String = idUser.toString()
+    ): Response<List<PostResponse>>
+
+    @GET("my/wall/{id}/before")
+    suspend fun getPostUserWallBefore(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+        @Path("author_id") author_id: String = idUser.toString()
+    ): Response<List<PostResponse>>
+
+    @GET("my/wall/{id}/after")
+    suspend fun getPostUserWallAfter(
+        @Path("id") id: Long,
+        @Query("count") count: Int,
+        @Path("author_id") author_id: String = idUser.toString()
     ): Response<List<PostResponse>>
 
 

@@ -29,6 +29,7 @@ class MyWallPostViewModel @Inject constructor(
     appAuth: AppAuth
 ): ViewModel() {
 //    val user: UserResponse = appAuth.
+    var user = UserRequested()
     var lastAction: ActionType? = null
     var lastId = 0
     private val _dataState = MutableLiveData<FeedModelState>()
@@ -41,13 +42,24 @@ class MyWallPostViewModel @Inject constructor(
     val data: Flow<PagingData<PostResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
-            val cached = repositoryPost.data.cachedIn(viewModelScope)
+            val cached = repositoryPost.dataMy.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
                     it.copy(ownerByMe = it.authorId.toLong() == myId )
                 }
             }
         }
+
+    fun getUser(id: Int): UserRequested {
+        viewModelScope.launch {
+            try {
+                user = repositoryPost.getUser(id)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+        return  user
+    }
 
     fun loadUsersMentions(mentionIds: List<Int>) {
         viewModelScope.launch {

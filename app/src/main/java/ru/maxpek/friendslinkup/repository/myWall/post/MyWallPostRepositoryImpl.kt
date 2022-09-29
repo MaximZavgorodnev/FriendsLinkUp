@@ -21,17 +21,30 @@ val emptyList = listOf<UserRequested>()
 class MyWallPostRepositoryImpl@Inject constructor(
     private val apiService: ApiService,
     private val mediator: MyWallPostRemoteMediator,
+    private val mediatorUser: UserWallPostRemoteMediator,
     private val dao: MyWallPostDao,
     private val daoPost: PostDao
 ): MyWallPostRepository {
+
+
     override val data: Flow<PagingData<PostResponse>> =
     Pager(
     config = PagingConfig(pageSize = 10, enablePlaceholders = false),
     pagingSourceFactory = {dao.getAll()},
-    remoteMediator = mediator
+    remoteMediator = mediatorUser
     ).flow.map{
         it.map(PostEntity::toDto)
     }
+
+    override val dataMy: Flow<PagingData<PostResponse>> =
+        Pager(
+            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
+            pagingSourceFactory = {dao.getAll()},
+            remoteMediator = mediator
+        ).flow.map{
+            it.map(PostEntity::toDto)
+        }
+
     override val dataUsersMentions: MutableLiveData<List<UserRequested>> = MutableLiveData(ru.maxpek.friendslinkup.repository.post.emptyList)
 
 
@@ -100,7 +113,8 @@ class MyWallPostRepositoryImpl@Inject constructor(
         dao.removeAll()
     }
 
-    override suspend fun getUser(id: Int) {
+    override suspend fun getUser(id: Int): UserRequested {
+        apiService.idUser = id
         TODO("Not yet implemented")
     }
 }

@@ -8,6 +8,7 @@ import ru.maxpek.friendslinkup.dto.UserRequested
 
 interface MyWallPostRepository {
     val data: Flow<PagingData<PostResponse>>
+    val dataMy: Flow<PagingData<PostResponse>>
     val dataUsersMentions: MutableLiveData<List<UserRequested>>
     suspend fun loadUsersMentions(list: List<Int>)
     fun getNewerCount(id: Int): Flow<Int>
@@ -15,5 +16,5 @@ interface MyWallPostRepository {
     suspend fun likeById(id: Int)
     suspend fun disLikeById(id: Int)
     suspend fun removeAll()
-    suspend fun getUser(id:Int)
+    suspend fun getUser(id:Int): UserRequested
 }
