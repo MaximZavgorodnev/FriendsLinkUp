@@ -9,7 +9,6 @@ import ru.maxpek.friendslinkup.dto.*
 
 
 interface ApiService {
-    var idUser: Int
 //    @POST("users/push-tokens")
 //    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
@@ -130,7 +129,7 @@ interface ApiService {
     ): Response<List<PostResponse>>
 
     //Переход на страницу пользователя
-    @GET("api/{user_id}/jobs")
+    @GET("{user_id}/jobs")
     suspend fun getUserJob (
         @Path("user_id") id: String
     ): Response<List<JobResponse>>

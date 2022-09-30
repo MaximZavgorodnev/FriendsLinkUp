@@ -52,19 +52,12 @@ class AppActivity : AppCompatActivity() {
     lateinit var binding: ActivityAppBinding
 
     @SuppressLint("ResourceType")
-    @OptIn(ExperimentalCoroutinesApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         MapKitFactory.setApiKey(MAPKIT_API_KEY)
         binding = inflate(layoutInflater)
         setContentView(binding.root)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-
-        val feedFragment = FeedFragment()
-        val eventFragment = EventFragment()
-        val jobFragment = JobFragment()
-        val myWallFragment = MyPostFragment()
 
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu_24)
 

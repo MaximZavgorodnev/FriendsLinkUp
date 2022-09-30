@@ -127,4 +127,9 @@
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
         android:label="fragment_my_wall_job"
         tools:layout="@layout/fragment_my_wall_job" />
+    <fragment
+        android:id="@+id/userJobFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.wall.users.UserJobFragment"
+        android:label="fragment_user_wall_job"
+        tools:layout="@layout/fragment_user_wall_job" />
 </navigation>

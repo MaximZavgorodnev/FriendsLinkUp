@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -25,6 +26,7 @@ import ru.maxpek.friendslinkup.adapter.myWall.posts.MyWallOnInteractionListener
 import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentMyWallPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
+import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.MyWallPostViewModel
 
@@ -99,6 +101,17 @@ class MyPostFragment: Fragment() {
             }),
         )
 
+        authViewModel.data.observeForever {
+            binding.nameUser.text = it.nameUser
+            Glide.with(this@MyPostFragment)
+                .load(it.avatarUser)
+                .error(R.drawable.ic_avatar_loading_error_48)
+                .placeholder(R.drawable.ic_baseline_cruelty_free_48)
+                .timeout(10_000)
+                .circleCrop()
+                .into(binding.avatar)
+        }
+
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
         }
@@ -111,7 +124,6 @@ class MyPostFragment: Fragment() {
 
         binding.menu.setOnClickListener {
             PopupMenu(it.context, it).apply {
-
                 inflate(R.menu.menu_navigation)
                 setOnMenuItemClickListener { item ->
                     when (item.itemId) {

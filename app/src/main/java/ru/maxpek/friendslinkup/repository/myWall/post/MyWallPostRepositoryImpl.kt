@@ -103,7 +103,7 @@ class MyWallPostRepositoryImpl@Inject constructor(
     }
 
     override suspend fun getUser(id: Int): UserRequested {
-        apiService.idUser = id
+
         TODO("Not yet implemented")
     }
 }

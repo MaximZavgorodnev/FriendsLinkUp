@@ -48,7 +48,7 @@
 
             <TextView
                 android:id="@+id/nameUser"
-                android:layout_width="275dp"
+                android:layout_width="wrap_content"
                 android:layout_height="29dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
@@ -68,8 +68,8 @@
                 android:layout_marginBottom="@dimen/common_spacing"
                 android:contentDescription="@string/description_post_menu"
                 app:icon="@drawable/ic_arrow_circle_left_24"
-                app:layout_constraintEnd_toEndtOf="parent"
-                app:layout_constraintStart_toEndOf="@id/nameUser"
+
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 style="@style/Widget.AppTheme.IconButton"
                 />

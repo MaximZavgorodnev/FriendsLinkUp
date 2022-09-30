@@ -1,10 +1,13 @@
 package ru.maxpek.friendslinkup.adapter.posts
 
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -18,6 +21,9 @@ import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.AttachmentType.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.util.GoDataTime
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 interface OnInteractionListener {
     fun onLike(post: PostResponse) {}
@@ -25,7 +31,7 @@ interface OnInteractionListener {
     fun onRemove(post: PostResponse) {}
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
-    fun goToPageUser(){}
+    fun goToPageUser(post: PostResponse){}
 }
 
 class PostsAdapter(
@@ -47,6 +53,7 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @SuppressLint("NewApi")
     fun bind(post: PostResponse) {
         binding.apply {
             mentionedMe.visibility = View.GONE
@@ -79,9 +86,8 @@ class PostViewHolder(
                 }
                 Glide.with(itemView).load(post.attachment?.url).timeout(10_000).into(backgroundVideo)
             }
-
             author.text = post.author
-            published.text = post.published
+            published.text = GoDataTime.convertDataTime(post.published)
             content.text = post.content
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
@@ -127,7 +133,7 @@ class PostViewHolder(
             }
 
             author.setOnClickListener {
-
+                onInteractionListener.goToPageUser(post)
             }
 
         }

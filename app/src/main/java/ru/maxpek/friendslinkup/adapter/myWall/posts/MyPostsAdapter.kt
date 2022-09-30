@@ -1,10 +1,12 @@
 package ru.maxpek.friendslinkup.adapter.myWall.posts
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -15,6 +17,9 @@ import ru.maxpek.friendslinkup.databinding.CardPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.util.GoDataTime
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 interface MyWallOnInteractionListener {
     fun onLike(post: PostResponse) {}
@@ -22,7 +27,6 @@ interface MyWallOnInteractionListener {
     fun onRemove(post: PostResponse) {}
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
-    fun goToPageUser(){}
 }
 
 class MyPostsAdapter (
@@ -33,6 +37,7 @@ class MyPostsAdapter (
         return MyWallPostViewHolder(binding, onInteractionListener)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: MyWallPostViewHolder, position: Int) {
         val post = getItem(position) ?: return
         holder.bind(post)
@@ -45,6 +50,7 @@ class MyWallPostViewHolder(
     private val onInteractionListener: MyWallOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun bind(post: PostResponse) {
         binding.apply {
             mentionedMe.visibility = View.GONE
@@ -78,8 +84,9 @@ class MyWallPostViewHolder(
                 Glide.with(itemView).load(post.attachment?.url).timeout(10_000).into(backgroundVideo)
             }
 
+
             author.text = post.author
-            published.text = post.published
+            published.text = GoDataTime.convertDataTime(post.published)
             content.text = post.content
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
@@ -123,10 +130,6 @@ class MyWallPostViewHolder(
             }
             mentions.setOnClickListener {
                 onInteractionListener.loadingTheListOfMentioned(post)
-            }
-
-            author.setOnClickListener {
-
             }
 
         }

@@ -23,6 +23,7 @@ import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.adapter.posts.PostsAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
+import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
@@ -31,7 +32,6 @@ import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 @AndroidEntryPoint
 class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by activityViewModels()
-//    val newPostViewModel : NewPostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,6 +89,11 @@ class FeedFragment : Fragment() {
                 }
             }
 
+            override fun goToPageUser(post: PostResponse) {
+                val idAuthor = post.authorId.toString()
+                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+            }
+
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
@@ -127,9 +132,9 @@ class FeedFragment : Fragment() {
             findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
         }
 
-//        binding.swiperefresh.setOnRefreshListener {
-//            adapter.refresh()
-//        }
+        binding.swiperefresh.setOnRefreshListener {
+            adapter.refresh()
+        }
 
         return binding.root
     }
