@@ -42,7 +42,7 @@ class MyWallPostViewModel @Inject constructor(
     val data: Flow<PagingData<PostResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
-            val cached = repositoryPost.dataMy.cachedIn(viewModelScope)
+            val cached = repositoryPost.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
                     it.copy(ownerByMe = it.authorId.toLong() == myId )

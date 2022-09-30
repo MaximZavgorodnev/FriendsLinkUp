@@ -54,13 +54,14 @@
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.328804347826087" />
         <entry key="app/src/main/res/layout/fragment_my_wall_event.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_my_wall_job.xml" value="0.36041666666666666" />
-        <entry key="app/src/main/res/layout/fragment_my_wall_post.xml" value="0.36041666666666666" />
+        <entry key="app/src/main/res/layout/fragment_my_wall_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_new_event.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_new_job.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_new_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_new_post2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_user.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/fragment_user_wall_job.xml" value="0.2658514492753623" />
         <entry key="app/src/main/res/layout/fragment_work.xml" value="0.3229166666666667" />
         <entry key="app/src/main/res/layout/header_navigation_drawer.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/load_state.xml" value="0.30027173913043476" />

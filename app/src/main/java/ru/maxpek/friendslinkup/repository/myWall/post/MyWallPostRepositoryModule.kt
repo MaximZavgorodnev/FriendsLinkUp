@@ -9,7 +9,7 @@ import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
-interface MyWallPostRepositoryModuleIe {
+interface MyWallPostRepositoryModule {
     @Binds
     @Singleton
     fun bindMyWallPostRepository(impl: MyWallPostRepositoryImpl): MyWallPostRepository

@@ -1,4 +1,4 @@
-package ru.maxpek.friendslinkup.repository.myWall.post
+package ru.maxpek.friendslinkup.repository.userWall
 
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
@@ -6,23 +6,23 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.dao.myWall.MyWallPostDao
-import ru.maxpek.friendslinkup.dao.myWall.MyWallRemoteKeyDao
-import ru.maxpek.friendslinkup.db.WallPostAppDb
-import ru.maxpek.friendslinkup.entity.PostEntity
+import ru.maxpek.friendslinkup.dao.userWall.UserWallJobDao
+import ru.maxpek.friendslinkup.dao.userWall.UserWallRemoteKeyDao
+import ru.maxpek.friendslinkup.db.UserWallAppDb
+import ru.maxpek.friendslinkup.entity.JobEntity
 import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
 import ru.maxpek.friendslinkup.entity.toEntity
 import ru.maxpek.friendslinkup.error.ApiError
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
-class UserWallPostRemoteMediator@Inject constructor(
+class UserWallRemoteMediator @Inject constructor(
     private val apiService: ApiService,
-    private val postDao: MyWallPostDao,
-    private val postRemoteKeyDao: MyWallRemoteKeyDao,
-    private val db: WallPostAppDb
-)  : RemoteMediator<Int, PostEntity>() {
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, PostEntity>): MediatorResult {
+    private val postDao: UserWallJobDao,
+    private val postRemoteKeyDao: UserWallRemoteKeyDao,
+    private val db: UserWallAppDb
+): RemoteMediator<Int, JobEntity>() {
+    override suspend fun load(loadType: LoadType, state: PagingState<Int, JobEntity>): MediatorResult {
         try {
             val response = when (loadType) {
 
