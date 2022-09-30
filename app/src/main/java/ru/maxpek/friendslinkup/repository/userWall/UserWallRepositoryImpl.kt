@@ -1,29 +1,31 @@
 package ru.maxpek.friendslinkup.repository.userWall
 
-import androidx.paging.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import androidx.lifecycle.MutableLiveData
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.userWall.UserWallJobDao
 import ru.maxpek.friendslinkup.dto.JobResponse
-import ru.maxpek.friendslinkup.entity.JobEntity
+import ru.maxpek.friendslinkup.error.ApiError
+import ru.maxpek.friendslinkup.error.NetworkError
+import java.io.IOException
 import javax.inject.Inject
 
-@OptIn(ExperimentalPagingApi::class)
+val listJob = listOf<JobResponse>()
 class UserWallRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: UserWallJobDao
 ): UserWallRepository {
-    override val data: Flow<PagingData<JobResponse>> =
-        Pager(
-            config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = {dao.getAll()},
-            remoteMediator = mediator
-        ).flow.map{
-            it.map(JobEntity::toDto)
+    override val data: MutableLiveData<List<JobResponse>> = MutableLiveData(listJob)
+    override suspend fun getJobUser(id: String) {
+        val usersList: List<JobResponse>
+        try {
+            val response = apiService.getUserJob(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            usersList = response.body() ?: throw ApiError(response.code(), response.message())
+            data.postValue(usersList)
+        } catch (e: IOException) {
+            throw NetworkError
         }
-
-    override suspend fun removeAll() {
-        TODO("Not yet implemented")
     }
 }

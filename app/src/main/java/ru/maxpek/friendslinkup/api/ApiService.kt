@@ -5,10 +5,7 @@ import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 import ru.maxpek.friendslinkup.auth.AuthState
-import ru.maxpek.friendslinkup.dto.MediaResponse
-import ru.maxpek.friendslinkup.dto.PostCreateRequest
-import ru.maxpek.friendslinkup.dto.PostResponse
-import ru.maxpek.friendslinkup.dto.UserRequested
+import ru.maxpek.friendslinkup.dto.*
 
 
 interface ApiService {
@@ -133,27 +130,10 @@ interface ApiService {
     ): Response<List<PostResponse>>
 
     //Переход на страницу пользователя
-    @GET("{author_id}/wall/latest/")
-    suspend fun getPostUserWallLatest(
-        @Query("count") count: Int,
-        @Path("author_id") author_id: String = idUser.toString()
-    ): Response<List<PostResponse>>
-
-    @GET("my/wall/{id}/before")
-    suspend fun getPostUserWallBefore(
-        @Path("id") id: Long,
-        @Query("count") count: Int,
-        @Path("author_id") author_id: String = idUser.toString()
-    ): Response<List<PostResponse>>
-
-    @GET("my/wall/{id}/after")
-    suspend fun getPostUserWallAfter(
-        @Path("id") id: Long,
-        @Query("count") count: Int,
-        @Path("author_id") author_id: String = idUser.toString()
-    ): Response<List<PostResponse>>
-
-
+    @GET("api/{user_id}/jobs")
+    suspend fun getUserJob (
+        @Path("user_id") id: String
+    ): Response<List<JobResponse>>
 
 
 
