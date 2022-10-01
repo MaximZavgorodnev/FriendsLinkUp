@@ -19,6 +19,15 @@ val emptyList = listOf<UserRequested>()
 
 
 val attachment = Attachment("", AttachmentType.IMAGE)
+
+var editedPost = PostCreateRequest(
+    id = 0,
+    content = "",
+    coords = Coordinates("0", "0"),
+    link = null,
+    attachment = null,
+    mentionIds = listOf())
+
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: PostDao
@@ -28,6 +37,7 @@ class NewPostRepositoryImpl @Inject constructor(
 
     override val dataUsers: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
     override val dataAttachment: MutableLiveData<Attachment> = MutableLiveData(attachment)
+    override val dataPost: MutableLiveData<PostCreateRequest> = MutableLiveData(editedPost)
 
 
     override suspend fun loadUsers(){
@@ -65,9 +75,31 @@ class NewPostRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             } else {
-                println(response)
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
                 dao.insert(PostEntity.fromDto(body))
+            }
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+    }
+
+    override suspend fun getPost(id: Int) {
+        try {
+            val response = apiService.getPost(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            } else {
+                val body = response.body() ?: throw ApiError(response.code(), response.message())
+                editedPost = editedPost.copy(
+                    id = body.id,
+                    content = body.content,
+                    coords = body.coords,
+                    link = body.link,
+                    attachment = body.attachment,
+                    mentionIds = body.mentionIds
+                )
+                dataPost.postValue(editedPost)
+                if (body.attachment != null) { dataAttachment.postValue(body.attachment!!)}
             }
         } catch (e: IOException) {
             throw NetworkError

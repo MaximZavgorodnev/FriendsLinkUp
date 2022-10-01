@@ -20,22 +20,15 @@ import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
-val edited = PostCreateRequest(
-    id = 0,
-    content = "",
-    coords = Coordinates("0", "0"),
-    link = null,
-    attachment = null,
-    mentionIds = listOf())
+
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
     private val repositoryListOfUser : NewPostRepository): ViewModel() {
 
-    private val _newPost = MutableLiveData(edited)
-    val newPost: LiveData<PostCreateRequest>
-        get() = _newPost
+    val newPost: MutableLiveData<PostCreateRequest> = repositoryListOfUser.dataPost
+
 
     val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
     private val mentions = mutableListOf<UserRequested>()
@@ -77,8 +70,8 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addPost(content: String){
-        _newPost.value = _newPost.value?.copy(content = content)
-        val post = _newPost.value!!
+        newPost.value = newPost.value?.copy(content = content)
+        val post = newPost.value!!
         _postCreated.value = Unit
         viewModelScope.launch {
             try {
@@ -94,14 +87,14 @@ class NewPostViewModel @Inject constructor(
     fun addCoords(point: Point){
         val coordinates = Coordinates(((point.latitude * 1000000.0).roundToInt() /1000000.0).toString(),
             ((point.longitude * 1000000.0).roundToInt() /1000000.0).toString())
-        _newPost.value = _newPost.value?.copy(coords = coordinates)
+        newPost.value = newPost.value?.copy(coords = coordinates)
     }
 
     fun addLink(link: String){
         if (link != ""){
-            _newPost.value = _newPost.value?.copy(link = link)
+            newPost.value = newPost.value?.copy(link = link)
         } else {
-            _newPost.value = _newPost.value?.copy(link = null)
+            newPost.value = newPost.value?.copy(link = null)
         }
     }
 
@@ -117,7 +110,7 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addAttachment(){
-        _newPost.value = _newPost.value?.copy(attachment = dataAttachment.value)
+        newPost.value = newPost.value?.copy(attachment = dataAttachment.value)
     }
 
     fun addMentionIds(){
@@ -129,7 +122,18 @@ class NewPostViewModel @Inject constructor(
                 mentions.add(user)
             }
         }
-        _newPost.value = _newPost.value?.copy(mentionIds = listChecked)
+        newPost.value = newPost.value?.copy(mentionIds = listChecked)
+    }
+
+    fun getPost(id: Int){
+        viewModelScope.launch {
+            try {
+                repositoryListOfUser.getPost(id)
+                _dataState.value = FeedModelState(error = false)
+            } catch (e: RuntimeException) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
 
 }

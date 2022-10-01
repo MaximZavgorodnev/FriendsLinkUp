@@ -26,6 +26,8 @@ import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
 import ru.maxpek.friendslinkup.dto.Coordinates
+import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
@@ -44,11 +46,19 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
+
         val newPostViewModel : NewPostViewModel by activityViewModels()
         var file: MultipartBody.Part
+        if (arguments?.intArg != null) {
+            val id = arguments?.intArg
+            id?.let { newPostViewModel.getPost(it) }
+        }
+
 
         val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
-            override fun goToPageUser() {}
+            override fun goToPageUser() {
+
+            }
         })
 
         val pickPhotoLauncher =
@@ -136,10 +146,12 @@ class NewPostFragment : Fragment() {
 
         binding.mentionIds.adapter = adapter
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
+            it.content.let(binding.edit::setText)
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
             adapter.submitList(newPostViewModel.mentionsLive.value)
             binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != Coordinates("0", "0")
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
+
         }
 
         newPostViewModel.dataAttachment.observe(viewLifecycleOwner) {
@@ -175,11 +187,5 @@ class NewPostFragment : Fragment() {
 
 
         return binding.root
-    }
-
-
-    companion object {
-        var Bundle.arrayInt: List<Int>? by ArrayInt
-        var Bundle.pointArg: Point by PointArg
     }
 }

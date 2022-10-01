@@ -11,7 +11,9 @@ import ru.maxpek.friendslinkup.enumeration.AttachmentType
 interface NewPostRepository {
     val dataUsers: MutableLiveData<List<UserRequested>>
     val dataAttachment: MutableLiveData<Attachment>
+    val dataPost: MutableLiveData<PostCreateRequest>
     suspend fun loadUsers()
     suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part)
     suspend fun addPost(post: PostCreateRequest)
+    suspend fun getPost(id: Int)
 }

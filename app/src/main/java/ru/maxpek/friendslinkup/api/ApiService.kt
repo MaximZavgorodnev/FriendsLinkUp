@@ -9,16 +9,7 @@ import ru.maxpek.friendslinkup.dto.*
 
 
 interface ApiService {
-//    @POST("users/push-tokens")
-//    suspend fun save(@Body pushToken: PushToken): Response<Unit>
 
-
-//
-//    @GET("posts/{id}/newer")
-//    suspend fun getNewer(@Path("id") id: Long): Response<List<PostResponse>>
-//
-//    @GET("posts/{id}")
-//    suspend fun getById(@Path("id") id: Long): Response<PostResponse>
 //
     @POST("posts")
     suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
@@ -87,6 +78,10 @@ interface ApiService {
     //Дизлайк посту
     @DELETE("posts/{id}/likes")
     suspend fun dislikeById(@Path("id") id: Int): Response<PostResponse>
+
+    //Получение поста
+    @GET("posts/{post_id}")
+    suspend fun getPost(@Path("post_id") id: Int): Response<PostResponse>
 
 
     @GET("posts/latest")

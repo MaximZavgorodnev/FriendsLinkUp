@@ -24,6 +24,8 @@ import ru.maxpek.friendslinkup.adapter.posts.PostsAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.util.IntArg
+import ru.maxpek.friendslinkup.util.StringArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
@@ -55,7 +57,9 @@ class FeedFragment : Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
-            override fun onEdit(post: PostResponse) {}
+            override fun onEdit(post: PostResponse) {
+                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment,Bundle().apply { intArg = post.id })
+            }
             override fun onRemove(post: PostResponse) {
                 viewModel.removeById(post.id)
             }
@@ -137,5 +141,9 @@ class FeedFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    companion object {
+        var Bundle.intArg: Int by IntArg
     }
 }
