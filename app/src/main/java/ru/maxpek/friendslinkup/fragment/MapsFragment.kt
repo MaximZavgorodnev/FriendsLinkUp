@@ -96,7 +96,8 @@ class MapsFragment : Fragment() {
                 BaseTransientBottomBar.LENGTH_INDEFINITE
             ).setAction(R.string.add)
                 { newPostViewModel.addCoords(point)
-                    findNavController().navigateUp()}.show()
+                    findNavController().navigateUp()
+            }.show()
 
         }
     }

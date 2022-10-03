@@ -1,11 +1,8 @@
 package ru.maxpek.friendslinkup.repository.newPost
 
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dao.PostDao
 import ru.maxpek.friendslinkup.dto.*
 import ru.maxpek.friendslinkup.entity.PostEntity
@@ -20,27 +17,17 @@ val emptyList = listOf<UserRequested>()
 
 val attachment = Attachment("", AttachmentType.IMAGE)
 
-var editedPost = PostCreateRequest(
-    id = 0,
-    content = "",
-    coords = Coordinates("0", "0"),
-    link = null,
-    attachment = null,
-    mentionIds = listOf())
+
 
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: PostDao
 ): NewPostRepository {
 
-
-
-    override val dataUsers: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
     override val dataAttachment: MutableLiveData<Attachment> = MutableLiveData(attachment)
-    override val dataPost: MutableLiveData<PostCreateRequest> = MutableLiveData(editedPost)
 
 
-    override suspend fun loadUsers(){
+    override suspend fun loadUsers(): List<UserRequested>{
         val usersList: List<UserRequested>
         try {
             val response = apiService.getUsers()
@@ -48,7 +35,8 @@ class NewPostRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             usersList = response.body() ?: throw ApiError(response.code(), response.message())
-            dataUsers.postValue(usersList)
+            return usersList
+//            dataUsers.postValue(usersList)
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -83,23 +71,39 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPost(id: Int) {
+    override suspend fun getPost(id: Int): PostCreateRequest{
         try {
-            val response = apiService.getPost(id)
+                val response = apiService.getPost(id)
+                if (!response.isSuccessful) {
+                    throw ApiError(response.code(), response.message())
+                } else {
+                    val body = response.body() ?: throw ApiError(response.code(), response.message())
+                    val post = PostCreateRequest(
+                        id = body.id,
+                        content = body.content,
+                        coords = body.coords,
+                        link = body.link,
+                        attachment = body.attachment,
+                        mentionIds = body.mentionIds
+                    )
+                    if (body.attachment != null) {
+                        dataAttachment.postValue(body.attachment!!)
+                    }
+                    return post
+                }
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+
+    }
+
+    override suspend fun getUser(id: Int): UserRequested {
+        try {
+            val response = apiService.getUser(id)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             } else {
-                val body = response.body() ?: throw ApiError(response.code(), response.message())
-                editedPost = editedPost.copy(
-                    id = body.id,
-                    content = body.content,
-                    coords = body.coords,
-                    link = body.link,
-                    attachment = body.attachment,
-                    mentionIds = body.mentionIds
-                )
-                dataPost.postValue(editedPost)
-                if (body.attachment != null) { dataAttachment.postValue(body.attachment!!)}
+                return response.body() ?: throw ApiError(response.code(), response.message())
             }
         } catch (e: IOException) {
             throw NetworkError

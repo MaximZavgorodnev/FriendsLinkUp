@@ -11,7 +11,7 @@ import ru.maxpek.friendslinkup.databinding.CardIdsBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 
 interface AdapterUsersIdCallback {
-    fun goToPageUser()
+    fun goToPageUser(id: Int)
 }
 
 class ListUsersIdAdapter (private val callback: AdapterUsersIdCallback) :
@@ -42,7 +42,7 @@ class UsersIdListOfViewHolder
                 .circleCrop()
                 .into(avatar)
             this.avatar.setOnClickListener {
-                callback.goToPageUser()
+                callback.goToPageUser(user.id)
             }
         }
     }

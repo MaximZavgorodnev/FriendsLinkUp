@@ -21,36 +21,82 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 
 
+val editedPost = PostCreateRequest(
+    id = 0,
+    content = "",
+    coords = Coordinates("0", "0"),
+    link = null,
+    attachment = null,
+    mentionIds = listOf())
 
+val mentions = mutableListOf<UserRequested>()
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
-    private val repositoryListOfUser : NewPostRepository): ViewModel() {
+    private val repository : NewPostRepository): ViewModel() {
 
-    val newPost: MutableLiveData<PostCreateRequest> = repositoryListOfUser.dataPost
+    val newPost: MutableLiveData<PostCreateRequest> = MutableLiveData(editedPost)
 
 
-    val data: MutableLiveData<List<UserRequested>> = repositoryListOfUser.dataUsers
-    private val mentions = mutableListOf<UserRequested>()
-    val mentionsLive : LiveData<List<UserRequested>> = MutableLiveData(mentions)
-    val dataAttachment = repositoryListOfUser.dataAttachment
+    val data: MutableLiveData<List<UserRequested>> = MutableLiveData()
+
+    val mentionsLive : MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
+    val dataAttachment = repository.dataAttachment
 
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
+
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    fun getUsers() {
+    fun getPost(id: Int){
+        mentionsLive.value = mentions
         viewModelScope.launch {
             try {
-                repositoryListOfUser.loadUsers()
+                newPost.value = repository.getPost(id)
+                newPost.value?.mentionIds?.forEach {
+                    mentionsLive.value!!.add(repository.getUser(it))
+                }
+                _dataState.value = FeedModelState(error = false)
+            } catch (e: RuntimeException) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
+    }
+
+    fun getUsers() {
+        mentionsLive.value = mentions
+        viewModelScope.launch {
+            try {
+                data.value = repository.loadUsers()
+                data.value?.forEach { user ->
+                    newPost.value?.mentionIds?.forEach {
+                        if (user.id == it) {
+                            user.checked = true
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
         }
+    }
+
+    fun addMentionIds(){
+        mentionsLive.value = mentions
+        val listChecked = mutableListOf<Int>()
+        val mentionsUserList = mutableListOf<UserRequested>()
+        data.value?.forEach { user ->
+            if (user.checked){
+                listChecked.add(user.id)
+                mentionsUserList.add(user)
+            }
+        }
+        mentionsLive.value = mentionsUserList
+        newPost.value = newPost.value?.copy(mentionIds = listChecked)
     }
 
     fun isChecked(id: Int){
@@ -75,9 +121,8 @@ class NewPostViewModel @Inject constructor(
         _postCreated.value = Unit
         viewModelScope.launch {
             try {
-                repositoryListOfUser.addPost(post)
+                repository.addPost(post)
                 _dataState.value = FeedModelState(error = false)
-                println(post)
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -101,7 +146,7 @@ class NewPostViewModel @Inject constructor(
     fun addPictureToThePost(image: MultipartBody.Part){
         viewModelScope.launch {
             try {
-                repositoryListOfUser.addPictureToThePost(AttachmentType.IMAGE, image)
+                repository.addPictureToThePost(AttachmentType.IMAGE, image)
                 _dataState.value = FeedModelState(error = false)
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
@@ -113,27 +158,14 @@ class NewPostViewModel @Inject constructor(
         newPost.value = newPost.value?.copy(attachment = dataAttachment.value)
     }
 
-    fun addMentionIds(){
-        mentions.clear()
-        val listChecked = mutableListOf<Int>()
-        data.value?.forEach { user ->
-            if (user.checked){
-                listChecked.add(user.id)
-                mentions.add(user)
-            }
-        }
-        newPost.value = newPost.value?.copy(mentionIds = listChecked)
-    }
 
-    fun getPost(id: Int){
-        viewModelScope.launch {
-            try {
-                repositoryListOfUser.getPost(id)
-                _dataState.value = FeedModelState(error = false)
-            } catch (e: RuntimeException) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
+
+
+
+    fun deleteEditPost(){
+        newPost.value = editedPost
+        mentions.clear()
+        mentionsLive.value = mentions
     }
 
 }

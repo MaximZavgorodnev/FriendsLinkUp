@@ -1,5 +1,6 @@
 package ru.maxpek.friendslinkup.fragment
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
@@ -7,11 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
@@ -36,6 +39,7 @@ import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 @AndroidEntryPoint
 class NewPostFragment : Fragment() {
 
+    @SuppressLint("FragmentBackPressedCallback")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,15 +53,26 @@ class NewPostFragment : Fragment() {
 
         val newPostViewModel : NewPostViewModel by activityViewModels()
         var file: MultipartBody.Part
+
+        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+                Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
+                    newPostViewModel.deleteEditPost()
+                    findNavController().navigate(R.id.feedFragment)
+                }.show()
+            }
+
         if (arguments?.intArg != null) {
             val id = arguments?.intArg
-            id?.let { newPostViewModel.getPost(it) }
+            id?.let {newPostViewModel.getPost(it) }
         }
 
 
-        val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
-            override fun goToPageUser() {
 
+
+        val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
+            override fun goToPageUser(id: Int) {
+                val idAuthor = id.toString()
+                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
             }
         })
 
@@ -145,10 +160,25 @@ class NewPostFragment : Fragment() {
         }
 
         binding.mentionIds.adapter = adapter
+        newPostViewModel.mentionsLive.observe(viewLifecycleOwner) {
+            val user = adapter.itemCount < it.size
+            adapter.submitList(it) {
+                if (user) {
+                    binding.mentionIds.smoothScrollToPosition(0)
+                }
+            }
+
+
+            adapter.submitList(it)
+        }
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
             it.content.let(binding.edit::setText)
+            it.link.let(binding.editLink::setText)
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
-            adapter.submitList(newPostViewModel.mentionsLive.value)
+//            if (newPostViewModel.mentionsLive.value!!.isEmpty()){
+//                adapter.submitList(newPostViewModel.mentionsLive.value)
+//            }
+
             binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != Coordinates("0", "0")
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
 
@@ -175,13 +205,13 @@ class NewPostFragment : Fragment() {
         }
         ///Нужно доработать ошибку
         newPostViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-                    .setAction(R.string.retry_loading) {
-//                        newPostViewModel.retry()
-                    }
-                    .show()
-            }
+//            if (state.error) {
+//                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
+//                    .setAction(R.string.retry_loading) {
+////                        newPostViewModel.retry()
+//                    }
+//                    .show()
+//            }
         }
 
 

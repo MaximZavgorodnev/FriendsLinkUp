@@ -41,10 +41,10 @@ class UsersListViewHolder
                 .into(avatar)
             author.text = user.name
             avatar.setOnClickListener {
-                callback.goToPageUser()
+                callback.goToPageUser(user.id)
             }
             author.setOnClickListener {
-                callback.goToPageUser()
+                callback.goToPageUser(user.id)
             }
         }
     }

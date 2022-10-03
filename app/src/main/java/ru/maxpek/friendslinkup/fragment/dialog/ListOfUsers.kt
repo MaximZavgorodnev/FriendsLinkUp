@@ -27,9 +27,7 @@ class ListOfUsers: DialogFragment() {
 
         val newPostViewModel: NewPostViewModel by activityViewModels()
 
-        if (newPostViewModel.data.value!!.isEmpty()) {
-            newPostViewModel.getUsers()
-        }
+        newPostViewModel.getUsers()
 
         val adapter = ListOfUsersChoiceAdapter(object : AdapterCallback {
             override fun isChecked(id: Int) {

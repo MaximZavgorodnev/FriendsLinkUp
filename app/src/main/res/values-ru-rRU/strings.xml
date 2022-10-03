@@ -71,4 +71,6 @@
     <string name="list_of_mentioned">Список упомянутых пользователей</string>
     <string name="mention_anyone">"Пользователь никого не упомянул "</string>
     <string name="you_are_where">Вы там где нужно</string>
+    <string name="be_lost">Все изменения будут потеряны, если вы выйдете</string>
+    <string name="exit">выход</string>
 </resources>

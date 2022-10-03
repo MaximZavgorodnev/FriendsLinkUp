@@ -1,6 +1,7 @@
 package ru.maxpek.friendslinkup
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding.inflate
+import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.EventFragment
 import ru.maxpek.friendslinkup.fragment.FeedFragment
 import ru.maxpek.friendslinkup.fragment.JobFragment
@@ -54,6 +56,7 @@ class AppActivity : AppCompatActivity() {
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         MapKitFactory.setApiKey(MAPKIT_API_KEY)
         binding = inflate(layoutInflater)
         setContentView(binding.root)
@@ -132,6 +135,7 @@ class AppActivity : AppCompatActivity() {
             }
             R.id.signout -> {
                 appAuth.removeAuth()
+                findNavController(R.id.frame).navigateUp()
                 true
             }
             android.R.id.home -> {
@@ -163,10 +167,6 @@ class AppActivity : AppCompatActivity() {
         firebaseMessaging.token.addOnSuccessListener {
             println(it)
         }
-    }
-    fun setThatFragment(fragment: Fragment) = supportFragmentManager.beginTransaction().apply {
-        replace(R.id.frame, fragment)
-        commit()
     }
 }
 
