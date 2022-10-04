@@ -2,7 +2,7 @@ package ru.maxpek.friendslinkup.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.maxpek.friendslinkup.dto.JobResponse
+import ru.maxpek.friendslinkup.dto.Job
 
 @Entity
 data class JobEntity(
@@ -14,13 +14,13 @@ data class JobEntity(
     val finish: String,
     val link: String,
 ) {
-    fun toDto() = JobResponse(id, name, position, start, finish, link)
+    fun toDto() = Job(id, name, position, start, finish, link)
 
     companion object {
-        fun fromDto(dto: JobResponse) =
+        fun fromDto(dto: Job) =
             JobEntity(dto.id, dto.name, dto.position, dto.start, dto.finish, dto.link)
     }
 }
 
 
-fun List<JobResponse>.toEntity(): List<JobEntity> = map(JobEntity::fromDto)
+fun List<Job>.toEntity(): List<JobEntity> = map(JobEntity::fromDto)

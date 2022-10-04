@@ -8,7 +8,6 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.maxpek.friendslinkup.dao.JobDao
-import ru.maxpek.friendslinkup.dao.JobRemoteKeyDao
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -25,7 +24,4 @@ class JobDbModule {
 
     @Provides
     fun provideJobDao(appDb: JobAppDb): JobDao = appDb.jobDao()
-
-    @Provides
-    fun provideJobRemoteKeyDao(appDb: JobAppDb): JobRemoteKeyDao = appDb.jobRemoteKeyDao()
 }

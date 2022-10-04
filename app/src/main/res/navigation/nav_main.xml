@@ -118,11 +118,6 @@
         android:label="fragment_my_wall_post"
         tools:layout="@layout/fragment_my_wall_post" />
     <fragment
-        android:id="@+id/myEventFragment2"
-        android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyEventFragment"
-        android:label="fragment_my_wall_event"
-        tools:layout="@layout/fragment_my_wall_event" />
-    <fragment
         android:id="@+id/myJobFragment2"
         android:name="ru.maxpek.friendslinkup.fragment.wall.myWall.MyJobFragment"
         android:label="fragment_my_wall_job"

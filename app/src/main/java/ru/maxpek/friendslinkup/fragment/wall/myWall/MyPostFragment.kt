@@ -123,28 +123,7 @@ class MyPostFragment: Fragment() {
         }
 
         binding.menu.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.menu_navigation)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.posts -> {
-                            Snackbar.make(binding.root, R.string.you_are_where, Snackbar.LENGTH_SHORT).show()
-                            true
-                        }
-                        R.id.events -> {
-                            findNavController().navigate(R.id.myEventFragment2)
-                            true
-                        }
-
-                        R.id.jobs -> {
-                            findNavController().navigate(R.id.myJobFragment2)
-                            true
-                        }
-
-                        else -> false
-                    }
-                }
-            }.show()
+            findNavController().navigate(R.id.myJobFragment2)
         }
 
         binding.home.setOnClickListener {

@@ -127,7 +127,11 @@ interface ApiService {
     @GET("{user_id}/jobs")
     suspend fun getUserJob (
         @Path("user_id") id: String
-    ): Response<List<JobResponse>>
+    ): Response<List<Job>>
+
+
+    //Получение списка работы
+
 
 
 

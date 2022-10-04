@@ -11,9 +11,7 @@ import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
-import ru.maxpek.friendslinkup.adapter.OnClickListener
 import ru.maxpek.friendslinkup.adapter.UserWallJobAdapter
-import ru.maxpek.friendslinkup.auth.AppAuth.Companion.avatar
 import ru.maxpek.friendslinkup.databinding.FragmentUserWallJobBinding
 import ru.maxpek.friendslinkup.util.StringArg
 import ru.maxpek.friendslinkup.viewmodel.UserWallViewModel
@@ -36,9 +34,7 @@ class UserJobFragment: Fragment() {
         }
 
 
-        val adapter = UserWallJobAdapter(object : OnClickListener{
-
-        })
+        val adapter = UserWallJobAdapter()
 
         binding.list.adapter = adapter
         userWallViewModel.data.observe(viewLifecycleOwner) {

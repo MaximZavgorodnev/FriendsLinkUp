@@ -4,18 +4,25 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
+import ru.maxpek.friendslinkup.adapter.jobs.MyJobsAdapter
+import ru.maxpek.friendslinkup.adapter.jobs.OnClickListener
 import ru.maxpek.friendslinkup.databinding.FragmentMyWallJobBinding
+import ru.maxpek.friendslinkup.dto.Job
+import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
+import ru.maxpek.friendslinkup.viewmodel.JobViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MyJobFragment: Fragment() {
+    private val authViewModel: AuthViewModel by viewModels()
+    private val viewModel: JobViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -23,29 +30,22 @@ class MyJobFragment: Fragment() {
     ): View {
         val binding = FragmentMyWallJobBinding.inflate(inflater, container, false)
 
+        val adapter = MyJobsAdapter(object : OnClickListener {
+            override fun onEditJob(job: Job) {
+
+            }
+
+            override fun onRemoveJob(job: Job) {
+
+            }
+        })
+
+        binding.list.adapter = adapter
+
+
+
         binding.menu.setOnClickListener {
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.menu_navigation)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.posts -> {
-                            findNavController().navigate(R.id.myPostFragment)
-                            true
-                        }
-                        R.id.events -> {
-                            findNavController().navigate(R.id.myEventFragment2)
-                            true
-                        }
-
-                        R.id.jobs -> {
-                            Snackbar.make(binding.root, R.string.you_are_where, Snackbar.LENGTH_SHORT).show()
-                            true
-                        }
-
-                        else -> false
-                    }
-                }
-            }.show()
+            findNavController().navigate(R.id.myPostFragment)
         }
 
         binding.home.setOnClickListener {

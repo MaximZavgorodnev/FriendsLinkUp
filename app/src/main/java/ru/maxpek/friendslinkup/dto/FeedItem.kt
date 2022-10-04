@@ -16,11 +16,11 @@ sealed class FeedItem{
     abstract val id: Int
 }
 
-data class Ad(
-    override val id: Int,
-    val url: String,
-    val image: String,
-) : FeedItem()
+//data class Ad(
+//    override val id: Int,
+//    val url: String,
+//    val image: String,
+//) : FeedItem()
 
 data class PostCreateRequest(
     val id: Int,
@@ -65,7 +65,7 @@ data class EventCreateRequest(
 )
 
 data class EventResponse(
-    override val id: Int,
+    val id: Int,
     val authorId: Int,
     val author: String,
     val authorAvatar: String,
@@ -84,19 +84,9 @@ data class EventResponse(
     val link: String,
     val ownerByMe: Boolean,
     val users: List<UserPreview>
+)
 
-) : FeedItem()
-
-data class JobCreateRequest (
-    override val id: Int,
-    val name: String,
-    val position: String,
-    val start: String,
-    val finish: String,
-    val link: String,
-) : FeedItem()
-
-data class JobResponse (
+data class Job (
     val id: Int,
     val name: String,
     val position: String,

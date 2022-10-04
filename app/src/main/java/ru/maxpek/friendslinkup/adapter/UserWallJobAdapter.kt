@@ -8,18 +8,16 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.maxpek.friendslinkup.databinding.CardJobsBinding
-import ru.maxpek.friendslinkup.dto.JobResponse
+import ru.maxpek.friendslinkup.dto.Job
 import ru.maxpek.friendslinkup.util.GoDataTime
 
-interface OnClickListener{
 
-}
 
-class UserWallJobAdapter(private val onClickListener: OnClickListener) :
-    ListAdapter<JobResponse, UserWallViewHolder>(UserWallJobDiffCallback()) {
+class UserWallJobAdapter: ListAdapter<Job,
+        UserWallViewHolder>(UserWallJobDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserWallViewHolder {
         val binding = CardJobsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UserWallViewHolder (binding, onClickListener)
+        return UserWallViewHolder (binding)
     }
 
     override fun onBindViewHolder(holder: UserWallViewHolder, position: Int) {
@@ -30,11 +28,10 @@ class UserWallJobAdapter(private val onClickListener: OnClickListener) :
 
 class UserWallViewHolder(
     private val binding: CardJobsBinding,
-    private val onClickListener: OnClickListener
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("NewApi")
-    fun bind(job: JobResponse){
+    fun bind(job: Job){
         binding.apply {
             nameOrganization.text = job.name
             position.text = job.position
@@ -46,12 +43,12 @@ class UserWallViewHolder(
     }
 }
 
-class UserWallJobDiffCallback : DiffUtil.ItemCallback<JobResponse>() {
-    override fun areItemsTheSame(oldItem: JobResponse, newItem: JobResponse): Boolean {
+class UserWallJobDiffCallback : DiffUtil.ItemCallback<Job>() {
+    override fun areItemsTheSame(oldItem: Job, newItem: Job): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: JobResponse, newItem: JobResponse): Boolean {
+    override fun areContentsTheSame(oldItem: Job, newItem: Job): Boolean {
         return oldItem == newItem
     }
 }

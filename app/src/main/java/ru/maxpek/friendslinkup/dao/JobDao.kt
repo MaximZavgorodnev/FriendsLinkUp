@@ -16,13 +16,13 @@ interface JobDao {
     suspend fun isEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(event: JobEntity) : Long
+    suspend fun insert(job: JobEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(events: List<JobEntity>)
+    suspend fun insert(job: List<JobEntity>)
 
     @Query("DELETE FROM JobEntity WHERE id = :id")
-    suspend fun removeById(id: Long)
+    suspend fun removeById(id: Int)
 
 //    @Query("UPDATE JobEntity SET read = 1")
 //    suspend fun update()   Пока что не знаю нужно или нет

@@ -25,16 +25,10 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding.inflate
-import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
-import ru.maxpek.friendslinkup.fragment.EventFragment
-import ru.maxpek.friendslinkup.fragment.FeedFragment
-import ru.maxpek.friendslinkup.fragment.JobFragment
-import ru.maxpek.friendslinkup.fragment.wall.myWall.MyPostFragment
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import javax.inject.Inject
 
@@ -70,9 +64,6 @@ class AppActivity : AppCompatActivity() {
             when(menuItem.itemId){
                 R.id.posts ->{
                     findNavController(R.id.frame).navigate(R.id.feedFragment)
-                }
-                R.id.jobs ->{
-                    findNavController(R.id.frame).navigate(R.id.jobFragment)
                 }
                 R.id.events ->{
                     findNavController(R.id.frame).navigate(R.id.eventFragment)
