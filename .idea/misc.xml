@@ -58,7 +58,7 @@
         <entry key="app/src/main/res/layout/fragment_my_wall_job.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_my_wall_post.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_new_event.xml" value="0.359375" />
-        <entry key="app/src/main/res/layout/fragment_new_job.xml" value="0.359375" />
+        <entry key="app/src/main/res/layout/fragment_new_job.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_new_post.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_new_post2.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_registration.xml" value="0.335" />

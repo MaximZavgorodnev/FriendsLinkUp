@@ -37,7 +37,6 @@ class NewPostViewModel @Inject constructor(
 
     val newPost: MutableLiveData<PostCreateRequest> = MutableLiveData(editedPost)
 
-
     val data: MutableLiveData<List<UserRequested>> = MutableLiveData()
 
     val mentionsLive : MutableLiveData<MutableList<UserRequested>> = MutableLiveData()

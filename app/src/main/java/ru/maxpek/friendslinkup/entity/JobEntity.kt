@@ -24,3 +24,4 @@ data class JobEntity(
 
 
 fun List<Job>.toEntity(): List<JobEntity> = map(JobEntity::fromDto)
+fun List<JobEntity>.toDto(): List<Job> = map(JobEntity::toDto)

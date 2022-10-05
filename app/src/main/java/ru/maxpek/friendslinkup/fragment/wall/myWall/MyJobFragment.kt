@@ -29,20 +29,33 @@ class MyJobFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val binding = FragmentMyWallJobBinding.inflate(inflater, container, false)
+        viewModel.getMyJob()
 
         val adapter = MyJobsAdapter(object : OnClickListener {
             override fun onEditJob(job: Job) {
-
+                viewModel.editJob(job)
+                findNavController().navigate(R.id.newJobFragment)
             }
 
             override fun onRemoveJob(job: Job) {
-
+                viewModel.removeById(job.id)
             }
         })
 
         binding.list.adapter = adapter
 
+        viewModel.data.observe(viewLifecycleOwner) {
+            val newJob = adapter.itemCount < it.size
+            adapter.submitList(it) {
+                if (newJob) {
+                    binding.list.smoothScrollToPosition(0)
+                }
+            }
+        }
 
+        binding.fab.setOnClickListener {
+            findNavController().navigate(R.id.newJobFragment)
+        }
 
         binding.menu.setOnClickListener {
             findNavController().navigate(R.id.myPostFragment)

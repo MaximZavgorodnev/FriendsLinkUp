@@ -10,7 +10,7 @@ import ru.maxpek.friendslinkup.entity.JobEntity
 @Dao
 interface JobDao {
     @Query("SELECT * FROM JobEntity ORDER BY id DESC")
-    fun getAll(): PagingSource<Int, JobEntity>
+    fun getAll(): List<JobEntity>
 
     @Query("SELECT COUNT(*) == 0 FROM JobEntity")
     suspend fun isEmpty(): Boolean

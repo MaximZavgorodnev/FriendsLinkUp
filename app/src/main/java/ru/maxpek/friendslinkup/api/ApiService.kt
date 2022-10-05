@@ -130,7 +130,17 @@ interface ApiService {
     ): Response<List<Job>>
 
 
-    //Получение списка работы
+    //Создание работы
+    @POST("my/jobs")
+    suspend fun addJob(@Body job: Job): Response<Job>
+
+    //Удаление работы
+    @DELETE("my/jobs/{job_id}")
+    suspend fun deleteJob(@Path("job_id") id: Int): Response<Unit>
+
+    //Получить список моих работ
+    @GET("my/jobs")
+    suspend fun getMyJob (): Response<List<Job>>
 
 
 
