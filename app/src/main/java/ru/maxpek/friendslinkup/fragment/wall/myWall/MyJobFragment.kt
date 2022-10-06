@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
@@ -41,6 +42,17 @@ class MyJobFragment: Fragment() {
                 viewModel.removeById(job.id)
             }
         })
+
+        authViewModel.data.observeForever {
+            binding.nameUser.text = it.nameUser
+            Glide.with(this@MyJobFragment)
+                .load(it.avatarUser)
+                .error(R.drawable.ic_avatar_loading_error_48)
+                .placeholder(R.drawable.ic_baseline_cruelty_free_48)
+                .timeout(10_000)
+                .circleCrop()
+                .into(binding.avatar)
+        }
 
         binding.list.adapter = adapter
 

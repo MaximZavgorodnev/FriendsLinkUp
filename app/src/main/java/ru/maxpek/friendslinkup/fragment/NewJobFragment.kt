@@ -22,19 +22,19 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentNewJobBinding
+import ru.maxpek.friendslinkup.dto.Job
 import ru.maxpek.friendslinkup.util.GoDataTime
 import ru.maxpek.friendslinkup.viewmodel.JobViewModel
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 
 var day = 0
 var month = 0
 var year = 0
+var startEndFinished = true
 
-var savedDay = 0
-var savedMonth = 0
-var savedYear = 0
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
@@ -54,8 +54,6 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
             false
         )
 
-        pickDate()
-
         requireActivity().onBackPressedDispatcher.addCallback(this) {
             Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
                 viewModel.deleteEditJob()
@@ -70,15 +68,17 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
             it.finish.apply { GoDataTime.convertDataTimeJob(this) }.let(binding.end::setText)
             it.link.let(binding.link::setText)
         }
+        viewModel.dateStart.observe(viewLifecycleOwner) {
+            it.let(binding.start::setText)
+        }
 
-//        binding.start.onFocusChangeListener = View.OnFocusChangeListener { view, b ->
-//            if(binding.start.hasFocus()){
-//                getDataCalendar()
-//                DatePickerDialog(context!!, this, year, month, day).show()
-//            }
-//        }
+        viewModel.dateFinish.observe(viewLifecycleOwner) {
+            it.let(binding.end::setText)
+        }
+
         binding.start.setOnTouchListener { viewStart, event ->
             viewStart.isFocusable = true
+            startEndFinished = true
             when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     val layout: Layout = (viewStart as EditText).layout
@@ -96,7 +96,8 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.end.setOnTouchListener { v, event ->
             v.isFocusable = true
-            when (event.action) {
+            startEndFinished = false
+                when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     val layout: Layout = (v as EditText).layout
                     val x: Float = event.x + v.scrollX
@@ -106,9 +107,24 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
                     ) else v.setSelection(offset - 1)
                     getDataCalendar()
                     DatePickerDialog(context!!, this, year, month, day).show()
+
                 }
             }
             true
+        }
+
+        binding.enter.setOnClickListener {
+            val job = Job(
+                id = 0,
+                name = binding.name.text.toString(),
+                position = binding.position.text.toString(),
+                start = GoDataTime.convertDateToLocalDate(binding.start.text.toString()),
+                finish = GoDataTime.convertDateToLocalDate(binding.end.text.toString()),
+                link = binding.link.text.toString()
+            )
+            viewModel.editJob(job)
+            viewModel.addJob()
+            findNavController().navigateUp()
         }
 
         return binding.root
@@ -123,10 +139,6 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         }
     }
 
-    private fun pickDate(){
-
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     @SuppressLint("SimpleDateFormat")
     override fun onDateSet(view: DatePicker?, yearOf: Int, monthOf: Int, dayOfMonth: Int) {
@@ -134,16 +146,18 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         month = monthOf
         year = yearOf
         val date = listOf(day, month, year)
-        GoDataTime.convertDataInput(date)
-//            "$day/$month/$year"
-//        val parsedDate = LocalDateTime.parse(date, DateTimeFormatter.ISO_DATE_TIME)
+        val dateTime = GoDataTime.convertDataInput(date)
 
-        val dateString = "$day.$month.$year"
+        if (startEndFinished){
+            viewModel.addDateStart(dateTime)
+        } else {
+            viewModel.addDateFinish(dateTime)
+        }
+//        val kkk = GoDataTime.convertDateToLocalDate(dateTime)
+//        val dateFormated = SimpleDateFormat("dd/MM/yyyy").format(trans.created_date.toDate())
+//        println(kkk)
+//        val current = LocalDateTime.now()
+        println(dateTime)
 
-        val formatter = SimpleDateFormat("DD.mm.yyyy")
-        val date1 = formatter.parse(dateString)
-
-        println(date1)
-        println(dateString)
     }
 }

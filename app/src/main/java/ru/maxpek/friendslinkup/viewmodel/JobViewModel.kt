@@ -37,6 +37,9 @@ class JobViewModel@Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    val dateStart = MutableLiveData<String>()
+    val dateFinish = MutableLiveData<String>()
+
     private val _editedJob: MutableLiveData<Job> = MutableLiveData(jobZero)
     val editedJob: LiveData<Job>
     get() = _editedJob
@@ -66,10 +69,11 @@ class JobViewModel@Inject constructor(
         _editedJob.value = job
     }
 
-    fun addJob(job: Job){
+    fun addJob(){
         viewModelScope.launch {
             try {
-                repository.save(job)
+                val job = _editedJob.value
+                job?.let { repository.save(it) }
                 _postCreated.value = Unit
                 _dataState.value = FeedModelState(error = false)
                 _editedJob.postValue(jobZero)
@@ -79,7 +83,17 @@ class JobViewModel@Inject constructor(
         }
     }
 
+    fun addDateStart(date: String) {
+        dateStart.postValue(date)
+    }
+
+    fun addDateFinish(date: String) {
+        dateFinish.postValue(date)
+    }
+
     fun deleteEditJob(){
         _editedJob.postValue(jobZero)
+        dateFinish.value = ""
+        dateStart.value = ""
     }
 }
