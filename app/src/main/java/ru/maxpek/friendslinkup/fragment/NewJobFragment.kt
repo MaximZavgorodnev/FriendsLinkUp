@@ -121,7 +121,7 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
                 Snackbar.make(binding.root, R.string.first_three, Snackbar.LENGTH_SHORT).show()
             } else {
                 val job = Job(
-                    id = 0,
+                    id = if (viewModel.editedJob.value!!.id == 0) {0} else {viewModel.editedJob.value!!.id},
                     name = binding.name.text.toString(),
                     position = binding.position.text.toString(),
                     start = viewModel.editedJob.value!!.start,
