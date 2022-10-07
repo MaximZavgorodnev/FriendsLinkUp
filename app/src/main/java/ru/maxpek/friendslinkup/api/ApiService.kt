@@ -140,7 +140,7 @@ interface ApiService {
 
     //Получить список моих работ
     @GET("my/jobs")
-    suspend fun getMyJob (): Response<List<Job>>
+    suspend fun getMyJob (): Response<MutableList<Job>>
 
 
 

@@ -36,7 +36,7 @@ class UserWallViewHolder(
             nameOrganization.text = job.name
             position.text = job.position
             start.text = GoDataTime.convertDataTimeJob(job.start)
-            finish.text = GoDataTime.convertDataTimeJob(job.finish)
+            finish.text = job.finish?.let { GoDataTime.convertDataTimeJob(it) }
             link.text = job.link
             menu.visibility = View.GONE
         }

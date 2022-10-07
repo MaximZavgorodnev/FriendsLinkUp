@@ -76,6 +76,7 @@
     <string name="not_registered">The user is not registered</string>
     <string name="audio">Audio</string>
     <string name="images">Image</string>
+    <string name="first_three">The first three fields are required</string>
 
     <string name="need_permission">Location permission required</string>
     <string name="which_mention">Which of the users should I mention?</string>

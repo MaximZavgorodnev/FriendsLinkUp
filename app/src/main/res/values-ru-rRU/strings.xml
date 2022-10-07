@@ -75,4 +75,5 @@
     <string name="exit">выход</string>
     <string name="add_job">Добавить</string>
     <string name="add_event">Добавить событие</string>
+    <string name="first_three">Первые три поля обязательны к заполнению</string>
 </resources>

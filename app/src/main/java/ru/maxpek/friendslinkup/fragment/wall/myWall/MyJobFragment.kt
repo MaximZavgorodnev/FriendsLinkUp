@@ -43,7 +43,7 @@ class MyJobFragment: Fragment() {
             }
         })
 
-        authViewModel.data.observeForever {
+        authViewModel.data.observe(viewLifecycleOwner) {
             binding.nameUser.text = it.nameUser
             Glide.with(this@MyJobFragment)
                 .load(it.avatarUser)

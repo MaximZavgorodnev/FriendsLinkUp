@@ -19,15 +19,15 @@ val jobZero = Job(
     name = "",
     position = "",
     start = "",
-    finish = "",
-    link = ""
+    finish = null,
+    link = null
 )
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class JobViewModel@Inject constructor(
     private val repository: MyWallJobRepository
 ): ViewModel() {
-    val data: MutableLiveData<List<Job>> = MutableLiveData(repository.dateJob)
+    val data: MutableLiveData<MutableList<Job>> = repository.dateJob
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -36,9 +36,6 @@ class JobViewModel@Inject constructor(
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
-
-    val dateStart = MutableLiveData<String>()
-    val dateFinish = MutableLiveData<String>()
 
     private val _editedJob: MutableLiveData<Job> = MutableLiveData(jobZero)
     val editedJob: LiveData<Job>
@@ -74,9 +71,10 @@ class JobViewModel@Inject constructor(
             try {
                 val job = _editedJob.value
                 job?.let { repository.save(it) }
-                _postCreated.value = Unit
+
                 _dataState.value = FeedModelState(error = false)
                 _editedJob.postValue(jobZero)
+                _postCreated.value = Unit
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -84,16 +82,14 @@ class JobViewModel@Inject constructor(
     }
 
     fun addDateStart(date: String) {
-        dateStart.postValue(date)
+        _editedJob.value = _editedJob.value?.copy(start = date)
     }
 
     fun addDateFinish(date: String) {
-        dateFinish.postValue(date)
+        _editedJob.value = _editedJob.value?.copy(finish = date)
     }
 
     fun deleteEditJob(){
         _editedJob.postValue(jobZero)
-        dateFinish.value = ""
-        dateStart.value = ""
     }
 }

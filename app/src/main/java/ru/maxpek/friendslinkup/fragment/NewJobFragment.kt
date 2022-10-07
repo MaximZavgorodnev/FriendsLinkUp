@@ -23,6 +23,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentNewJobBinding
 import ru.maxpek.friendslinkup.dto.Job
+import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.util.GoDataTime
 import ru.maxpek.friendslinkup.viewmodel.JobViewModel
 import java.text.SimpleDateFormat
@@ -62,18 +63,19 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         viewModel.editedJob.observe(viewLifecycleOwner) {
-            it.name.let(binding.name::setText)
-            it.position.let(binding.position::setText)
-            it.start.apply { GoDataTime.convertDataTimeJob(this) }.let(binding.start::setText)
-            it.finish.apply { GoDataTime.convertDataTimeJob(this) }.let(binding.end::setText)
-            it.link.let(binding.link::setText)
-        }
-        viewModel.dateStart.observe(viewLifecycleOwner) {
-            it.let(binding.start::setText)
-        }
-
-        viewModel.dateFinish.observe(viewLifecycleOwner) {
-            it.let(binding.end::setText)
+            val start = GoDataTime.convertDataTimeJob(it.start)
+            val end = it.finish?.let { it1 -> GoDataTime.convertDataTimeJob(it1) }
+            if (binding.name.text.toString() == ""){
+                it.name.let(binding.name::setText)
+            }
+            if (binding.position.text.toString() ==""){
+                it.position.let(binding.position::setText)
+            }
+            start.let(binding.start::setText)
+            end.let(binding.end::setText)
+            if (binding.link.text.toString() == "") {
+                it.link.let(binding.link::setText)
+            }
         }
 
         binding.start.setOnTouchListener { viewStart, event ->
@@ -114,16 +116,24 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         }
 
         binding.enter.setOnClickListener {
-            val job = Job(
-                id = 0,
-                name = binding.name.text.toString(),
-                position = binding.position.text.toString(),
-                start = GoDataTime.convertDateToLocalDate(binding.start.text.toString()),
-                finish = GoDataTime.convertDateToLocalDate(binding.end.text.toString()),
-                link = binding.link.text.toString()
-            )
-            viewModel.editJob(job)
-            viewModel.addJob()
+            AndroidUtils.hideKeyboard(requireView())
+            if (binding.name.text.toString() =="" || binding.position.text.toString()=="" || binding.start.text.toString() == "") {
+                Snackbar.make(binding.root, R.string.first_three, Snackbar.LENGTH_SHORT).show()
+            } else {
+                val job = Job(
+                    id = 0,
+                    name = binding.name.text.toString(),
+                    position = binding.position.text.toString(),
+                    start = viewModel.editedJob.value!!.start,
+                    finish = viewModel.editedJob.value!!.finish,
+                    link = if (binding.link.text.toString() == "") {null} else {binding.link.text.toString()}
+                )
+                viewModel.editJob(job)
+                viewModel.addJob()
+            }
+        }
+
+        viewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
 
@@ -147,17 +157,10 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         year = yearOf
         val date = listOf(day, month, year)
         val dateTime = GoDataTime.convertDataInput(date)
-
         if (startEndFinished){
             viewModel.addDateStart(dateTime)
         } else {
             viewModel.addDateFinish(dateTime)
         }
-//        val kkk = GoDataTime.convertDateToLocalDate(dateTime)
-//        val dateFormated = SimpleDateFormat("dd/MM/yyyy").format(trans.created_date.toDate())
-//        println(kkk)
-//        val current = LocalDateTime.now()
-        println(dateTime)
-
     }
 }

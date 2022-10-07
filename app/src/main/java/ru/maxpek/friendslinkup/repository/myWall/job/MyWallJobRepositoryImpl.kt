@@ -14,13 +14,11 @@ import ru.maxpek.friendslinkup.error.ApiError
 import ru.maxpek.friendslinkup.error.NetworkError
 import java.io.IOException
 import javax.inject.Inject
-
+val emptyList = mutableListOf<Job>()
 class MyWallJobRepositoryImpl @Inject constructor(
-    private val apiService: ApiService,
-    private val dao: JobDao
-
+    private val apiService: ApiService
 ): MyWallJobRepository {
-    override val dateJob: MutableList<Job> = mutableListOf()
+    override val dateJob: MutableLiveData<MutableList<Job>> = MutableLiveData(emptyList)
 
     override suspend fun getMyJob() {
         val usersList: List<Job>
@@ -30,7 +28,7 @@ class MyWallJobRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             }
             usersList = response.body() ?: throw ApiError(response.code(), response.message())
-            dateJob.addAll(usersList)
+            dateJob.postValue(usersList)
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -42,7 +40,7 @@ class MyWallJobRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            dateJob.removeAt(id)
+            getMyJob()
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -55,7 +53,8 @@ class MyWallJobRepositoryImpl @Inject constructor(
                 throw ApiError(response.code(), response.message())
             } else {
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
-                dateJob.add(body)
+                dateJob.value
+                getMyJob()
             }
         } catch (e: IOException) {
             throw NetworkError
