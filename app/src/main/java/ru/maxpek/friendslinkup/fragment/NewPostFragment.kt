@@ -31,6 +31,7 @@ import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
 import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
+import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
@@ -54,7 +55,7 @@ class NewPostFragment : Fragment() {
         val newPostViewModel : NewPostViewModel by activityViewModels()
         var file: MultipartBody.Part
 
-        val callback = requireActivity().onBackPressedDispatcher.addCallback(this) {
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
                 Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
                     newPostViewModel.deleteEditPost()
                     findNavController().navigate(R.id.feedFragment)
@@ -138,12 +139,13 @@ class NewPostFragment : Fragment() {
         }
 
         binding.geoAdd.setOnClickListener {
-//            findNavController().navigate(
-//                R.id.action_newPostFragment_to_mapsFragment,
-////                Bundle().apply { pointArg = Point(newPostViewModel.newPost.value?.coords.latitude.toS, marker.pointLongitude) })
-//            )
-            binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != null
-            findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
+            if (newPostViewModel.newPost.value?.coords != null) {
+                binding.geoAdd.isChecked = true
+                val point = Point(newPostViewModel.newPost.value?.coords!!.lat.toDouble(),
+                    newPostViewModel.newPost.value?.coords!!.long.toDouble() )
+                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
+                    Bundle().apply { pointArg = point })
+            }
         }
 
         binding.linkAdd.setOnClickListener {
@@ -175,23 +177,15 @@ class NewPostFragment : Fragment() {
             it.content.let(binding.edit::setText)
             it.link.let(binding.editLink::setText)
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
-//            if (newPostViewModel.mentionsLive.value!!.isEmpty()){
-//                adapter.submitList(newPostViewModel.mentionsLive.value)
-//            }
-
             binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != Coordinates("0", "0")
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
-
-        }
-
-        newPostViewModel.dataAttachment.observe(viewLifecycleOwner) {
-            newPostViewModel.addAttachment()
-            if (it.url != "") {
+            if (it.attachment?.url != "") {
                 binding.image.visibility = View.VISIBLE
                 binding.menuAdd.isChecked = true
             } else {
                 binding.menuAdd.isChecked = false
             }
+
         }
 
         binding.ok.setOnClickListener {

@@ -11,10 +11,5 @@
         android:title="@string/feed_of_events"
         android:icon="@drawable/event_icons"
         android:checked="true"/>
-    <item
-        android:id="@+id/jobs"
-        android:title="@string/feed_of_jobs"
-        android:icon="@drawable/work_icons"
-        android:checked="true"/>
 
 </menu>

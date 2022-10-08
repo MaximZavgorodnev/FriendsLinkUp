@@ -13,6 +13,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.yandex.mapkit.geometry.Point
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
@@ -21,6 +23,7 @@ import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.AttachmentType.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -32,6 +35,7 @@ interface OnInteractionListener {
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
     fun goToPageUser(post: PostResponse){}
+    fun goToGeo(post: PostResponse){}
 }
 
 class PostsAdapter(
@@ -53,6 +57,7 @@ class PostViewHolder(
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("NewApi")
     fun bind(post: PostResponse) {
         binding.apply {
@@ -134,6 +139,15 @@ class PostViewHolder(
 
             author.setOnClickListener {
                 onInteractionListener.goToPageUser(post)
+            }
+
+            geo.setOnClickListener {
+                it.findNavController().navigate(R.id.action_feedFragment_to_mapsFragment,
+                    Bundle().apply {
+                        Point(
+                            post.coords?.lat!!.toDouble(), post.coords.long.toDouble()
+                        ).also { pointArg = it }
+                    })
             }
 
         }

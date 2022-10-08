@@ -169,13 +169,14 @@ class MapsFragment : Fragment() {
             userLocation.setObjectListener(locationObjectListener)
 
             if (arguments?.pointArg != null) {
-                mapView?.map?.move(CameraPosition(arguments?.pointArg!!, 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 5F),
-                    null)
-                mapView?.map?.mapObjects?.addPlacemark(
-                    arguments?.pointArg!!,
+                val point = Point(arguments?.pointArg?.latitude!!, arguments?.pointArg?.longitude!!)
+                binding.map.map?.mapObjects?.addPlacemark(
+                    point,
                     ImageProvider.fromResource(context, R.drawable.search_result)
                 )
+                mapView?.map?.move(CameraPosition(point, 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 5F), null)
+
 
             } else {
                 if (requireActivity()
@@ -189,13 +190,6 @@ class MapsFragment : Fragment() {
 
             }
         }
-
-
-
-
-
-
-
 
         binding.plus.setOnClickListener {
             binding.map.map.move(CameraPosition(binding.map.map.cameraPosition.target,binding.map.map.cameraPosition.zoom+1,

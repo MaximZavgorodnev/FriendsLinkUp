@@ -15,17 +15,10 @@ import javax.inject.Inject
 val emptyList = listOf<UserRequested>()
 
 
-val attachment = Attachment("", AttachmentType.IMAGE)
-
-
-
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: PostDao
 ): NewPostRepository {
-
-    override val dataAttachment: MutableLiveData<Attachment> = MutableLiveData(attachment)
-
 
     override suspend fun loadUsers(): List<UserRequested>{
         val usersList: List<UserRequested>
@@ -42,7 +35,7 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part) {
+    override suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part): Attachment {
 
         try {
             val response = apiService.addMultimedia(image)
@@ -51,7 +44,7 @@ class NewPostRepositoryImpl @Inject constructor(
             }
             val mediaResponse = response.body() ?: throw ApiError(response.code(), response.message())
             val attachment = Attachment(mediaResponse.url, attachmentType)
-            dataAttachment.postValue(attachment)
+            return attachment
         } catch (e: IOException) {
             throw NetworkError
         }
@@ -86,9 +79,6 @@ class NewPostRepositoryImpl @Inject constructor(
                         attachment = body.attachment,
                         mentionIds = body.mentionIds
                     )
-                    if (body.attachment != null) {
-                        dataAttachment.postValue(body.attachment!!)
-                    }
                     return post
                 }
         } catch (e: IOException) {

@@ -14,7 +14,6 @@ import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.model.ErrorLive
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
-import ru.maxpek.friendslinkup.repository.newPost.attachment
 import ru.maxpek.friendslinkup.util.SingleLiveEvent
 import java.text.DecimalFormat
 import javax.inject.Inject
@@ -40,8 +39,6 @@ class NewPostViewModel @Inject constructor(
     val data: MutableLiveData<List<UserRequested>> = MutableLiveData()
 
     val mentionsLive : MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
-    val dataAttachment = repository.dataAttachment
-
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -145,20 +142,14 @@ class NewPostViewModel @Inject constructor(
     fun addPictureToThePost(image: MultipartBody.Part){
         viewModelScope.launch {
             try {
-                repository.addPictureToThePost(AttachmentType.IMAGE, image)
+                val attachment = repository.addPictureToThePost(AttachmentType.IMAGE, image)
+                newPost.value = newPost.value?.copy(attachment = attachment)
                 _dataState.value = FeedModelState(error = false)
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
         }
     }
-
-    fun addAttachment(){
-        newPost.value = newPost.value?.copy(attachment = dataAttachment.value)
-    }
-
-
-
 
 
     fun deleteEditPost(){
