@@ -6,6 +6,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.activity.addCallback
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -29,6 +31,7 @@ import ru.maxpek.friendslinkup.util.StringArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
+import kotlin.system.exitProcess
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -46,6 +49,10 @@ class FeedFragment : Fragment() {
             if (!authViewModel.authenticated) {binding.fab.visibility = View.GONE} else {
                 binding.fab.visibility = View.VISIBLE
             }
+        }
+
+        requireActivity().onBackPressedDispatcher.addCallback(this) {
+            findNavController().navigate(R.id.exit)
         }
 
         val adapter = PostsAdapter(object : OnInteractionListener {
@@ -126,6 +133,7 @@ class FeedFragment : Fragment() {
             viewModel.data.collectLatest(adapter::submitData)
         }
 
+        adapter.loadStateFlow
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest {
                 binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading

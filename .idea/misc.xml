@@ -15,12 +15,15 @@
         <entry key="app/src/main/res/drawable/card_event.xml" value="0.2085" />
         <entry key="app/src/main/res/drawable/event_icons.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/feed_icons.xml" value="0.1615" />
+        <entry key="app/src/main/res/drawable/ic_.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_avatar_loading_error_48.xml" value="0.1585" />
         <entry key="app/src/main/res/drawable/ic_baseline_feed_24.xml" value="0.1615" />
         <entry key="app/src/main/res/drawable/ic_baseline_work_24.xml" value="0.214" />
         <entry key="app/src/main/res/drawable/ic_baseline_zoom_in_24.xml" value="0.149" />
         <entry key="app/src/main/res/drawable/ic_baseline_zoom_out_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_gps_fixed_24.xml" value="0.3085" />
+        <entry key="app/src/main/res/drawable/ic_heck_24.xml" value="0.16" />
+        <entry key="app/src/main/res/drawable/ic_heck_click.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_logo_foreground.xml" value="0.2005" />
         <entry key="app/src/main/res/drawable/ic_mention_24.xml" value="0.2415" />
         <entry key="app/src/main/res/drawable/ic_menu_24.xml" value="0.1" />
@@ -35,7 +38,7 @@
         <entry key="app/src/main/res/drawable/work_icons.xml" value="0.1615" />
         <entry key="app/src/main/res/layout/activity_app.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="app/src/main/res/layout/card_event.xml" value="0.3229166666666667" />
+        <entry key="app/src/main/res/layout/card_event.xml" value="0.25" />
         <entry key="app/src/main/res/layout/card_ids.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/card_jobs.xml" value="0.23136246786632392" />
         <entry key="app/src/main/res/layout/card_mention.xml" value="0.24954710144927536" />
@@ -50,7 +53,8 @@
         <entry key="app/src/main/res/layout/fragment_add_link.xml" value="0.359375" />
         <entry key="app/src/main/res/layout/fragment_authentication.xml" value="0.317481884057971" />
         <entry key="app/src/main/res/layout/fragment_displaying_images.xml" value="0.317481884057971" />
-        <entry key="app/src/main/res/layout/fragment_event.xml" value="0.3229166666666667" />
+        <entry key="app/src/main/res/layout/fragment_event.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_exit.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_feed.xml" value="0.25" />
         <entry key="app/src/main/res/layout/fragment_job.xml" value="0.36041666666666666" />
         <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.328804347826087" />

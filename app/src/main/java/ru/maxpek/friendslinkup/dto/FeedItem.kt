@@ -55,11 +55,10 @@ data class EventCreateRequest(
     val id: Int,
     val content: String,
     val datetime: String?,
-    val published: String,
     val coords: Coordinates?,
     val type: TypeEvent?,
     val attachment: Attachment?,
-    val link: String,
+    val link: String?,
     val speakerIds: List<Int>?,
 
 )
@@ -145,10 +144,6 @@ data class Coordinates (
 data class MediaResponse(
     val url: String
 )
-
-
-
-data class PhotoModel(val uri: Uri? = null, val file: File? = null)
 
 
 

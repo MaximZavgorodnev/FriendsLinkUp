@@ -1,4 +1,15 @@
 package ru.maxpek.friendslinkup.repository.event
 
+import dagger.Binds
+import dagger.Module
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
+
+@InstallIn(SingletonComponent::class)
+@Module
 interface EventRepositoryModule {
+    @Binds
+    @Singleton
+    fun bindPostRepository(impl: EventRepositoryImpl): EventRepository
 }

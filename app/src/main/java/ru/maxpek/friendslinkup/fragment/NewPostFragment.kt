@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -145,6 +146,8 @@ class NewPostFragment : Fragment() {
                     newPostViewModel.newPost.value?.coords!!.long.toDouble() )
                 findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
                     Bundle().apply { pointArg = point })
+            } else {
+                findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
             }
         }
 
@@ -170,42 +173,51 @@ class NewPostFragment : Fragment() {
                 }
             }
 
-
-            adapter.submitList(it)
         }
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
             it.content.let(binding.edit::setText)
             it.link.let(binding.editLink::setText)
             binding.mentionAdd.isChecked = it.mentionIds.isNotEmpty()
-            binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != Coordinates("0", "0")
+            binding.geoAdd.isChecked = newPostViewModel.newPost.value?.coords != null
             binding.linkAdd.isChecked = newPostViewModel.newPost.value?.link != null
-            if (it.attachment?.url != "") {
+            if (it.attachment != null) {
                 binding.image.visibility = View.VISIBLE
+                Glide.with(this)
+                    .load(it.attachment.url)
+                    .error(R.drawable.ic_avatar_loading_error_48)
+                    .placeholder(R.drawable.ic_baseline_cruelty_free_48)
+                    .timeout(10_000)
+                    .into(binding.image)
                 binding.menuAdd.isChecked = true
             } else {
                 binding.menuAdd.isChecked = false
+                binding.image.visibility = View.GONE
             }
 
         }
 
+        binding.image.setOnClickListener {
+            newPostViewModel.deletePicture()
+        }
+
         binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
-            newPostViewModel.addPost(content)
+            if (content =="") {
+                Snackbar.make(binding.root, R.string.content_field, Snackbar.LENGTH_SHORT).show()
+            } else {
+                newPostViewModel.addPost(content)
+            }
 
         }
 
         newPostViewModel.postCreated.observe(viewLifecycleOwner) {
             findNavController().navigateUp()
         }
-        ///Нужно доработать ошибку
+
         newPostViewModel.dataState.observe(viewLifecycleOwner) { state ->
-//            if (state.error) {
-//                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
-//                    .setAction(R.string.retry_loading) {
-////                        newPostViewModel.retry()
-//                    }
-//                    .show()
-//            }
+            if (state.error) {
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE).show()
+            }
         }
 
 

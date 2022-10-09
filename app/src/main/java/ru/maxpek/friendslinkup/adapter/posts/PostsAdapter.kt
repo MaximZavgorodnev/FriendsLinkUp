@@ -35,7 +35,6 @@ interface OnInteractionListener {
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
     fun goToPageUser(post: PostResponse){}
-    fun goToGeo(post: PostResponse){}
 }
 
 class PostsAdapter(
@@ -52,12 +51,11 @@ class PostsAdapter(
     }
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
-
-    @OptIn(ExperimentalCoroutinesApi::class)
     @SuppressLint("NewApi")
     fun bind(post: PostResponse) {
         binding.apply {

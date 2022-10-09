@@ -22,13 +22,13 @@ interface EventDao {
     suspend fun isEmpty(): Boolean
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(event: EventEntity) : Long
+    suspend fun insert(event: EventEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(events: List<EventEntity>)
 
     @Query("DELETE FROM EventEntity WHERE id = :id")
-    suspend fun removeById(id: Long)
+    suspend fun removeById(id: Int)
 
 //    @Query("UPDATE EventEntity SET read = 1")
 //    suspend fun update()   Пока что не знаю нужно или нет

@@ -89,7 +89,8 @@
             app:layout_constraintStart_toEndOf="@id/dateTime"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toBottomOf="@id/dateTime"
-            android:src="@drawable/online_icons"/>
+            android:src="@drawable/online_icons"
+            tools:ignore="RtlSymmetry" />
 
         <androidx.constraintlayout.widget.Group
             android:id="@+id/group"
@@ -162,15 +163,31 @@
             />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/share"
+            android:id="@+id/participate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/description_post_share"
             app:layout_constraintStart_toEndOf="@+id/like"
             app:layout_constraintTop_toBottomOf="@id/footer"
-            app:icon="@drawable/ic_share_24"
-            style="@style/Widget.AppTheme.IconButton" />
+            app:icon="@drawable/ic_heck_click"
+            android:textColor="#000000"
+            tools:checked="@sample/posts.json/data/likedByMe"
+            tools:text="@sample/posts.json/data/likes"
+            style="@style/Widget.AppTheme.LikeCheckBox"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/speakers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/common_spacing"
+            android:contentDescription="@string/description_post_share"
+            app:layout_constraintStart_toEndOf="@+id/participate"
+            app:layout_constraintTop_toBottomOf="@id/footer"
+            android:textColor="#000000"
+            app:icon="@drawable/ic_speaker_24"
+            style="@style/Widget.AppTheme.IconButton"
+            tools:text="@sample/posts.json/data/likes"/>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/geo"
@@ -178,31 +195,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/description_post_share"
-            app:layout_constraintStart_toEndOf="@+id/share"
+            app:layout_constraintStart_toEndOf="@+id/speakers"
             app:layout_constraintTop_toBottomOf="@id/footer"
             app:icon="@drawable/ic_gps_fixed_24"
             style="@style/Widget.AppTheme.IconButton"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/participate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/common_spacing"
-            android:contentDescription="@string/description_post_share"
-            app:layout_constraintStart_toEndOf="@+id/geo"
-            app:layout_constraintTop_toBottomOf="@id/footer"
-            app:icon="@drawable/ic_heck_24"
-            style="@style/Widget.AppTheme.CheckBox"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/participantsIds"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/like"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/card_ids" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

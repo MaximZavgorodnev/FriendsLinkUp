@@ -6,16 +6,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import ru.maxpek.friendslinkup.dto.Attachment
 import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.PostCreateRequest
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
-import ru.maxpek.friendslinkup.model.ErrorLive
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newPost.NewPostRepository
 import ru.maxpek.friendslinkup.util.SingleLiveEvent
-import java.text.DecimalFormat
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -23,7 +20,7 @@ import kotlin.math.roundToInt
 val editedPost = PostCreateRequest(
     id = 0,
     content = "",
-    coords = Coordinates("0", "0"),
+    coords = null,
     link = null,
     attachment = null,
     mentionIds = listOf())
@@ -49,7 +46,8 @@ class NewPostViewModel @Inject constructor(
         get() = _dataState
 
     fun getPost(id: Int){
-        mentionsLive.value = mentions
+
+        mentionsLive.postValue(mentions)
         viewModelScope.launch {
             try {
                 newPost.value = repository.getPost(id)
@@ -64,7 +62,7 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun getUsers() {
-        mentionsLive.value = mentions
+        mentionsLive.postValue(mentions)
         viewModelScope.launch {
             try {
                 data.value = repository.loadUsers()
@@ -75,6 +73,7 @@ class NewPostViewModel @Inject constructor(
                         }
                     }
                 }
+                _dataState.value = FeedModelState(error = false)
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -82,7 +81,7 @@ class NewPostViewModel @Inject constructor(
     }
 
     fun addMentionIds(){
-        mentionsLive.value = mentions
+        mentionsLive.postValue(mentions)
         val listChecked = mutableListOf<Int>()
         val mentionsUserList = mutableListOf<UserRequested>()
         data.value?.forEach { user ->
@@ -149,6 +148,10 @@ class NewPostViewModel @Inject constructor(
                 _dataState.value = FeedModelState(error = true)
             }
         }
+    }
+
+    fun deletePicture(){
+        newPost.value = newPost.value?.copy(attachment = null)
     }
 
 

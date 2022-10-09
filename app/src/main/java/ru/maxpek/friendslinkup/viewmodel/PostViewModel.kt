@@ -101,7 +101,9 @@ class PostViewModel @Inject constructor(
             LIKE -> retryLikeById()
             DISLIKE -> retryDisLikeById()
             REMOVE -> retryRemove()
-            null -> TODO()
+            PARTICIPATE -> {}
+            DONOTPARTICIPATE -> {}
+            null -> {}
         }
     }
 
@@ -127,5 +129,7 @@ class PostViewModel @Inject constructor(
 enum class ActionType{
     LIKE,
     DISLIKE,
-    REMOVE
+    REMOVE,
+    PARTICIPATE,
+    DONOTPARTICIPATE
 }

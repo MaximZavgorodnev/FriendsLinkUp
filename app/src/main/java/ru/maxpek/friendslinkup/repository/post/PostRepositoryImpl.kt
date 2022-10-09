@@ -25,10 +25,8 @@ val emptyList = listOf<UserRequested>()
 class PostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mediator: PostRemoteMediator,
-    private val appAuth: AppAuth,
     private val dao: PostDao
 ) : PostRepository {
-    private val memoryPosts = mutableListOf<PostResponse>()
 
     override val data: Flow<PagingData<PostResponse>> =
         Pager(
@@ -57,18 +55,6 @@ class PostRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             throw NetworkError
         }
-    }
-
-    override suspend fun getAll() {
-
-    }
-
-    override fun getNewerCount(id: Int): Flow<Int> {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun save(postResponse: PostResponse) {
-        TODO("Not yet implemented")
     }
 
     override suspend fun removeById(id: Int) {
@@ -109,11 +95,4 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun update() {
-        TODO("Not yet implemented")
-    }
-
-    override suspend fun isSize(): Int {
-        TODO("Not yet implemented")
-    }
 }

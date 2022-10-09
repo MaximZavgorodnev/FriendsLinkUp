@@ -44,25 +44,7 @@ class PostRemoteMediator @Inject constructor(
                     )
                     apiService.getBefore(id, state.config.pageSize)
                 }
-//                LoadType.REFRESH -> {
-//                    if (postDao.isEmpty()){
-//                        apiService.getLatest(state.config.pageSize)
-//                    } else {
-//                        val id = postRemoteKeyDao.max() ?: return MediatorResult.Success(
-//                            endOfPaginationReached = false
-//                        )
-//                        apiService.getAfter(id, state.config.pageSize)
-//                    }
-//                }
-//                LoadType.PREPEND -> null
-//                LoadType.APPEND -> {
-//                    val id = postRemoteKeyDao.min() ?: return MediatorResult.Success(
-//                        endOfPaginationReached = false
-//                    )
-//                    apiService.getBefore(id, state.config.pageSize)
-//                }
             }
-//            if (response != null) {
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
@@ -73,45 +55,6 @@ class PostRemoteMediator @Inject constructor(
 
             db.withTransaction {
                 when (loadType) {
-//                    LoadType.REFRESH -> {
-//                        if (postRemoteKeyDao.isEmpty()) {
-//                            postRemoteKeyDao.insert(
-//                                listOf(
-//                                    PostRemoteKeyEntity(
-//                                        type = PostRemoteKeyEntity.KeyType.AFTER,
-//                                        id = body.first().id,
-//                                    ),
-//                                    PostRemoteKeyEntity(
-//                                        type = PostRemoteKeyEntity.KeyType.BEFORE,
-//                                        id = body.last().id,
-//                                    ),
-//                                )
-//                            )
-//                        } else {
-//                            postRemoteKeyDao.insert(
-//                                PostRemoteKeyEntity(
-//                                    type = PostRemoteKeyEntity.KeyType.AFTER,
-//                                    id = body.first().id,
-//                                )
-//                            )
-//                        }
-//                    }
-//                    LoadType.PREPEND -> {
-//                        postRemoteKeyDao.insert(
-//                            PostRemoteKeyEntity(
-//                                type = PostRemoteKeyEntity.KeyType.AFTER,
-//                                id = body.first().id,
-//                            )
-//                        )
-//                    }
-//                    LoadType.APPEND -> {
-//                        postRemoteKeyDao.insert(
-//                            PostRemoteKeyEntity(
-//                                type = PostRemoteKeyEntity.KeyType.BEFORE,
-//                                id = body.last().id,
-//                            )
-//                        )
-//                    }
                     LoadType.REFRESH -> {
                         postRemoteKeyDao.removeAll()
                         postRemoteKeyDao.insert(
@@ -152,7 +95,6 @@ class PostRemoteMediator @Inject constructor(
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
         }
         catch (e: Exception){
-            println(e)
             return MediatorResult.Error(e)
         }
 

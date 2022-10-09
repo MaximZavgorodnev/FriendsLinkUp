@@ -121,4 +121,9 @@
         android:name="ru.maxpek.friendslinkup.fragment.wall.users.UserJobFragment"
         android:label="fragment_user_wall_job"
         tools:layout="@layout/fragment_user_wall_job" />
+    <dialog
+        android:id="@+id/exit"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.Exit"
+        android:label="fragment_exit"
+        tools:layout="@layout/fragment_exit" />
 </navigation>

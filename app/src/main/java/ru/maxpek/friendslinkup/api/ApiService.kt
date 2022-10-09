@@ -13,11 +13,6 @@ interface ApiService {
 //
     @POST("posts")
     suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
-//
-
-//
-
-//
 
 
     //Аунтетификация пользователя
@@ -141,6 +136,43 @@ interface ApiService {
     //Получить список моих работ
     @GET("my/jobs")
     suspend fun getMyJob (): Response<MutableList<Job>>
+
+    //Получение событий
+    @GET("events/latest")
+    suspend fun getLatestEvent(@Query("count") count: Int): Response<List<EventResponse>>
+
+    @GET("events/{id}/before")
+    suspend fun getBeforeEvent(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<EventResponse>>
+
+    @GET("events/{id}/after")
+    suspend fun getAfterEvent(
+        @Path("id") id: Long,
+        @Query("count") count: Int
+    ): Response<List<EventResponse>>
+
+    //Удаление события
+    @DELETE("events/{id}")
+    suspend fun removeByIdEvent(@Path("id") id: Int): Response<Unit>
+
+    //Лайк события
+    @POST("events/{id}/likes")
+    suspend fun likeByIdEvent(@Path("id") id: Int): Response<EventResponse>
+
+    //Дизлайк события
+    @DELETE("events/{id}/likes")
+    suspend fun dislikeByIdEvent(@Path("id") id: Int): Response<EventResponse>
+
+    //Участвовать в событии
+    @POST("events/{id}/participants")
+    suspend fun participateInEvent(@Path("id") id: Int): Response<EventResponse>
+
+    //Не участвовать в событии
+    @DELETE("events/{id}/participants")
+    suspend fun doNotParticipateInEvent(@Path("id") id: Int): Response<EventResponse>
+
 
 
 

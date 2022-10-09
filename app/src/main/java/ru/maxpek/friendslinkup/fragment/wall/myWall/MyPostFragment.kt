@@ -27,6 +27,7 @@ import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentMyWallPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.MyWallPostViewModel
 
@@ -52,7 +53,9 @@ class MyPostFragment: Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
-            override fun onEdit(post: PostResponse) {}
+            override fun onEdit(post: PostResponse) {
+                findNavController().navigate(R.id.newPostFragment,Bundle().apply { intArg = post.id })
+            }
             override fun onRemove(post: PostResponse) {
                 viewModel.removeById(post.id)
             }
