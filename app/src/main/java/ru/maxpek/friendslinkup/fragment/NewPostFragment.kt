@@ -144,9 +144,11 @@ class NewPostFragment : Fragment() {
                 binding.geoAdd.isChecked = true
                 val point = Point(newPostViewModel.newPost.value?.coords!!.lat.toDouble(),
                     newPostViewModel.newPost.value?.coords!!.long.toDouble() )
+                newPostViewModel.inJob = true
                 findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
                     Bundle().apply { pointArg = point })
             } else {
+                newPostViewModel.inJob = true
                 findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment)
             }
         }

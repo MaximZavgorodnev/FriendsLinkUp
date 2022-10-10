@@ -37,6 +37,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentMapsBinding
 import ru.maxpek.friendslinkup.util.PointArg
+import ru.maxpek.friendslinkup.viewmodel.NewEventViewModel
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 
@@ -45,6 +46,7 @@ import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 class MapsFragment : Fragment() {
     private var binding: FragmentMapsBinding? = null
     val newPostViewModel: NewPostViewModel by activityViewModels()
+    val newEventViewModel: NewEventViewModel by activityViewModels()
 
 
     var mapObjects: MapObject? = null
@@ -86,19 +88,32 @@ class MapsFragment : Fragment() {
             }
             binding?.map?.map?.deselectGeoObject()
 
-            mapObjects = binding?.map?.map?.mapObjects?.addPlacemark(
-                point,
-                ImageProvider.fromResource(context, R.drawable.search_result)
-            )
 
-            Snackbar.make(
-                binding?.root!!, R.string.addGeo,
-                BaseTransientBottomBar.LENGTH_INDEFINITE
-            ).setAction(R.string.add)
+            if (newPostViewModel.inJob){
+                mapObjects = binding?.map?.map?.mapObjects?.addPlacemark(
+                    point,
+                    ImageProvider.fromResource(context, R.drawable.search_result)
+                )
+                Snackbar.make(
+                    binding?.root!!, R.string.addGeo,
+                    BaseTransientBottomBar.LENGTH_INDEFINITE
+                ).setAction(R.string.add)
                 { newPostViewModel.addCoords(point)
                     findNavController().navigateUp()
-            }.show()
-
+                }.show()
+            } else if (newEventViewModel.inJob) {
+                mapObjects = binding?.map?.map?.mapObjects?.addPlacemark(
+                    point,
+                    ImageProvider.fromResource(context, R.drawable.search_result)
+                )
+                Snackbar.make(
+                    binding?.root!!, R.string.addGeo,
+                    BaseTransientBottomBar.LENGTH_INDEFINITE
+                ).setAction(R.string.add)
+                { newEventViewModel.addCoords(point)
+                    findNavController().navigateUp()
+                }.show()
+            }
         }
     }
 
@@ -133,7 +148,6 @@ class MapsFragment : Fragment() {
         }
 
     companion object{
-        private val TARGET_LOCATION = Point(59.945933, 30.320045)
         var Bundle.pointArg: Point by PointArg
 
     }
@@ -209,10 +223,7 @@ class MapsFragment : Fragment() {
         binding.location.setOnClickListener {
             permissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
         }
-
         return binding.root
-
-
     }
 
     override fun onStart() {

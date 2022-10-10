@@ -173,6 +173,13 @@ interface ApiService {
     @DELETE("events/{id}/participants")
     suspend fun doNotParticipateInEvent(@Path("id") id: Int): Response<EventResponse>
 
+    //Добавление нового события
+    @POST("events")
+    suspend fun addEvent(@Body post: EventCreateRequest): Response<EventResponse>
+
+    //Получение события
+    @GET("events/{event_id}")
+    suspend fun getEvent(@Path("event_id") id: Int): Response<EventResponse>
 
 
 

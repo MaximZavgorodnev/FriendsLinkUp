@@ -66,11 +66,11 @@
         android:label="fragment_new_event"
         tools:layout="@layout/fragment_new_event" >
         <action
-            android:id="@+id/action_newEventFragment_to_listOfUsers"
-            app:destination="@id/listOfUsers" />
-        <action
             android:id="@+id/action_newEventFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_newEventFragment_to_listOfUsersAddInEvent"
+            app:destination="@id/listOfUsersAddInEvent" />
     </fragment>
     <fragment
         android:id="@+id/newJobFragment"
@@ -133,4 +133,8 @@
         android:id="@+id/listOfSpeakers"
         android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfSpeakers"
         android:label="ListOfSpeakers" />
+    <dialog
+        android:id="@+id/listOfUsersAddInEvent"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfUsersAddInEvent"
+        android:label="ListOfUsersAddInEvent" />
 </navigation>

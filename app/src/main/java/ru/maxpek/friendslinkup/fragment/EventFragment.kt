@@ -94,7 +94,7 @@ class EventFragment: Fragment() {
 
             override fun loadingTheListOfParticipants(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    if (event.speakerIds.isEmpty()){
+                    if (event.participantsIds.isEmpty()){
                         Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
                     } else {
                         viewModel.goToUserParticipateInEvent(event.participantsIds)

@@ -1,10 +1,10 @@
-package ru.maxpek.friendslinkup.repository.newPost
+package ru.maxpek.friendslinkup.repository.newEvent
 
 import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.dao.PostDao
+import ru.maxpek.friendslinkup.dao.EventDao
 import ru.maxpek.friendslinkup.dto.*
-import ru.maxpek.friendslinkup.entity.PostEntity
+import ru.maxpek.friendslinkup.entity.EventEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.error.ApiError
 import ru.maxpek.friendslinkup.error.NetworkError
@@ -12,14 +12,11 @@ import java.io.IOException
 import javax.inject.Inject
 
 val emptyList = listOf<UserRequested>()
-
-
-class NewPostRepositoryImpl @Inject constructor(
+class NewEventRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-    private val dao: PostDao
-): NewPostRepository {
-
-    override suspend fun loadUsers(): List<UserRequested>{
+    private val dao: EventDao
+): NewEventRepository{
+    override suspend fun loadUsers(): List<UserRequested> {
         val usersList: List<UserRequested>
         try {
             val response = apiService.getUsers()
@@ -33,8 +30,10 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part): Attachment {
-
+    override suspend fun addPictureToTheEvent(
+        attachmentType: AttachmentType,
+        image: MultipartBody.Part
+    ): Attachment {
         try {
             val response = apiService.addMultimedia(image)
             if (!response.isSuccessful) {
@@ -48,41 +47,41 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addPost(post: PostCreateRequest) {
+    override suspend fun addEvent(event: EventCreateRequest) {
         try {
-            val response = apiService.addPost(post)
+            val response = apiService.addEvent(event)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             } else {
                 val body = response.body() ?: throw ApiError(response.code(), response.message())
-                dao.insert(PostEntity.fromDto(body))
+                dao.insert(EventEntity.fromDto(body))
             }
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun getPost(id: Int): PostCreateRequest{
+    override suspend fun getEvent(id: Int): EventCreateRequest {
         try {
-                val response = apiService.getPost(id)
-                if (!response.isSuccessful) {
-                    throw ApiError(response.code(), response.message())
-                } else {
-                    val body =
-                        response.body() ?: throw ApiError(response.code(), response.message())
-                    return PostCreateRequest(
-                        id = body.id,
-                        content = body.content,
-                        coords = body.coords,
-                        link = body.link,
-                        attachment = body.attachment,
-                        mentionIds = body.mentionIds
-                    )
-                }
+            val response = apiService.getEvent(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            } else {
+                val body = response.body() ?: throw ApiError(response.code(), response.message())
+                return EventCreateRequest(
+                    id = body.id,
+                    content = body.content,
+                    datetime = body.datetime,
+                    coords = body.coords,
+                    type = body.type,
+                    attachment = body.attachment,
+                    link = body.link,
+                    speakerIds = body.speakerIds
+                )
+            }
         } catch (e: IOException) {
             throw NetworkError
         }
-
     }
 
     override suspend fun getUser(id: Int): UserRequested {
@@ -97,5 +96,4 @@ class NewPostRepositoryImpl @Inject constructor(
             throw NetworkError
         }
     }
-
 }
