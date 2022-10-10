@@ -67,7 +67,7 @@ data class EventResponse(
     val id: Int,
     val authorId: Int,
     val author: String,
-    val authorAvatar: String,
+    val authorAvatar: String?,
     val authorJob: String?,
     val content: String,
     val datetime: String,
@@ -80,9 +80,8 @@ data class EventResponse(
     val participantsIds: List<Int>,
     val participatedByMe: Boolean,
     val attachment: Attachment?,
-    val link: String,
-    val ownerByMe: Boolean,
-    val users: List<UserPreview>
+    val link: String?,
+    val ownerByMe: Boolean
 )
 
 data class Job (

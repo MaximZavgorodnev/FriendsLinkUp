@@ -82,22 +82,37 @@
             app:layout_constraintTop_toBottomOf="@id/header"
             tools:text="@sample/posts.json/data/dateTime" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/common_spacing"
             app:layout_constraintStart_toEndOf="@id/dateTime"
             app:layout_constraintTop_toBottomOf="@id/header"
             app:layout_constraintBottom_toBottomOf="@id/dateTime"
-            android:src="@drawable/online_icons"
+            style="@style/Widget.AppTheme.CheckBox"
+            android:clickable="false"
+            android:checkable="true"
             tools:ignore="RtlSymmetry" />
 
-        <androidx.constraintlayout.widget.Group
-            android:id="@+id/group"
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:autoLink="web"
+            android:paddingBottom="@dimen/common_spacing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header_barrier3"
+            tools:text="@sample/posts.json/data/content" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/footer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:constraint_referenced_ids="video, header_barrier3, backgroundVideo"/>
-
+            app:barrierDirection="bottom"
+            app:constraint_referenced_ids="content" />
 
         <ImageView
             android:id="@+id/backgroundVideo"
@@ -106,7 +121,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/dateTime"
-            app:srcCompat="@drawable/img_backg"/>
+            app:srcCompat="@drawable/img_backg"
+            tools:ignore="ContentDescription" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/video"
@@ -128,25 +144,7 @@
             android:layout_height="0dp"
             app:barrierDirection="bottom"
             android:layout_marginTop="@dimen/common_spacing"
-            app:constraint_referenced_ids="video" />
-
-        <TextView
-            android:id="@+id/content"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:autoLink="web"
-            android:paddingBottom="@dimen/common_spacing"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/header_barrier3"
-            tools:text="@sample/posts.json/data/content" />
-
-        <androidx.constraintlayout.widget.Barrier
-            android:id="@+id/footer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:barrierDirection="bottom"
-            app:constraint_referenced_ids="content" />
+            app:constraint_referenced_ids="video, backgroundVideo" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/like"
@@ -168,6 +166,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/common_spacing"
             android:contentDescription="@string/description_post_share"
+            android:checkable="true"
             app:layout_constraintStart_toEndOf="@+id/like"
             app:layout_constraintTop_toBottomOf="@id/footer"
             app:icon="@drawable/ic_heck_click"

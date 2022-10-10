@@ -39,6 +39,9 @@
         <action
             android:id="@+id/action_eventFragment_to_displayingImagesFragment2"
             app:destination="@id/displayingImagesFragment2" />
+        <action
+            android:id="@+id/action_eventFragment_to_listOfSpeakers"
+            app:destination="@id/listOfSpeakers" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -126,4 +129,8 @@
         android:name="ru.maxpek.friendslinkup.fragment.dialog.Exit"
         android:label="fragment_exit"
         tools:layout="@layout/fragment_exit" />
+    <dialog
+        android:id="@+id/listOfSpeakers"
+        android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfSpeakers"
+        android:label="ListOfSpeakers" />
 </navigation>

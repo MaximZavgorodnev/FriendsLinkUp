@@ -17,6 +17,8 @@ import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.CardEventBinding
 import ru.maxpek.friendslinkup.dto.EventResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
+import ru.maxpek.friendslinkup.enumeration.TypeEvent
+import ru.maxpek.friendslinkup.enumeration.TypeEvent.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
@@ -55,6 +57,8 @@ class EventViewHolder(
         binding.apply {
             video.visibility = View.GONE
             backgroundVideo.visibility = View.GONE
+            type.isChecked = false
+            type.setIconResource(R.drawable.online_icons)
 
             Glide.with(itemView)
                 .load(event.authorAvatar)
@@ -65,8 +69,8 @@ class EventViewHolder(
                 .into(avatar)
 
 
-            if (event.attachment?.url != "") {
-                when (event.attachment?.type) {
+            if (event.attachment != null) {
+                when (event.attachment.type) {
                     AttachmentType.IMAGE -> {
                         backgroundVideo.visibility = View.VISIBLE
                     }
@@ -80,7 +84,12 @@ class EventViewHolder(
                         backgroundVideo.visibility = View.GONE
                     }
                 }
-                Glide.with(itemView).load(event.attachment?.url).timeout(10_000).into(backgroundVideo)
+                Glide.with(itemView).load(event.attachment.url).timeout(10_000).into(backgroundVideo)
+            }
+
+            type.isChecked = when(event.type){
+                OFFLINE -> false
+                ONLINE -> true
             }
             author.text = event.author
             published.text = GoDataTime.convertDataTime(event.published)
@@ -126,7 +135,7 @@ class EventViewHolder(
 
             backgroundVideo.setOnClickListener{
                 it.findNavController().navigate(
-                    R.id.action_feedFragment_to_displayingImagesFragment2,
+                    R.id.action_eventFragment_to_displayingImagesFragment2,
                     Bundle().apply { textArg = event.attachment?.url ?: " "})
             }
             speakers.setOnClickListener {
@@ -137,9 +146,13 @@ class EventViewHolder(
                 onInteractionListener.goToPageUser(event)
             }
 
+            avatar.setOnClickListener {
+                onInteractionListener.goToPageUser(event)
+            }
+
             geo.setOnClickListener {
                 it.findNavController().navigate(
-                    R.id.action_feedFragment_to_mapsFragment,
+                    R.id.mapsFragment,
                     Bundle().apply {
                         Point(
                             event.coords?.lat!!.toDouble(), event.coords.long.toDouble()

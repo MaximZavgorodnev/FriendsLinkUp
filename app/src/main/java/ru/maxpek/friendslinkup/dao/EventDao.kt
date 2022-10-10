@@ -59,17 +59,17 @@ class ConvertersListIds {
         return Gson().fromJson(sh, ListIds::class.java)
     }
 }
-class UserPreviewConverter {
-    @TypeConverter
-    fun userPreviewToJson(users: ListUserPreview): String {
-
-        return Gson().toJson(users)
-
-    }
-
-    @TypeConverter
-    fun jsonToUserPreview(sh: String): ListUserPreview {
-        val type = object : TypeToken<ListUserPreview>() {}.type
-        return gson.fromJson(sh, type)
-    }
-}
+//class UserPreviewConverter {
+//    @TypeConverter
+//    fun userPreviewToJson(users: ListUserPreview): String {
+//
+//        return Gson().toJson(users)
+//
+//    }
+//
+//    @TypeConverter
+//    fun jsonToUserPreview(sh: String): ListUserPreview {
+//        val type = object : TypeToken<ListUserPreview>() {}.type
+//        return gson.fromJson(sh, type)
+//    }
+//}

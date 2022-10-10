@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.EventResponse
-import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.event.EventRepository
@@ -25,7 +24,7 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class EventViewModel @Inject constructor(
-    private val repositoryPost: EventRepository,
+    private val repositoryEvent: EventRepository,
     appAuth: AppAuth
     ) : ViewModel() {
 
@@ -35,11 +34,11 @@ class EventViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    val dataUserSpeakers: LiveData<List<UserRequested>> = repositoryPost.dataUsersSpeakers
+    val dataUserSpeakers: LiveData<List<UserRequested>> = repositoryEvent.dataUsersSpeakers
     val data: Flow<PagingData<EventResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
-            val cached = repositoryPost.data.cachedIn(viewModelScope)
+            val cached = repositoryEvent.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
                     it.copy(ownerByMe = it.authorId.toLong() == myId )
@@ -50,7 +49,7 @@ class EventViewModel @Inject constructor(
     fun loadUsersSpeakers(mentionIds: List<Int>) {
         viewModelScope.launch {
             try {
-                repositoryPost.loadUsersSpeakers(mentionIds)
+                repositoryEvent.loadUsersSpeakers(mentionIds)
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -61,7 +60,7 @@ class EventViewModel @Inject constructor(
         lastAction = ActionType.REMOVE
         viewModelScope.launch {
             try {
-                repositoryPost.removeById(id)
+                repositoryEvent.removeById(id)
                 _dataState.value = FeedModelState()
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
@@ -74,7 +73,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryPost.likeById(id)
+                repositoryEvent.likeById(id)
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -86,7 +85,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryPost.disLikeById(id)
+                repositoryEvent.disLikeById(id)
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -96,11 +95,25 @@ class EventViewModel @Inject constructor(
     fun participateInEvent(id: Int){
         lastAction = ActionType.PARTICIPATE
         lastId = id
+        viewModelScope.launch {
+            try {
+                repositoryEvent.participateInEvent(id)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
 
     fun doNotParticipateInEvent(id: Int){
         lastAction = ActionType.DONOTPARTICIPATE
         lastId = id
+        viewModelScope.launch {
+            try {
+                repositoryEvent.doNotParticipateInEvent(id)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
+            }
+        }
     }
 
     fun retry(){

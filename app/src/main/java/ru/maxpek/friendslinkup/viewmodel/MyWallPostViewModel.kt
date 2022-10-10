@@ -124,7 +124,9 @@ class MyWallPostViewModel @Inject constructor(
             ActionType.LIKE -> retryLikeById()
             ActionType.DISLIKE -> retryDisLikeById()
             ActionType.REMOVE -> retryRemove()
-            null -> TODO()
+            ActionType.PARTICIPATE -> {}
+            ActionType.DONOTPARTICIPATE -> {}
+            null -> {}
         }
     }
 

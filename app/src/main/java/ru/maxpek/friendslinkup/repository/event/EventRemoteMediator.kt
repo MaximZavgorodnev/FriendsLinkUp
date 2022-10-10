@@ -8,6 +8,7 @@ import androidx.room.withTransaction
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.EventDao
 import ru.maxpek.friendslinkup.dao.EventRemoteKeyDao
+import ru.maxpek.friendslinkup.db.EventAppDb
 import ru.maxpek.friendslinkup.db.PostAppDb
 import ru.maxpek.friendslinkup.entity.*
 import ru.maxpek.friendslinkup.error.ApiError
@@ -18,7 +19,7 @@ class EventRemoteMediator @Inject constructor(
     private val apiService: ApiService,
     private val eventDao: EventDao,
     private val eventRemoteKeyDao: EventRemoteKeyDao,
-    private val db: PostAppDb,
+    private val db: EventAppDb,
 
     ): RemoteMediator<Int, EventEntity>() {
     override suspend fun load(loadType: LoadType, state: PagingState<Int, EventEntity>): MediatorResult {
@@ -86,13 +87,14 @@ class EventRemoteMediator @Inject constructor(
                 eventDao.insert(body.toEntity())
             }
 
+            println("222222222")
+
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
         }
         catch (e: Exception){
+            println("0000000000")
+            println(e)
             return MediatorResult.Error(e)
         }
-
     }
-
-
 }

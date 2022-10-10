@@ -11,5 +11,5 @@ import javax.inject.Singleton
 interface EventRepositoryModule {
     @Binds
     @Singleton
-    fun bindPostRepository(impl: EventRepositoryImpl): EventRepository
+    fun bindEventRepository(impl: EventRepositoryImpl): EventRepository
 }

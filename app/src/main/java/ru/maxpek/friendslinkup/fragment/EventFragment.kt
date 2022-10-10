@@ -58,11 +58,11 @@ class EventFragment: Fragment() {
                     if (!event.likedByMe) viewModel.likeById(event.id) else viewModel.disLikeById(event.id)
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
             override fun onEdit(event: EventResponse) {
-                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment,Bundle().apply { intArg = post.id })
+                findNavController().navigate(R.id.action_eventFragment_to_newEventFragment,Bundle().apply { intArg = event.id })
             }
             override fun onRemove(event: EventResponse) {
                 viewModel.removeById(event.id)
@@ -73,17 +73,26 @@ class EventFragment: Fragment() {
                         Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
                     } else {
                         viewModel.loadUsersSpeakers(event.speakerIds)
-                        findNavController().navigate(R.id.action_feedFragment_to_listOfMentions)
+                        findNavController().navigate(R.id.action_eventFragment_to_listOfSpeakers)
                     }
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
 
             override fun goToPageUser(event: EventResponse) {
                 val idAuthor = event.authorId.toString()
                 findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+            }
+
+            override fun onParticipateInEvent(event: EventResponse){
+                if (authViewModel.authenticated) {
+                    if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.doNotParticipateInEvent(event.id)
+                } else {
+                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.authenticationFragment)
+                }
             }
 
         })
@@ -122,7 +131,7 @@ class EventFragment: Fragment() {
         }
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
+            findNavController().navigate(R.id.action_eventFragment_to_newEventFragment)
         }
 
         binding.swiperefresh.setOnRefreshListener {
@@ -136,12 +145,6 @@ class EventFragment: Fragment() {
         var Bundle.intArg: Int by IntArg
     }
 
-
-            binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_eventFragment_to_newEventFragment)
-        }
-        return binding.root
-    }
 }
 
 
