@@ -13,6 +13,7 @@ import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.dto.EventCreateRequest
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
+import ru.maxpek.friendslinkup.enumeration.TypeEvent
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.newEvent.NewEventRepository
 import ru.maxpek.friendslinkup.util.SingleLiveEvent
@@ -117,11 +118,12 @@ class NewEventViewModel @Inject constructor(
     fun addPost(content: String){
         newEvent.value = newEvent.value?.copy(content = content)
         val event = newEvent.value!!
-        _postCreated.value = Unit
+        println(event)
         viewModelScope.launch {
             try {
                 repository.addEvent(event)
                 _dataState.value = FeedModelState(error = false)
+                _postCreated.value = Unit
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }

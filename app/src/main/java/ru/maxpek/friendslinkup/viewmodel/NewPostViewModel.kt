@@ -115,11 +115,11 @@ class NewPostViewModel @Inject constructor(
     fun addPost(content: String){
         newPost.value = newPost.value?.copy(content = content)
         val post = newPost.value!!
-        _postCreated.value = Unit
         viewModelScope.launch {
             try {
                 repository.addPost(post)
                 _dataState.value = FeedModelState(error = false)
+                _postCreated.value = Unit
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
