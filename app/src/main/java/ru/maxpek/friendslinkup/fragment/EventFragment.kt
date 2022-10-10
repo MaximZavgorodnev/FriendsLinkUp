@@ -95,6 +95,14 @@ class EventFragment: Fragment() {
                 }
             }
 
+            override fun loadingTheListOfParticipants(event: EventResponse) {
+                if (authViewModel.authenticated) {
+                    viewModel
+                } else {
+                    Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                    findNavController().navigate(R.id.authenticationFragment)
+                }
+            }
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
