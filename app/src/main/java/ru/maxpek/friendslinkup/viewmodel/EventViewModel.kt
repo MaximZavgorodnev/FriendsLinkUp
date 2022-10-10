@@ -30,11 +30,13 @@ class EventViewModel @Inject constructor(
 
     var lastAction: ActionType? = null
     var lastId = 0
+    var errorCounter = 0
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
     val dataUserSpeakers: LiveData<List<UserRequested>> = repositoryEvent.dataUsersSpeakers
+
     val data: Flow<PagingData<EventResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
@@ -50,8 +52,9 @@ class EventViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryEvent.loadUsersSpeakers(mentionIds)
+                _dataState.value = FeedModelState(loading = false)
             } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
+                _dataState.value = FeedModelState(loading = true)
             }
         }
     }
@@ -116,41 +119,60 @@ class EventViewModel @Inject constructor(
         }
     }
 
+    fun goToUserParticipateInEvent(users: List<Int>) {
+        viewModelScope.launch {
+            try {
+                repositoryEvent.loadUsersSpeakers(users)
+                _dataState.value = FeedModelState(loading = false)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(loading = true)
+            }
+        }
+    }
+
     fun retry(){
-        when (lastAction){
-            ActionType.LIKE -> retryLikeById()
-            ActionType.DISLIKE -> retryDisLikeById()
-            ActionType.REMOVE -> retryRemove()
-            ActionType.PARTICIPATE -> retryParticipateInEvent()
-            ActionType.DONOTPARTICIPATE -> retryDoNotParticipateInEvent()
-            null -> {}
+        if (errorCounter == 3 || errorCounter > 3){
+            _dataState.value = FeedModelState(loading = true)
+        } else {
+            when (lastAction) {
+                ActionType.LIKE -> retryLikeById()
+                ActionType.DISLIKE -> retryDisLikeById()
+                ActionType.REMOVE -> retryRemove()
+                ActionType.PARTICIPATE -> retryParticipateInEvent()
+                ActionType.DONOTPARTICIPATE -> retryDoNotParticipateInEvent()
+                null -> {}
+            }
         }
     }
 
     fun retryLikeById(){
         lastId.let{
             likeById(it)}
+        errorCounter++
     }
 
     fun retryDisLikeById(){
         lastId.let{
             disLikeById(it)}
+        errorCounter++
     }
 
     fun retryRemove(){
         lastId.let{
-            removeById(it)
-        }
+            removeById(it) }
+        errorCounter++
     }
 
     fun retryParticipateInEvent() {
         lastId.let{
             participateInEvent(it)}
+        errorCounter++
     }
 
     fun retryDoNotParticipateInEvent() {
         lastId.let{
             doNotParticipateInEvent(it)}
+        errorCounter++
     }
 
 

@@ -127,6 +127,9 @@ class FeedFragment : Fragment() {
                     .setAction(R.string.retry_loading) { viewModel.retry() }
                     .show()
             }
+            if (state.loading){
+                Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
+            }
         }
 
         lifecycleScope.launchWhenCreated {

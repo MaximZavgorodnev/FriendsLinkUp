@@ -81,4 +81,5 @@
     <string name="leave_the_app">Вы уверены что хотите покинуть приложение?</string>
     <string name="yes">да</string>
     <string name="no">нет</string>
+    <string name="problem_loading">Проблемы с загрузкой данных с сервера, попробуйте в другой раз</string>
 </resources>

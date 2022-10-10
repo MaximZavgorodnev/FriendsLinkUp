@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
@@ -39,6 +40,12 @@ class ListOfMentions : DialogFragment() {
             }
         })
         binding.list.adapter = adapter
+
+        postViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.loading){
+                Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
+            }
+        }
 
         postViewModel.dataUserMentions.observe(viewLifecycleOwner) {
             val newUser = adapter.itemCount < it.size

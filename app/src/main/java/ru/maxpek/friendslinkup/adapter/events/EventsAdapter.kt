@@ -52,13 +52,11 @@ class EventViewHolder(
     private val binding: CardEventBinding,
     private val onInteractionListener: EventCallback
 ): RecyclerView.ViewHolder(binding.root) {
-    @SuppressLint("NewApi")
+    @SuppressLint("NewApi", "SetTextI18n")
     fun bind(event: EventResponse) {
         binding.apply {
             video.visibility = View.GONE
             backgroundVideo.visibility = View.GONE
-            type.isChecked = false
-            type.setIconResource(R.drawable.online_icons)
 
             Glide.with(itemView)
                 .load(event.authorAvatar)
@@ -79,21 +77,18 @@ class EventViewHolder(
                         backgroundVideo.visibility = View.VISIBLE
                     }
                     AttachmentType.AUDIO ->{}
-                    null -> {
-                        video.visibility = View.GONE
-                        backgroundVideo.visibility = View.GONE
-                    }
                 }
                 Glide.with(itemView).load(event.attachment.url).timeout(10_000).into(backgroundVideo)
             }
 
-            type.isChecked = when(event.type){
-                OFFLINE -> false
-                ONLINE -> true
+            when(event.type){
+                OFFLINE -> type.setImageResource(R.drawable.ic_sensors_off_32)
+                ONLINE -> type.setImageResource(R.drawable.ic_sensors_32)
             }
             author.text = event.author
             published.text = GoDataTime.convertDataTime(event.published)
-            content.text = event.content
+            dateTime.text = GoDataTime.convertDataTime(event.datetime)
+            content.text = event.content + if(event.link!=null){ "\n"+ event.link} else {""}
             like.isChecked = event.likedByMe
             like.text = "${event.likeOwnerIds.size}"
             participate.isChecked = event.participatedByMe

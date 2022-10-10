@@ -32,6 +32,7 @@ class PostViewModel @Inject constructor(
 
     var lastAction: ActionType? = null
     var lastId = 0
+    var errorCounter = 0
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
@@ -52,8 +53,10 @@ class PostViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryPost.loadUsersMentions(mentionIds)
+                _dataState.value = FeedModelState(loading = false)
+                errorCounter = 0
             } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
+                _dataState.value = FeedModelState(loading = true)
             }
         }
     }
@@ -64,6 +67,7 @@ class PostViewModel @Inject constructor(
             try {
                 repositoryPost.removeById(id)
                 _dataState.value = FeedModelState()
+                errorCounter = 0
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -76,6 +80,8 @@ class PostViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryPost.likeById(id)
+                _dataState.value = FeedModelState()
+                errorCounter = 0
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -88,8 +94,8 @@ class PostViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 repositoryPost.disLikeById(id)
-
-
+                _dataState.value = FeedModelState()
+                errorCounter = 0
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -97,30 +103,36 @@ class PostViewModel @Inject constructor(
     }
 
     fun retry(){
-        when (lastAction){
-            LIKE -> retryLikeById()
-            DISLIKE -> retryDisLikeById()
-            REMOVE -> retryRemove()
-            PARTICIPATE -> {}
-            DONOTPARTICIPATE -> {}
-            null -> {}
+        if (errorCounter == 3 || errorCounter > 3){
+            _dataState.value = FeedModelState(loading = true)
+        } else {
+            when (lastAction) {
+                LIKE -> retryLikeById()
+                DISLIKE -> retryDisLikeById()
+                REMOVE -> retryRemove()
+                PARTICIPATE -> {}
+                DONOTPARTICIPATE -> {}
+                null -> {}
+            }
         }
     }
 
     fun retryLikeById(){
         lastId.let{
             likeById(it)}
+        errorCounter++
     }
 
     fun retryDisLikeById(){
         lastId.let{
             disLikeById(it)}
+        errorCounter++
     }
 
     fun retryRemove(){
         lastId.let{
-            removeById(it)
-        }
+            removeById(it) }
+        errorCounter++
     }
 }
 

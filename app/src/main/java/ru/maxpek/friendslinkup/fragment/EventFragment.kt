@@ -1,6 +1,5 @@
 package ru.maxpek.friendslinkup.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,11 +19,9 @@ import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.events.EventCallback
 import ru.maxpek.friendslinkup.adapter.events.EventsAdapter
-import ru.maxpek.friendslinkup.adapter.posts.OnInteractionListener
 import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentEventBinding
 import ru.maxpek.friendslinkup.dto.EventResponse
-import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.util.IntArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
@@ -97,7 +94,12 @@ class EventFragment: Fragment() {
 
             override fun loadingTheListOfParticipants(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    viewModel
+                    if (event.speakerIds.isEmpty()){
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    } else {
+                        viewModel.goToUserParticipateInEvent(event.participantsIds)
+                        findNavController().navigate(R.id.action_eventFragment_to_listOfSpeakers)
+                    }
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.authenticationFragment)
@@ -124,6 +126,9 @@ class EventFragment: Fragment() {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.retry_loading) { viewModel.retry() }
                     .show()
+            }
+            if (state.loading){
+                Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
 

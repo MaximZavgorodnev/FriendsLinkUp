@@ -82,6 +82,7 @@
     <string name="leave_the_app">Are you sure you want to leave the app?</string>
     <string name="yes">yes</string>
     <string name="no">no</string>
+    <string name="problem_loading">Problems downloading data from the server, try another time</string>
 
     <string name="need_permission">Location permission required</string>
     <string name="which_mention">Which of the users should I mention?</string>

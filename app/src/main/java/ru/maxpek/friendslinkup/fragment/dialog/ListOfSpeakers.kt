@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
@@ -35,6 +37,13 @@ class ListOfSpeakers: DialogFragment() {
             }
         })
         binding.list.adapter = adapter
+
+        eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
+            if (state.loading){
+                Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         eventViewModel.dataUserSpeakers.observe(viewLifecycleOwner) {
             val newUser = adapter.itemCount < it.size
             adapter.submitList(it) {

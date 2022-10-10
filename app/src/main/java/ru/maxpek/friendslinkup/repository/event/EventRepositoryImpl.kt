@@ -31,6 +31,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     override val dataUsersSpeakers: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
 
+
     override suspend fun loadUsersSpeakers(list: List<Int>) {
         val usersList = mutableListOf<UserRequested>()
         try {

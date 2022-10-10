@@ -56,7 +56,7 @@ class PostViewHolder(
     private val binding: CardPostBinding,
     private val onInteractionListener: OnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
-    @SuppressLint("NewApi")
+    @SuppressLint("NewApi", "SetTextI18n")
     fun bind(post: PostResponse) {
         binding.apply {
             mentionedMe.visibility = View.GONE
@@ -91,7 +91,7 @@ class PostViewHolder(
             }
             author.text = post.author
             published.text = GoDataTime.convertDataTime(post.published)
-            content.text = post.content
+            content.text = post.content + if(post.link!=null){ "\n"+ post.link} else {""}
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
             geo.visibility = if (post.coords != null) View.VISIBLE else View.INVISIBLE
