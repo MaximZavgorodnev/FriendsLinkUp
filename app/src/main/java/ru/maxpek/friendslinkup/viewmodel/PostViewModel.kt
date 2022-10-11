@@ -37,6 +37,10 @@ class PostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    private val _postResponse = MutableLiveData<PostResponse>()
+    val postResponse: LiveData<PostResponse>
+        get() = _postResponse
+
     val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
     val data: Flow<PagingData<PostResponse>> = appAuth
             .authStateFlow
@@ -79,7 +83,7 @@ class PostViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryPost.likeById(id)
+                _postResponse.postValue(repositoryPost.likeById(id))
                 _dataState.value = FeedModelState()
                 errorCounter = 0
             } catch (e: Exception) {
@@ -93,7 +97,7 @@ class PostViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryPost.disLikeById(id)
+                _postResponse.postValue(repositoryPost.disLikeById(id))
                 _dataState.value = FeedModelState()
                 errorCounter = 0
             } catch (e: Exception) {
@@ -113,6 +117,17 @@ class PostViewModel @Inject constructor(
                 PARTICIPATE -> {}
                 DONOTPARTICIPATE -> {}
                 null -> {}
+            }
+        }
+    }
+
+    fun getPost(id: Int){
+        viewModelScope.launch {
+            try {
+                _postResponse.postValue(repositoryPost.getPost(id))
+                _dataState.value = FeedModelState(refreshing = false)
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(loading = true)
             }
         }
     }

@@ -11,7 +11,7 @@ import ru.maxpek.friendslinkup.error.NetworkError
 import java.io.IOException
 import javax.inject.Inject
 
-val emptyList = listOf<UserRequested>()
+
 class NewEventRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: EventDao

@@ -92,7 +92,7 @@ class NewPostViewModel @Inject constructor(
                 mentionsUserList.add(user)
             }
         }
-        mentionsLive.value = mentionsUserList
+        mentionsLive.postValue(mentionsUserList)
         newPost.value = newPost.value?.copy(mentionIds = listChecked)
     }
 
@@ -119,6 +119,7 @@ class NewPostViewModel @Inject constructor(
             try {
                 repository.addPost(post)
                 _dataState.value = FeedModelState(error = false)
+                deleteEditPost()
                 _postCreated.value = Unit
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
@@ -161,7 +162,7 @@ class NewPostViewModel @Inject constructor(
     fun deleteEditPost(){
         newPost.value = editedPost
         mentions.clear()
-        mentionsLive.value = mentions
+        mentionsLive.postValue(mentions)
     }
 
 }

@@ -78,7 +78,7 @@
     <string name="images">Image</string>
     <string name="first_three">The first three fields are required</string>
     <string name="content">Content</string>
-    <string name="content_field">The content field is required</string>
+    <string name="content_field">The content field and date is required</string>
     <string name="leave_the_app">Are you sure you want to leave the app?</string>
     <string name="yes">yes</string>
     <string name="no">no</string>

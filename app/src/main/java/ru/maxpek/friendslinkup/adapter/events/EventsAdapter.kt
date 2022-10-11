@@ -20,6 +20,7 @@ import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
 import ru.maxpek.friendslinkup.enumeration.TypeEvent.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 
@@ -143,6 +144,9 @@ class EventViewHolder(
 
             avatar.setOnClickListener {
                 onInteractionListener.goToPageUser(event)
+            }
+            content.setOnClickListener {
+                it.findNavController().navigate(R.id.action_eventFragment_to_openEventFragment, Bundle().apply { intArg = event.id})
             }
 
             geo.setOnClickListener {

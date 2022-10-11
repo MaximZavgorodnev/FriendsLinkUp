@@ -11,8 +11,9 @@ interface EventRepository {
     val dataUsersSpeakers: MutableLiveData<List<UserRequested>>
     suspend fun loadUsersSpeakers(list: List<Int>)
     suspend fun removeById(id: Int)
-    suspend fun likeById(id: Int)
-    suspend fun disLikeById(id: Int)
-    suspend fun participateInEvent(id: Int)
-    suspend fun doNotParticipateInEvent(id: Int)
+    suspend fun likeById(id: Int): EventResponse
+    suspend fun disLikeById(id: Int): EventResponse
+    suspend fun participateInEvent(id: Int): EventResponse
+    suspend fun doNotParticipateInEvent(id: Int): EventResponse
+    suspend fun getEvent(id: Int): EventResponse
 }

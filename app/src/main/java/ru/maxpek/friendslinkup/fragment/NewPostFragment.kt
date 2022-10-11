@@ -168,13 +168,7 @@ class NewPostFragment : Fragment() {
 
         binding.mentionIds.adapter = adapter
         newPostViewModel.mentionsLive.observe(viewLifecycleOwner) {
-            val user = adapter.itemCount < it.size
-            adapter.submitList(it) {
-                if (user) {
-                    binding.mentionIds.smoothScrollToPosition(0)
-                }
-            }
-
+            adapter.submitList(it)
         }
         newPostViewModel.newPost.observe(viewLifecycleOwner) {
             it.content.let(binding.edit::setText)

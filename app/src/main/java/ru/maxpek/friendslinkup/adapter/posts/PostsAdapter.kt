@@ -23,6 +23,7 @@ import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.AttachmentType.*
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 import java.time.LocalDateTime
@@ -137,6 +138,9 @@ class PostViewHolder(
 
             author.setOnClickListener {
                 onInteractionListener.goToPageUser(post)
+            }
+            content.setOnClickListener {
+                it.findNavController().navigate(R.id.action_feedFragment_to_openPostFragment2, Bundle().apply { intArg = post.id})
             }
 
             geo.setOnClickListener {

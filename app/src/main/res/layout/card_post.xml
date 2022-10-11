@@ -4,10 +4,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/allPost"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/common_spacing">
@@ -78,11 +79,12 @@
             app:layout_constraintTop_toBottomOf="@id/header_barrier3"
             app:layout_constraintBottom_toBottomOf="@id/content"/>
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:autoLink="web"
+            android:ellipsize="end"
             android:paddingTop="@dimen/common_spacing"
             android:paddingBottom="@dimen/common_spacing"
             app:layout_constraintEnd_toEndOf="parent"
@@ -181,10 +183,7 @@
             app:icon="@drawable/ic_gps_fixed_24"
             style="@style/Widget.AppTheme.IconButton"
             />
-
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </com.google.android.material.card.MaterialCardView>

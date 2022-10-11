@@ -32,7 +32,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/mentionIds"
+        android:id="@+id/speakersIds"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -115,13 +115,25 @@
         android:contentDescription="@string/description_add_menu"
         app:icon="@drawable/ic_baseline_calendar_month_24" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/type"
+        style="@style/Widget.AppTheme.CheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_marginStart="250dp"
+        android:paddingBottom="8dp"
+        android:checkable="true"
+        android:contentDescription="@string/description_add_menu"
+        app:icon="@drawable/ic_sensors_32" />
+
     <ImageView
         android:id="@+id/image"
         android:checkable="true"
         android:layout_width="112dp"
         android:layout_height="48dp"
         android:visibility="gone"
-        android:paddingEnd="64dp"
+        android:paddingEnd="8dp"
         android:layout_gravity="bottom|right"
         tools:ignore="ContentDescription,RtlHardcoded,RtlSymmetry" />
 

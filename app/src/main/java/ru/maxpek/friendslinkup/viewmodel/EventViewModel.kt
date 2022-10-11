@@ -35,6 +35,10 @@ class EventViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    private val _eventResponse = MutableLiveData<EventResponse>()
+    val eventResponse: LiveData <EventResponse>
+        get() = _eventResponse
+
     val dataUserSpeakers: LiveData<List<UserRequested>> = repositoryEvent.dataUsersSpeakers
 
     val data: Flow<PagingData<EventResponse>> = appAuth
@@ -76,7 +80,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryEvent.likeById(id)
+                _eventResponse.postValue(repositoryEvent.likeById(id))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -88,7 +92,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryEvent.disLikeById(id)
+                _eventResponse.postValue(repositoryEvent.disLikeById(id))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -100,7 +104,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryEvent.participateInEvent(id)
+                _eventResponse.postValue(repositoryEvent.participateInEvent(id))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -112,7 +116,7 @@ class EventViewModel @Inject constructor(
         lastId = id
         viewModelScope.launch {
             try {
-                repositoryEvent.doNotParticipateInEvent(id)
+                _eventResponse.postValue(repositoryEvent.doNotParticipateInEvent(id))
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -126,6 +130,16 @@ class EventViewModel @Inject constructor(
                 _dataState.value = FeedModelState(loading = false)
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(loading = true)
+            }
+        }
+    }
+
+    fun getEvent(id: Int){
+        viewModelScope.launch {
+            try {
+                _eventResponse.postValue(repositoryEvent.getEvent(id))
+            } catch (e: Exception) {
+                _dataState.value = FeedModelState(error = true)
             }
         }
     }

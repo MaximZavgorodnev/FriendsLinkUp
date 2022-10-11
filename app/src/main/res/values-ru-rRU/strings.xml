@@ -77,7 +77,7 @@
     <string name="add_event">Добавить событие</string>
     <string name="first_three">Первые три поля обязательны к заполнению</string>
     <string name="content">Контент</string>
-    <string name="content_field">Поле контент обязательно для заполнения</string>
+    <string name="content_field">Поле контент обязательно и дата для заполнения</string>
     <string name="leave_the_app">Вы уверены что хотите покинуть приложение?</string>
     <string name="yes">да</string>
     <string name="no">нет</string>

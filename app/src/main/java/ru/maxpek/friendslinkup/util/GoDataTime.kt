@@ -44,22 +44,48 @@ object GoDataTime {
             }
         }
         val year = "$z"
-
-//        val date1 = LocalDateTime.of(year.toInt(), month.toInt(), day.toInt(), 0, 0, 0, 0)
         val newDate = "$day.$month.$year"
         val formatter = SimpleDateFormat("dd.MM.yyyy")
         val date = formatter.parse(newDate)
-//        println(date)
 
         val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
-        val dateTime = sdf.format(date!!)
 
-        return dateTime
-        return ""
+        return sdf.format(date!!)
     }
 
-    fun convertDateToLocalDate(dateTime: String): String {
-        val formatter = DateTimeFormatter.ofPattern("mm.dd.yyyy, hh:mm:ss")
-        return LocalDateTime.parse(dateTime, formatter).toString()
+    @SuppressLint("SimpleDateFormat")
+    fun convertDateToLocalDate(date: List<Int>): String {
+        val x = date[0]
+        val y = date[1] + 1
+        val z = date[2]
+        val h = date[3]
+        val m = date[4]
+        val day = when (x) {
+            in 1..9 -> "0$x"
+            else -> {
+                "$x"
+            }
+        }
+        val month = when (y) {
+            in 1..9 -> "0$y"
+            else -> {
+                "$y"
+            }
+        }
+        val year = "$z"
+        val hour = when (h) {
+            in 1..9 -> "0$h"
+            else -> "$h"
+        }
+        val minute = when (m) {
+            in 1..9 -> "0$m"
+            else -> "$m"
+        }
+
+        val newDate = "$day.$month.$year $hour:$minute"
+        val formatter = SimpleDateFormat("dd.MM.yyyy HH:mm")
+        val date = formatter.parse(newDate)
+        val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss'Z'")
+        return sdf.format(date!!)
     }
 }

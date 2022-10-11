@@ -60,7 +60,7 @@ class EventRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeById(id: Int) {
+    override suspend fun likeById(id: Int): EventResponse {
         try {
             val response = apiService.likeByIdEvent(id)
             if (!response.isSuccessful) {
@@ -68,12 +68,13 @@ class EventRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(EventEntity.fromDto(body))
+            return body
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun disLikeById(id: Int) {
+    override suspend fun disLikeById(id: Int): EventResponse {
         try {
             val response = apiService.dislikeByIdEvent(id)
             if (!response.isSuccessful) {
@@ -81,12 +82,13 @@ class EventRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(EventEntity.fromDto(body))
+            return body
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun participateInEvent(id: Int) {
+    override suspend fun participateInEvent(id: Int): EventResponse {
         try {
             val response = apiService.participateInEvent(id)
             if (!response.isSuccessful) {
@@ -94,12 +96,13 @@ class EventRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(EventEntity.fromDto(body))
+            return body
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun doNotParticipateInEvent(id: Int) {
+    override suspend fun doNotParticipateInEvent(id: Int): EventResponse {
         try {
             val response = apiService.doNotParticipateInEvent(id)
             if (!response.isSuccessful) {
@@ -107,6 +110,19 @@ class EventRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(EventEntity.fromDto(body))
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+    }
+
+    override suspend fun getEvent(id: Int): EventResponse {
+        try {
+            val response = apiService.getEvent(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }

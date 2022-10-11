@@ -25,10 +25,11 @@ val editedEvent = EventCreateRequest(
     content = "",
     datetime = null,
     coords = null,
-    type = null,
+    type = TypeEvent.OFFLINE,
     attachment = null,
     link = null,
     speakerIds = listOf())
+val speakers = mutableListOf<UserRequested>()
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NewEventViewModel @Inject constructor(
@@ -51,8 +52,7 @@ class NewEventViewModel @Inject constructor(
         get() = _dataState
 
     fun getEvent(id: Int){
-
-        speakersLive.postValue(mentions)
+        speakersLive.postValue(speakers)
         viewModelScope.launch {
             try {
                 newEvent.value = repository.getEvent(id)
@@ -67,7 +67,7 @@ class NewEventViewModel @Inject constructor(
     }
 
     fun getUsers() {
-        speakersLive.postValue(mentions)
+        speakersLive.postValue(speakers)
         viewModelScope.launch {
             try {
                 data.value = repository.loadUsers()
@@ -86,7 +86,7 @@ class NewEventViewModel @Inject constructor(
     }
 
     fun addSpeakersIds(){
-        speakersLive.postValue(mentions)
+        speakersLive.postValue(speakers)
         val listChecked = mutableListOf<Int>()
         val speakersUserList = mutableListOf<UserRequested>()
         data.value?.forEach { user ->
@@ -95,7 +95,7 @@ class NewEventViewModel @Inject constructor(
                 speakersUserList.add(user)
             }
         }
-        speakersLive.value = speakersUserList
+        speakersLive.postValue(speakersUserList)
         newEvent.value = newEvent.value?.copy(speakerIds = listChecked)
     }
 
@@ -124,6 +124,7 @@ class NewEventViewModel @Inject constructor(
                 repository.addEvent(event)
                 _dataState.value = FeedModelState(error = false)
                 _postCreated.value = Unit
+                deleteEditPost()
             } catch (e: RuntimeException) {
                 _dataState.value = FeedModelState(error = true)
             }
@@ -157,14 +158,26 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
+    fun addDateTime(dateTime: String){
+        newEvent.value = newEvent.value?.copy(datetime = dateTime)
+    }
+
+    fun addTypeEvent(){
+        val type = when(newEvent.value?.type){
+            TypeEvent.OFFLINE -> TypeEvent.ONLINE
+            else -> TypeEvent.OFFLINE
+        }
+        newEvent.value = newEvent.value?.copy(type = type)
+    }
+
     fun deletePicture(){
         newEvent.value = newEvent.value?.copy(attachment = null)
     }
 
 
     fun deleteEditPost(){
-        newEvent.value = editedEvent
-        mentions.clear()
-        speakersLive.value = mentions
+        newEvent.postValue(editedEvent)
+        speakers.clear()
+        speakersLive.postValue(speakers)
     }
 }

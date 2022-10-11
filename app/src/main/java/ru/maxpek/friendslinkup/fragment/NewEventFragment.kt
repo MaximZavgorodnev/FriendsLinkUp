@@ -2,12 +2,15 @@ package ru.maxpek.friendslinkup.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.DatePicker
 import android.widget.PopupMenu
+import android.widget.TimePicker
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
@@ -27,16 +30,31 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
+import ru.maxpek.friendslinkup.adapter.ListUsersIdEventAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentNewEventBinding
+import ru.maxpek.friendslinkup.enumeration.TypeEvent
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
+import ru.maxpek.friendslinkup.util.GoDataTime
 import ru.maxpek.friendslinkup.viewmodel.NewEventViewModel
+import java.util.*
+import android.app.TimePickerDialog as TimePickerDialog
+
+
+var dayEvent = 0
+var monthEvent = 0
+var yearEvent = 0
+var hourEvent = 0
+var minuteEvent = 0
+
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 @SuppressLint("FragmentBackPressedCallback")
-class NewEventFragment : Fragment() {
+class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+    private val newEventViewModel : NewEventViewModel by activityViewModels()
+    @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -48,7 +66,7 @@ class NewEventFragment : Fragment() {
             false
         )
 
-        val newEventViewModel : NewEventViewModel by activityViewModels()
+
         var file: MultipartBody.Part
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
@@ -66,7 +84,7 @@ class NewEventFragment : Fragment() {
 
 
 
-        val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
+        val adapter = ListUsersIdEventAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser(id: Int) {
                 val idAuthor = id.toString()
                 findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
@@ -162,15 +180,9 @@ class NewEventFragment : Fragment() {
             binding.okAdd.visibility = View.GONE
         }
 
-        binding.mentionIds.adapter = adapter
+        binding.speakersIds.adapter = adapter
         newEventViewModel.speakersLive.observe(viewLifecycleOwner) {
-            val user = adapter.itemCount < it.size
-            adapter.submitList(it) {
-                if (user) {
-                    binding.mentionIds.smoothScrollToPosition(0)
-                }
-            }
-
+            adapter.submitList(it)
         }
         newEventViewModel.newEvent.observe(viewLifecycleOwner) {
             it.content.let(binding.edit::setText)
@@ -178,6 +190,8 @@ class NewEventFragment : Fragment() {
             binding.mentionAdd.isChecked = it.speakerIds!!.isNotEmpty()
             binding.geoAdd.isChecked = newEventViewModel.newEvent.value?.coords != null
             binding.linkAdd.isChecked = newEventViewModel.newEvent.value?.link != null
+            binding.dateTime.isChecked = newEventViewModel.newEvent.value?.datetime != null
+            binding.type.isChecked = newEventViewModel.newEvent.value?.type == TypeEvent.ONLINE
             if (it.attachment != null) {
                 binding.image.visibility = View.VISIBLE
                 Glide.with(this)
@@ -200,11 +214,21 @@ class NewEventFragment : Fragment() {
 
         binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
-            if (content =="") {
+            val date = newEventViewModel.newEvent.value?.datetime
+            if (content ==""|| date == null) {
                 Snackbar.make(binding.root, R.string.content_field, Snackbar.LENGTH_SHORT).show()
             } else {
                 newEventViewModel.addPost(content)
             }
+        }
+        binding.dateTime.setOnClickListener {
+            binding.dateTime.isChecked = newEventViewModel.newEvent.value?.datetime != null
+            getDataCalendar()
+            DatePickerDialog(context!!, this, yearEvent, monthEvent, dayEvent).show()
+        }
+        binding.type.setOnClickListener {
+            binding.type.isChecked = newEventViewModel.newEvent.value?.type == TypeEvent.ONLINE
+            newEventViewModel.addTypeEvent()
         }
 
         newEventViewModel.postCreated.observe(viewLifecycleOwner) {
@@ -216,8 +240,40 @@ class NewEventFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE).show()
             }
         }
-
-
         return binding.root
+    }
+
+    private fun getDataCalendar(){
+        if (day == 0){
+            val cal = Calendar.getInstance()
+            dayEvent =  cal.get(Calendar.DAY_OF_MONTH)
+            monthEvent  = cal.get(Calendar.MONTH)
+            yearEvent = cal.get(Calendar.YEAR)
+        }
+    }
+
+    private fun getTimeCalendar(){
+        if (day == 0){
+            val cal = Calendar.getInstance()
+            hourEvent = cal.get(Calendar.HOUR)
+            minuteEvent = cal.get(Calendar.MINUTE)
+        }
+    }
+
+
+    override fun onDateSet(p0: DatePicker?, yearOf: Int, monthOf: Int, dayOfMonth: Int) {
+        dayEvent = dayOfMonth
+        monthEvent = monthOf
+        yearEvent = yearOf
+        getTimeCalendar()
+        TimePickerDialog(context, this, hourEvent, minuteEvent, true).show()
+    }
+
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
+        hourEvent = hourOfDay
+        minuteEvent = minute
+        val date = listOf(dayEvent, monthEvent, yearEvent, hourEvent, minuteEvent)
+        val dateTime = GoDataTime.convertDateToLocalDate(date)
+        newEventViewModel.addDateTime(dateTime)
     }
 }

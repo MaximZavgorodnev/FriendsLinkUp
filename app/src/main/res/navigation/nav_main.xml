@@ -27,6 +27,9 @@
         <action
             android:id="@+id/action_feedFragment_to_mapsFragment"
             app:destination="@id/mapsFragment" />
+        <action
+            android:id="@+id/action_feedFragment_to_openPostFragment2"
+            app:destination="@id/openPostFragment2" />
     </fragment>
     <fragment
         android:id="@+id/eventFragment"
@@ -42,6 +45,9 @@
         <action
             android:id="@+id/action_eventFragment_to_listOfSpeakers"
             app:destination="@id/listOfSpeakers" />
+        <action
+            android:id="@+id/action_eventFragment_to_openEventFragment"
+            app:destination="@id/openEventFragment" />
     </fragment>
     <fragment
         android:id="@+id/newPostFragment"
@@ -137,4 +143,13 @@
         android:id="@+id/listOfUsersAddInEvent"
         android:name="ru.maxpek.friendslinkup.fragment.dialog.ListOfUsersAddInEvent"
         android:label="ListOfUsersAddInEvent" />
+    <fragment
+        android:id="@+id/openPostFragment2"
+        android:name="ru.maxpek.friendslinkup.fragment.OpenPostFragment2"
+        android:label="OpenPostFragment2" />
+    <fragment
+        android:id="@+id/openEventFragment"
+        android:name="ru.maxpek.friendslinkup.fragment.OpenEventFragment"
+        android:label="fragment_open_event"
+        tools:layout="@layout/fragment_open_event" />
 </navigation>

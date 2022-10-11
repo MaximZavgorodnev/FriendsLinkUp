@@ -11,15 +11,13 @@ import ru.maxpek.friendslinkup.error.NetworkError
 import java.io.IOException
 import javax.inject.Inject
 
-val emptyList = listOf<UserRequested>()
-
 
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: PostDao
 ): NewPostRepository {
 
-    override suspend fun loadUsers(): List<UserRequested>{
+    override suspend fun loadUsers(): List<UserRequested> {
         val usersList: List<UserRequested>
         try {
             val response = apiService.getUsers()

@@ -11,6 +11,7 @@ interface PostRepository {
     val dataUsersMentions: MutableLiveData<List<UserRequested>>
     suspend fun loadUsersMentions(list: List<Int>)
     suspend fun removeById(id: Int)
-    suspend fun likeById(id: Int)
-    suspend fun disLikeById(id: Int)
+    suspend fun likeById(id: Int) : PostResponse
+    suspend fun disLikeById(id: Int) : PostResponse
+    suspend fun getPost(id: Int): PostResponse
 }

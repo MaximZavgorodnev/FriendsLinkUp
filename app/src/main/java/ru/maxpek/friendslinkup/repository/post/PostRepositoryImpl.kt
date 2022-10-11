@@ -2,18 +2,13 @@ package ru.maxpek.friendslinkup.repository.post
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.*
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dao.PostDao
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.entity.PostEntity
-import ru.maxpek.friendslinkup.entity.toEntity
 import ru.maxpek.friendslinkup.error.ApiError
 import ru.maxpek.friendslinkup.error.NetworkError
 import java.io.IOException
@@ -69,7 +64,7 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeById(id:Int) {
+    override suspend fun likeById(id:Int): PostResponse {
         try {
             val response = apiService.likeById(id)
             if (!response.isSuccessful) {
@@ -77,12 +72,13 @@ class PostRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(PostEntity.fromDto(body))
+            return body
         } catch (e: IOException) {
             throw NetworkError
         }
     }
 
-    override suspend fun disLikeById(id: Int) {
+    override suspend fun disLikeById(id: Int): PostResponse {
         try {
             val response = apiService.dislikeById(id)
             if (!response.isSuccessful) {
@@ -90,6 +86,19 @@ class PostRepositoryImpl @Inject constructor(
             }
             val body = response.body() ?: throw ApiError(response.code(), response.message())
             dao.insert(PostEntity.fromDto(body))
+            return body
+        } catch (e: IOException) {
+            throw NetworkError
+        }
+    }
+
+    override suspend fun getPost(id: Int): PostResponse {
+        try {
+            val response = apiService.getPost(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            }
+            return response.body() ?: throw ApiError(response.code(), response.message())
         } catch (e: IOException) {
             throw NetworkError
         }
