@@ -2,8 +2,13 @@ package ru.maxpek.friendslinkup.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
+import android.content.RestrictionsManager.RESULT_ERROR
 import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.telecom.Connection
+import android.telecom.RemoteConnection
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,9 +20,12 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.media.MediaBrowserServiceCompat.RESULT_ERROR
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
+import com.github.dhaval2404.imagepicker.ImagePicker.Companion.RESULT_ERROR
+import com.github.dhaval2404.imagepicker.ImagePicker.Companion.getError
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import com.yandex.mapkit.geometry.Point
@@ -36,6 +44,7 @@ import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.ArrayInt
 import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
+import java.io.File
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -84,7 +93,7 @@ class NewPostFragment : Fragment() {
                     ImagePicker.RESULT_ERROR -> {
                         Snackbar.make(
                             binding.root,
-                            ImagePicker.getError(it.data),
+                            getError(it.data),
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
@@ -102,36 +111,18 @@ class NewPostFragment : Fragment() {
 
         binding.menuAdd.setOnClickListener {
             binding.menuAdd.isChecked = binding.image.isVisible
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.menu_add_post)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.audio -> {
-
-                            true
-                        }
-                        R.id.video -> {
-
-                            true
-                        }
-                        R.id.image -> {
-                            ImagePicker.with(this@NewPostFragment)
-                                .crop()
-                                .compress(2048)
-                                .provider(ImageProvider.BOTH)
-                                .galleryMimeTypes(
-                                    arrayOf(
-                                        "image/png",
-                                        "image/jpeg",
-                                    )
-                                )
-                                .createIntent(pickPhotoLauncher::launch)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-            }.show()
+            ImagePicker.with(this@NewPostFragment)
+                .crop()
+                .compress(2048)
+                .provider(ImageProvider.BOTH)
+                .galleryMimeTypes(
+                    arrayOf(
+                        "image/png",
+                        "image/jpeg",
+                        "image/jpg"
+                    )
+                )
+                .createIntent(pickPhotoLauncher::launch)
         }
 
         binding.mentionAdd.setOnClickListener {
@@ -212,7 +203,7 @@ class NewPostFragment : Fragment() {
 
         newPostViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
 

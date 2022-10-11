@@ -115,36 +115,17 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
         binding.menuAdd.setOnClickListener {
             binding.menuAdd.isChecked = binding.image.isVisible
-            PopupMenu(it.context, it).apply {
-                inflate(R.menu.menu_add_post)
-                setOnMenuItemClickListener { item ->
-                    when (item.itemId) {
-                        R.id.audio -> {
-
-                            true
-                        }
-                        R.id.video -> {
-
-                            true
-                        }
-                        R.id.image -> {
-                            ImagePicker.with(this@NewEventFragment)
-                                .crop()
-                                .compress(2048)
-                                .provider(ImageProvider.BOTH)
-                                .galleryMimeTypes(
-                                    arrayOf(
-                                        "image/png",
-                                        "image/jpeg",
-                                    )
-                                )
-                                .createIntent(pickPhotoLauncher::launch)
-                            true
-                        }
-                        else -> false
-                    }
-                }
-            }.show()
+            ImagePicker.with(this@NewEventFragment)
+                .crop()
+                .compress(2048)
+                .provider(ImageProvider.BOTH)
+                .galleryMimeTypes(
+                    arrayOf(
+                        "image/png",
+                        "image/jpeg",
+                    )
+                )
+                .createIntent(pickPhotoLauncher::launch)
         }
 
         binding.mentionAdd.setOnClickListener {

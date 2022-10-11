@@ -154,6 +154,7 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
+
     fun deletePicture(){
         newPost.value = newPost.value?.copy(attachment = null)
     }

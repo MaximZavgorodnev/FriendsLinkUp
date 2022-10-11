@@ -1,11 +1,13 @@
 package ru.maxpek.friendslinkup.adapter.posts
 
 import android.annotation.SuppressLint
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.MediaController
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.navigation.findNavController
@@ -79,8 +81,9 @@ class PostViewHolder(
                         backgroundVideo.visibility = View.VISIBLE
                     }
                     VIDEO ->{
-                        video.visibility = View.VISIBLE
-                        backgroundVideo.visibility = View.VISIBLE
+                        video.visibility = View.GONE
+                        backgroundVideo.visibility = View.GONE
+
                     }
                     AUDIO ->{}
                     null -> {

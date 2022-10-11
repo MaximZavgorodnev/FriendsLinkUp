@@ -109,19 +109,13 @@
             app:layout_constraintTop_toBottomOf="@id/header"
             app:srcCompat="@drawable/img_backg"/>
 
-        <com.google.android.material.button.MaterialButton
+        <VideoView
             android:id="@+id/video"
-            android:layout_width="320dp"
+            android:layout_width="310dp"
             android:layout_height="240dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:icon="@drawable/ic_play_arrow_48"
-            app:iconGravity="top"
-            android:paddingTop="88dp"
-            android:backgroundTint="#0000"
             app:layout_constraintTop_toBottomOf="@id/header"
-            android:contentDescription="@string/video"
-            />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.constraintlayout.widget.Barrier
             android:id="@+id/header_barrier3"
@@ -183,6 +177,8 @@
             app:icon="@drawable/ic_gps_fixed_24"
             style="@style/Widget.AppTheme.IconButton"
             />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

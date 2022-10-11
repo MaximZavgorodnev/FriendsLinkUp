@@ -104,7 +104,6 @@ class FeedFragment : Fragment() {
                 val idAuthor = post.authorId.toString()
                 findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
             }
-
         })
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(

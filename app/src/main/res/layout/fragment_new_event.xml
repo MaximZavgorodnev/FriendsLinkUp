@@ -130,9 +130,8 @@
     <ImageView
         android:id="@+id/image"
         android:checkable="true"
-        android:layout_width="112dp"
-        android:layout_height="48dp"
-        android:visibility="gone"
+        android:layout_width="100dp"
+        android:layout_height="52dp"
         android:paddingEnd="8dp"
         android:layout_gravity="bottom|right"
         tools:ignore="ContentDescription,RtlHardcoded,RtlSymmetry" />

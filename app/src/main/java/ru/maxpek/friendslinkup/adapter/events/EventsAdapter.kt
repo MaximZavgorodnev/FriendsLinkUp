@@ -74,7 +74,7 @@ class EventViewHolder(
                         backgroundVideo.visibility = View.VISIBLE
                     }
                     AttachmentType.VIDEO ->{
-                        video.visibility = View.VISIBLE
+                        video.visibility = View.GONE
                         backgroundVideo.visibility = View.VISIBLE
                     }
                     AttachmentType.AUDIO ->{}
