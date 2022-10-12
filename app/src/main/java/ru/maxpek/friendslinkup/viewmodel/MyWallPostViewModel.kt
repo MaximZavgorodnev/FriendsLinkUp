@@ -33,6 +33,8 @@ class MyWallPostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
+    val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
+
     val data: Flow<PagingData<PostResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
@@ -99,35 +101,6 @@ class MyWallPostViewModel @Inject constructor(
             } catch (e: Exception) {
                 _dataState.value = FeedModelState(error = true)
             }
-        }
-    }
-
-    fun retry() {
-        when (lastAction) {
-            ActionType.LIKE -> retryLikeById()
-            ActionType.DISLIKE -> retryDisLikeById()
-            ActionType.REMOVE -> retryRemove()
-            ActionType.PARTICIPATE -> {}
-            ActionType.DONOTPARTICIPATE -> {}
-            null -> {}
-        }
-    }
-
-    fun retryLikeById() {
-        lastId.let {
-            likeById(it)
-        }
-    }
-
-    fun retryDisLikeById() {
-        lastId.let {
-            disLikeById(it)
-        }
-    }
-
-    fun retryRemove() {
-        lastId.let {
-            removeById(it)
         }
     }
 }

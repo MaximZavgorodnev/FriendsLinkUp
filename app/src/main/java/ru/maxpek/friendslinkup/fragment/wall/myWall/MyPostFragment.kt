@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -30,7 +31,7 @@ import ru.maxpek.friendslinkup.viewmodel.MyWallPostViewModel
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 class MyPostFragment : Fragment() {
-    private val viewModel: MyWallPostViewModel by activityViewModels()
+    private val viewModel: MyWallPostViewModel by viewModels()
     private val authViewModel: AuthViewModel by viewModels()
 
     @SuppressLint("ResourceType")
@@ -47,7 +48,7 @@ class MyPostFragment : Fragment() {
                     if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.disLikeById(post.id)
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
 
@@ -74,7 +75,7 @@ class MyPostFragment : Fragment() {
                     startActivity(shareIntent)
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
 
@@ -85,19 +86,15 @@ class MyPostFragment : Fragment() {
                             .show()
                     } else {
                         viewModel.loadUsersMentions(post.mentionIds)
-                        findNavController().navigate(R.id.action_feedFragment_to_listOfMentions)
+                        findNavController().navigate(R.id.listOfMentions,Bundle().apply { intArg = 1 })
                     }
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
+                    findNavController().navigate(R.id.authenticationFragment)
                 }
             }
 
         })
-
-        if (!authViewModel.authenticated) {
-            viewModel.removeAll()
-        }
 
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
@@ -123,10 +120,18 @@ class MyPostFragment : Fragment() {
                 .into(binding.avatar)
         }
 
+        viewModel.dataState.observe(viewLifecycleOwner) { state ->
+            binding.progress.isVisible = state.loading
+            if (state.loading) {
+                Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
+            }
+        }
+
         lifecycleScope.launchWhenCreated {
             viewModel.data.collectLatest(adapter::submitData)
         }
 
+        adapter.loadStateFlow
         lifecycleScope.launchWhenCreated {
             adapter.loadStateFlow.collectLatest {
                 binding.swiperefresh.isRefreshing = it.refresh is LoadState.Loading
@@ -135,6 +140,10 @@ class MyPostFragment : Fragment() {
 
         binding.menu.setOnClickListener {
             findNavController().navigate(R.id.myJobFragment2)
+        }
+
+        binding.swiperefresh.setOnRefreshListener {
+            adapter.refresh()
         }
 
         binding.home.setOnClickListener {

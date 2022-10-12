@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavAction
 import androidx.navigation.NavController
@@ -25,22 +26,27 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.messaging.FirebaseMessaging
 import com.yandex.mapkit.MapKitFactory
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.collectLatest
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding
 import ru.maxpek.friendslinkup.databinding.ActivityAppBinding.inflate
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
+import ru.maxpek.friendslinkup.viewmodel.MyWallPostViewModel
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @AndroidEntryPoint
 class AppActivity : AppCompatActivity() {
     private val viewModel: AuthViewModel by viewModels()
+    private val wallPostViewModel: MyWallPostViewModel by viewModels()
     @Inject
     lateinit var appAuth: AppAuth
     @Inject
     lateinit var firebaseMessaging: FirebaseMessaging
     @Inject
     lateinit var googleApiAvailability: GoogleApiAvailability
+
 
     companion object{
         private const val MAPKIT_API_KEY = "e0f40ead-fefb-45cf-821c-37efc0eaa548"
@@ -124,6 +130,7 @@ class AppActivity : AppCompatActivity() {
             }
             R.id.signout -> {
                 appAuth.removeAuth()
+                wallPostViewModel.removeAll()
                 findNavController(R.id.frame).navigate(R.id.feedFragment)
                 true
             }

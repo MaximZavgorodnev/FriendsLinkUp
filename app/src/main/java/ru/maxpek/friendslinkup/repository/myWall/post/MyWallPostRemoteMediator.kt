@@ -91,7 +91,6 @@ class MyWallPostRemoteMediator @Inject constructor(
             }
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
         } catch (e: Exception) {
-            println(e)
             return MediatorResult.Error(e)
         }
 

@@ -121,7 +121,6 @@ class NewEventViewModel @Inject constructor(
     fun addPost(content: String) {
         newEvent.value = newEvent.value?.copy(content = content)
         val event = newEvent.value!!
-        println(event)
         viewModelScope.launch {
             try {
                 repository.addEvent(event)

@@ -1,5 +1,8 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
 package ru.maxpek.friendslinkup.adapter.myWall.posts
 
+import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,11 +15,15 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.yandex.mapkit.geometry.Point
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.CardPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
+import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
+import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -50,6 +57,7 @@ class MyWallPostViewHolder(
     private val onInteractionListener: MyWallOnInteractionListener,
 ) : RecyclerView.ViewHolder(binding.root) {
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.O)
     fun bind(post: PostResponse) {
         binding.apply {
@@ -72,8 +80,8 @@ class MyWallPostViewHolder(
                         backgroundVideo.visibility = View.VISIBLE
                     }
                     AttachmentType.VIDEO -> {
-                        video.visibility = View.VISIBLE
-                        backgroundVideo.visibility = View.VISIBLE
+                        video.visibility = View.GONE
+                        backgroundVideo.visibility = View.GONE
                     }
                     AttachmentType.AUDIO -> {}
                     null -> {
@@ -88,7 +96,11 @@ class MyWallPostViewHolder(
 
             author.text = post.author
             published.text = GoDataTime.convertDataTime(post.published)
-            content.text = post.content
+            content.text = post.content + if (post.link != null) {
+                "\n" + post.link
+            } else {
+                ""
+            }
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
             geo.visibility = if (post.coords != null) View.VISIBLE else View.INVISIBLE
@@ -126,13 +138,25 @@ class MyWallPostViewHolder(
 
             backgroundVideo.setOnClickListener {
                 it.findNavController().navigate(
-                    R.id.action_feedFragment_to_displayingImagesFragment2,
+                    R.id.displayingImagesFragment2,
                     Bundle().apply { textArg = post.attachment?.url ?: " " })
             }
             mentions.setOnClickListener {
                 onInteractionListener.loadingTheListOfMentioned(post)
             }
-
+            content.setOnClickListener {
+                it.findNavController().navigate(
+                    R.id.openPostFragment2,
+                    Bundle().apply { intArg = post.id })
+            }
+            geo.setOnClickListener {
+                it.findNavController().navigate(R.id.mapsFragment,
+                    Bundle().apply {
+                        Point(
+                            post.coords?.lat!!.toDouble(), post.coords.long.toDouble()
+                        ).also { pointArg = it }
+                    })
+            }
         }
     }
 }

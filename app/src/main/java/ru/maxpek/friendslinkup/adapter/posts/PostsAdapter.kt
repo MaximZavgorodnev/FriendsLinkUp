@@ -138,7 +138,7 @@ class PostViewHolder(
 
             backgroundVideo.setOnClickListener {
                 it.findNavController()
-                    .navigate(R.id.action_feedFragment_to_displayingImagesFragment2,
+                    .navigate(R.id.displayingImagesFragment2,
                         Bundle().apply { textArg = post.attachment?.url ?: " " })
             }
             mentions.setOnClickListener {

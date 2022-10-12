@@ -36,7 +36,7 @@ class MyWallPostRepositoryImpl @Inject constructor(
         }
 
     override val dataUsersMentions: MutableLiveData<List<UserRequested>> =
-        MutableLiveData(ru.maxpek.friendslinkup.repository.post.emptyList)
+        MutableLiveData(emptyList)
 
 
     override suspend fun loadUsersMentions(list: List<Int>) {

@@ -104,7 +104,7 @@ class RegistrationFragment : DialogFragment() {
             binding.avatar.setImageResource(R.mipmap.ic_launcher)
         }
 
-        viewModel.data.observeForever {
+        viewModel.data.observe(viewLifecycleOwner) {
             if (it.token != null) {
                 findNavController().navigateUp()
             }
