@@ -10,7 +10,7 @@ import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentDisplayingImagesBinding
 import ru.maxpek.friendslinkup.util.StringArg
 
-class DisplayingImagesFragment: Fragment() {
+class DisplayingImagesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

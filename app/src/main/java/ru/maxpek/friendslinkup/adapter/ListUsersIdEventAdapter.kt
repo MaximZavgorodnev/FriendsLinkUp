@@ -10,12 +10,12 @@ import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.CardIdsBinding
 import ru.maxpek.friendslinkup.dto.UserRequested
 
-class ListUsersIdEventAdapter (private val callback: AdapterUsersIdCallback) :
+class ListUsersIdEventAdapter(private val callback: AdapterUsersIdCallback) :
     ListAdapter<UserRequested, UsersListEventViewHolder>(UsersListIdEventDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListEventViewHolder {
         val binding = CardIdsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UsersListEventViewHolder (binding, callback)
+        return UsersListEventViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: UsersListEventViewHolder, position: Int) {
@@ -24,9 +24,10 @@ class ListUsersIdEventAdapter (private val callback: AdapterUsersIdCallback) :
     }
 }
 
-class UsersListEventViewHolder
-    (private val binding: CardIdsBinding,
-     private val callback: AdapterUsersIdCallback)  : RecyclerView.ViewHolder(binding.root) {
+class UsersListEventViewHolder(
+    private val binding: CardIdsBinding,
+    private val callback: AdapterUsersIdCallback
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: UserRequested) {
         binding.apply {

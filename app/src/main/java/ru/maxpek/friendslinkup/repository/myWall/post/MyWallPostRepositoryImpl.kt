@@ -17,24 +17,26 @@ import java.io.IOException
 import javax.inject.Inject
 
 val emptyList = listOf<UserRequested>()
+
 @OptIn(ExperimentalPagingApi::class)
-class MyWallPostRepositoryImpl@Inject constructor(
+class MyWallPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mediator: MyWallPostRemoteMediator,
     private val dao: MyWallPostDao,
     private val daoPost: PostDao
-): MyWallPostRepository {
+) : MyWallPostRepository {
 
     override val data: Flow<PagingData<PostResponse>> =
         Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = {dao.getAll()},
+            pagingSourceFactory = { dao.getAll() },
             remoteMediator = mediator
-        ).flow.map{
+        ).flow.map {
             it.map(PostEntity::toDto)
         }
 
-    override val dataUsersMentions: MutableLiveData<List<UserRequested>> = MutableLiveData(ru.maxpek.friendslinkup.repository.post.emptyList)
+    override val dataUsersMentions: MutableLiveData<List<UserRequested>> =
+        MutableLiveData(ru.maxpek.friendslinkup.repository.post.emptyList)
 
 
     override suspend fun loadUsersMentions(list: List<Int>) {
@@ -45,16 +47,17 @@ class MyWallPostRepositoryImpl@Inject constructor(
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())
                 }
-                usersList.add(response.body()?: throw ApiError(response.code(), response.message()))
+                usersList.add(
+                    response.body() ?: throw ApiError(
+                        response.code(),
+                        response.message()
+                    )
+                )
             }
             dataUsersMentions.postValue(usersList)
         } catch (e: IOException) {
             throw NetworkError
         }
-    }
-
-    override fun getNewerCount(id: Int): Flow<Int> {
-        TODO("Not yet implemented")
     }
 
     override suspend fun removeById(id: Int) {
@@ -100,10 +103,5 @@ class MyWallPostRepositoryImpl@Inject constructor(
 
     override suspend fun removeAll() {
         dao.removeAll()
-    }
-
-    override suspend fun getUser(id: Int): UserRequested {
-
-        TODO("Not yet implemented")
     }
 }

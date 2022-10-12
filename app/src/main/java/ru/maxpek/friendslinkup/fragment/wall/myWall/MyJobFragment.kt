@@ -21,7 +21,7 @@ import ru.maxpek.friendslinkup.viewmodel.JobViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MyJobFragment: Fragment() {
+class MyJobFragment : Fragment() {
     private val authViewModel: AuthViewModel by viewModels()
     private val viewModel: JobViewModel by activityViewModels()
     override fun onCreateView(

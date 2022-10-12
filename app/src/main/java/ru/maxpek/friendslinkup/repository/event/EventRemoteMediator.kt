@@ -9,8 +9,9 @@ import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.EventDao
 import ru.maxpek.friendslinkup.dao.EventRemoteKeyDao
 import ru.maxpek.friendslinkup.db.EventAppDb
-import ru.maxpek.friendslinkup.db.PostAppDb
-import ru.maxpek.friendslinkup.entity.*
+import ru.maxpek.friendslinkup.entity.EventEntity
+import ru.maxpek.friendslinkup.entity.EventRemoteKeyEntity
+import ru.maxpek.friendslinkup.entity.toEntity
 import ru.maxpek.friendslinkup.error.ApiError
 import javax.inject.Inject
 
@@ -21,8 +22,11 @@ class EventRemoteMediator @Inject constructor(
     private val eventRemoteKeyDao: EventRemoteKeyDao,
     private val db: EventAppDb,
 
-    ): RemoteMediator<Int, EventEntity>() {
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, EventEntity>): MediatorResult {
+    ) : RemoteMediator<Int, EventEntity>() {
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, EventEntity>
+    ): MediatorResult {
         try {
             val response = when (loadType) {
 
@@ -87,8 +91,7 @@ class EventRemoteMediator @Inject constructor(
                 eventDao.insert(body.toEntity())
             }
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             return MediatorResult.Error(e)
         }
     }

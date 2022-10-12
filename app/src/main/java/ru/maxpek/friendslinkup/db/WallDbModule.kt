@@ -26,5 +26,6 @@ class WallDbModule {
     fun provideWallPostAppDb(appDb: WallPostAppDb): MyWallPostDao = appDb.myWallPostDao()
 
     @Provides
-    fun provideWallPostRemoteKeyDao(appDb: WallPostAppDb): MyWallRemoteKeyDao = appDb.myWallPostRemoteKeyDao()
+    fun provideWallPostRemoteKeyDao(appDb: WallPostAppDb): MyWallRemoteKeyDao =
+        appDb.myWallPostRemoteKeyDao()
 }

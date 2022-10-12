@@ -14,12 +14,12 @@ interface AdapterUsersIdCallback {
     fun goToPageUser(id: Int)
 }
 
-class ListUsersIdAdapter (private val callback: AdapterUsersIdCallback) :
+class ListUsersIdAdapter(private val callback: AdapterUsersIdCallback) :
     ListAdapter<UserRequested, UsersIdListOfViewHolder>(UsersIdDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersIdListOfViewHolder {
         val binding = CardIdsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UsersIdListOfViewHolder (binding, callback)
+        return UsersIdListOfViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: UsersIdListOfViewHolder, position: Int) {
@@ -28,9 +28,10 @@ class ListUsersIdAdapter (private val callback: AdapterUsersIdCallback) :
     }
 }
 
-class UsersIdListOfViewHolder
-    (private val binding: CardIdsBinding,
-     private val callback: AdapterUsersIdCallback)  : RecyclerView.ViewHolder(binding.root) {
+class UsersIdListOfViewHolder(
+    private val binding: CardIdsBinding,
+    private val callback: AdapterUsersIdCallback
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: UserRequested) {
         binding.apply {

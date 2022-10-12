@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
@@ -40,13 +39,12 @@ class AuthenticationFragment : DialogFragment() {
         enter.setOnClickListener {
             val usernameEditText = binding.username.text.toString()
             val passwordEditText = binding.password.text.toString()
-            if (usernameEditText=="" || passwordEditText==""){
+            if (usernameEditText == "" || passwordEditText == "") {
                 Snackbar.make(binding.root, R.string.All_fields, Snackbar.LENGTH_SHORT).show()
             } else {
                 val userResponse = UserResponse(usernameEditText, passwordEditText)
                 viewModel.onSignIn(userResponse)
                 AndroidUtils.hideKeyboard(requireView())
-
             }
         }
         viewModel.data.observeForever {
@@ -58,8 +56,6 @@ class AuthenticationFragment : DialogFragment() {
         return binding.root
 
     }
-
-
 
 
 }

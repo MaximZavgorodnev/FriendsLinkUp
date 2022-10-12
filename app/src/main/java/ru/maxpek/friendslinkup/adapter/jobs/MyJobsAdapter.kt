@@ -13,16 +13,16 @@ import ru.maxpek.friendslinkup.dto.Job
 import ru.maxpek.friendslinkup.util.GoDataTime
 
 
-interface OnClickListener{
-    fun onEditJob(job: Job){}
-    fun onRemoveJob(job: Job){}
+interface OnClickListener {
+    fun onEditJob(job: Job) {}
+    fun onRemoveJob(job: Job) {}
 }
 
-class MyJobsAdapter(private val onClickListener: OnClickListener): ListAdapter<Job,
+class MyJobsAdapter(private val onClickListener: OnClickListener) : ListAdapter<Job,
         JobMyWallViewHolder>(JobMyWallDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JobMyWallViewHolder {
         val binding = CardJobsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return JobMyWallViewHolder (binding, onClickListener)
+        return JobMyWallViewHolder(binding, onClickListener)
     }
 
     override fun onBindViewHolder(holder: JobMyWallViewHolder, position: Int) {
@@ -37,7 +37,7 @@ class JobMyWallViewHolder(
 ) : RecyclerView.ViewHolder(binding.root) {
 
     @SuppressLint("NewApi")
-    fun bind(job: Job){
+    fun bind(job: Job) {
         binding.apply {
             nameOrganization.text = job.name
             position.text = job.position

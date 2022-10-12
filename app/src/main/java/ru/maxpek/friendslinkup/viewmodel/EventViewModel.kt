@@ -26,7 +26,7 @@ import javax.inject.Inject
 class EventViewModel @Inject constructor(
     private val repositoryEvent: EventRepository,
     appAuth: AppAuth
-    ) : ViewModel() {
+) : ViewModel() {
 
     var lastAction: ActionType? = null
     var lastId = 0
@@ -36,7 +36,7 @@ class EventViewModel @Inject constructor(
         get() = _dataState
 
     private val _eventResponse = MutableLiveData<EventResponse>()
-    val eventResponse: LiveData <EventResponse>
+    val eventResponse: LiveData<EventResponse>
         get() = _eventResponse
 
     val dataUserSpeakers: LiveData<List<UserRequested>> = repositoryEvent.dataUsersSpeakers
@@ -47,7 +47,7 @@ class EventViewModel @Inject constructor(
             val cached = repositoryEvent.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
-                    it.copy(ownerByMe = it.authorId.toLong() == myId )
+                    it.copy(ownerByMe = it.authorId.toLong() == myId)
                 }
             }
         }
@@ -99,7 +99,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun participateInEvent(id: Int){
+    fun participateInEvent(id: Int) {
         lastAction = ActionType.PARTICIPATE
         lastId = id
         viewModelScope.launch {
@@ -111,7 +111,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun doNotParticipateInEvent(id: Int){
+    fun doNotParticipateInEvent(id: Int) {
         lastAction = ActionType.DONOTPARTICIPATE
         lastId = id
         viewModelScope.launch {
@@ -134,7 +134,7 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun getEvent(id: Int){
+    fun getEvent(id: Int) {
         viewModelScope.launch {
             try {
                 _eventResponse.postValue(repositoryEvent.getEvent(id))
@@ -144,8 +144,8 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun retry(){
-        if (errorCounter == 3 || errorCounter > 3){
+    fun retry() {
+        if (errorCounter == 3 || errorCounter > 3) {
             _dataState.value = FeedModelState(loading = true)
         } else {
             when (lastAction) {
@@ -159,33 +159,38 @@ class EventViewModel @Inject constructor(
         }
     }
 
-    fun retryLikeById(){
-        lastId.let{
-            likeById(it)}
+    fun retryLikeById() {
+        lastId.let {
+            likeById(it)
+        }
         errorCounter++
     }
 
-    fun retryDisLikeById(){
-        lastId.let{
-            disLikeById(it)}
+    fun retryDisLikeById() {
+        lastId.let {
+            disLikeById(it)
+        }
         errorCounter++
     }
 
-    fun retryRemove(){
-        lastId.let{
-            removeById(it) }
+    fun retryRemove() {
+        lastId.let {
+            removeById(it)
+        }
         errorCounter++
     }
 
     fun retryParticipateInEvent() {
-        lastId.let{
-            participateInEvent(it)}
+        lastId.let {
+            participateInEvent(it)
+        }
         errorCounter++
     }
 
     fun retryDoNotParticipateInEvent() {
-        lastId.let{
-            doNotParticipateInEvent(it)}
+        lastId.let {
+            doNotParticipateInEvent(it)
+        }
         errorCounter++
     }
 

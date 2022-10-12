@@ -10,11 +10,6 @@ import ru.maxpek.friendslinkup.dto.*
 
 interface ApiService {
 
-//
-    @POST("posts")
-    suspend fun save(@Body postResponse: PostResponse): Response<PostResponse>
-
-
     //Аунтетификация пользователя
     @FormUrlEncoded
     @POST("users/authentication")
@@ -95,8 +90,6 @@ interface ApiService {
     ): Response<List<PostResponse>>
 
 
-
-
     //Загрузка всех постов
     @GET("posts")
     suspend fun getAll(): Response<List<PostResponse>>
@@ -120,7 +113,7 @@ interface ApiService {
 
     //Переход на страницу пользователя
     @GET("{user_id}/jobs")
-    suspend fun getUserJob (
+    suspend fun getUserJob(
         @Path("user_id") id: String
     ): Response<List<Job>>
 
@@ -135,7 +128,7 @@ interface ApiService {
 
     //Получить список моих работ
     @GET("my/jobs")
-    suspend fun getMyJob (): Response<MutableList<Job>>
+    suspend fun getMyJob(): Response<MutableList<Job>>
 
     //Получение событий
     @GET("events/latest")
@@ -180,8 +173,6 @@ interface ApiService {
     //Получение события
     @GET("events/{event_id}")
     suspend fun getEvent(@Path("event_id") id: Int): Response<EventResponse>
-
-
 
 
 }

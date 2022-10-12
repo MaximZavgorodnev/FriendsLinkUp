@@ -6,17 +6,13 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dao.PostDao
 import ru.maxpek.friendslinkup.dao.PostRemoteKeyDao
 import ru.maxpek.friendslinkup.db.PostAppDb
-import ru.maxpek.friendslinkup.dto.PostResponse
-import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.entity.PostRemoteKeyEntity
 import ru.maxpek.friendslinkup.entity.toEntity
 import ru.maxpek.friendslinkup.error.ApiError
-import ru.maxpek.friendslinkup.error.NetworkError
 import javax.inject.Inject
 
 @OptIn(ExperimentalPagingApi::class)
@@ -26,8 +22,11 @@ class PostRemoteMediator @Inject constructor(
     private val postRemoteKeyDao: PostRemoteKeyDao,
     private val db: PostAppDb,
 
-): RemoteMediator<Int, PostEntity>() {
-    override suspend fun load(loadType: LoadType, state: PagingState<Int, PostEntity>): MediatorResult {
+    ) : RemoteMediator<Int, PostEntity>() {
+    override suspend fun load(
+        loadType: LoadType,
+        state: PagingState<Int, PostEntity>
+    ): MediatorResult {
         try {
             val response = when (loadType) {
 
@@ -93,8 +92,7 @@ class PostRemoteMediator @Inject constructor(
             }
 
             return MediatorResult.Success(endOfPaginationReached = body.isEmpty())
-        }
-        catch (e: Exception){
+        } catch (e: Exception) {
             return MediatorResult.Error(e)
         }
 

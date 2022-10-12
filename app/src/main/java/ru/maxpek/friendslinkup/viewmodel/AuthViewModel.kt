@@ -7,23 +7,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.auth.AuthState
-
 import ru.maxpek.friendslinkup.dto.UserRegistration
 import ru.maxpek.friendslinkup.dto.UserResponse
-import ru.maxpek.friendslinkup.repository.user.UserRepository
 import ru.maxpek.friendslinkup.error.UnknownError
 import ru.maxpek.friendslinkup.model.ErrorLive
-
+import ru.maxpek.friendslinkup.repository.user.UserRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     private val appAuth: AppAuth,
-    private val repositoryUser : UserRepository
+    private val repositoryUser: UserRepository
 ) : ViewModel() {
-//    private val _photo = MutableLiveData(noPhoto)
-//    val photo: LiveData<PhotoModel>
-//        get() = _photo
+
     private val _errors = MutableLiveData(ErrorLive())
     val errors: LiveData<ErrorLive>
         get() = _errors
@@ -34,9 +30,7 @@ class AuthViewModel @Inject constructor(
         get() = appAuth.authStateFlow.value.id != 0L
 
 
-
-
-    fun onSignIn(userResponse: UserResponse){
+    fun onSignIn(userResponse: UserResponse) {
         viewModelScope.launch {
             try {
                 repositoryUser.onSignIn(userResponse)
@@ -44,12 +38,10 @@ class AuthViewModel @Inject constructor(
             } catch (e: RuntimeException) {
                 _errors.value = ErrorLive(error = true)
             }
-
-
         }
     }
 
-    fun onSignUp(user: UserRegistration){
+    fun onSignUp(user: UserRegistration) {
         viewModelScope.launch {
             try {
                 repositoryUser.onSignUp(user)

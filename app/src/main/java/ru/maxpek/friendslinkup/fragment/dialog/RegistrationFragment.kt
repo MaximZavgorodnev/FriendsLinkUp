@@ -1,7 +1,5 @@
 package ru.maxpek.friendslinkup.fragment.dialog
 
-
-
 import android.app.Activity
 import android.net.Uri
 import android.os.Bundle
@@ -11,20 +9,14 @@ import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.load.ImageHeaderParser
-import com.canhub.cropper.*
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
-import okhttp3.Headers
-import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.internal.http2.Header
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.databinding.FragmentRegistrationBinding
 import ru.maxpek.friendslinkup.dto.UserRegistration
@@ -52,15 +44,21 @@ class RegistrationFragment : DialogFragment() {
             val passwordEditText = binding.password.text.toString()
             val repeatPasswordEditText = binding.repeatPassword.text.toString()
             val avatarImage = file
-            if (passwordEditText != repeatPasswordEditText){
-                Snackbar.make(binding.root, R.string.password_not_match, Snackbar.LENGTH_SHORT).show()
+            if (passwordEditText != repeatPasswordEditText) {
+                Snackbar.make(binding.root, R.string.password_not_match, Snackbar.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             } else {
                 if (loginEditText == "" || passwordEditText == "") {
                     Snackbar.make(binding.root, R.string.All_fields, Snackbar.LENGTH_SHORT).show()
                     return@setOnClickListener
                 } else {
-                    val user = UserRegistration(loginEditText, passwordEditText, usernameEditText, avatarImage)
+                    val user = UserRegistration(
+                        loginEditText,
+                        passwordEditText,
+                        usernameEditText,
+                        avatarImage
+                    )
                     viewModel.onSignUp(user)
                     AndroidUtils.hideKeyboard(requireView())
                 }
@@ -81,18 +79,16 @@ class RegistrationFragment : DialogFragment() {
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody())
+                            "file", resultFile?.name, resultFile!!.asRequestBody()
+                        )
                         binding.avatar.setImageURI(uri)
                     }
                 }
             }
 
-
         binding.avatar.setOnClickListener {
-
-
             ImagePicker.with(this)
-                .crop(1F,1F)
+                .crop(1F, 1F)
                 .compress(2048)
                 .provider(ImageProvider.BOTH)
                 .galleryMimeTypes(

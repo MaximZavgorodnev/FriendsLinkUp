@@ -27,7 +27,7 @@ import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.EventViewModel
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class OpenEventFragment:  Fragment() {
+class OpenEventFragment : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
     private val viewModel: EventViewModel by activityViewModels()
 
@@ -53,7 +53,7 @@ class OpenEventFragment:  Fragment() {
         viewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.refreshing
 
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -79,23 +79,28 @@ class OpenEventFragment:  Fragment() {
                             AttachmentType.IMAGE -> {
                                 backgroundVideo.visibility = View.VISIBLE
                             }
-                            AttachmentType.VIDEO ->{
+                            AttachmentType.VIDEO -> {
                                 video.visibility = View.VISIBLE
                                 backgroundVideo.visibility = View.VISIBLE
                             }
-                            AttachmentType.AUDIO ->{}
+                            AttachmentType.AUDIO -> {}
                         }
-                        Glide.with(this@OpenEventFragment).load(event.attachment.url).timeout(10_000).into(backgroundVideo)
+                        Glide.with(this@OpenEventFragment).load(event.attachment.url)
+                            .timeout(10_000).into(backgroundVideo)
                     }
 
-                    when(event.type){
+                    when (event.type) {
                         TypeEvent.OFFLINE -> type.setImageResource(R.drawable.ic_sensors_off_32)
                         TypeEvent.ONLINE -> type.setImageResource(R.drawable.ic_sensors_32)
                     }
                     author.text = event.author
                     published.text = GoDataTime.convertDataTime(event.published)
                     dateTime.text = GoDataTime.convertDataTime(event.datetime)
-                    content.text = event.content + if(event.link!=null){ "\n"+ event.link} else {""}
+                    content.text = event.content + if (event.link != null) {
+                        "\n" + event.link
+                    } else {
+                        ""
+                    }
                     like.isChecked = event.likedByMe
                     like.text = "${event.likeOwnerIds.size}"
                     participate.isChecked = event.participatedByMe
@@ -127,62 +132,82 @@ class OpenEventFragment:  Fragment() {
 
                     like.setOnClickListener {
                         if (authViewModel.authenticated) {
-                            if (!event.likedByMe) viewModel.likeById(event.id) else viewModel.disLikeById(event.id)
+                            if (!event.likedByMe) viewModel.likeById(event.id) else viewModel.disLikeById(
+                                event.id
+                            )
                         } else {
-                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT)
+                                .show()
                             findNavController().navigate(R.id.authenticationFragment)
                         }
                     }
                     participate.setOnClickListener {
                         if (authViewModel.authenticated) {
-                            if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.doNotParticipateInEvent(event.id)
+                            if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.doNotParticipateInEvent(
+                                event.id
+                            )
                         } else {
-                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT)
+                                .show()
                             findNavController().navigate(R.id.authenticationFragment)
                         }
                     }
                     participate.setOnLongClickListener {
                         if (authViewModel.authenticated) {
-                            if (event.participantsIds.isEmpty()){
-                                Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                            if (event.participantsIds.isEmpty()) {
+                                Snackbar.make(
+                                    binding.root,
+                                    R.string.mention_anyone,
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             } else {
                                 viewModel.goToUserParticipateInEvent(event.participantsIds)
                                 findNavController().navigate(R.id.listOfSpeakers)
                             }
                         } else {
-                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT)
+                                .show()
                             findNavController().navigate(R.id.authenticationFragment)
                         }
                         true
                     }
 
-                    backgroundVideo.setOnClickListener{
+                    backgroundVideo.setOnClickListener {
                         it.findNavController().navigate(
                             R.id.displayingImagesFragment2,
-                            Bundle().apply { textArg = event.attachment?.url ?: " "})
+                            Bundle().apply { textArg = event.attachment?.url ?: " " })
                     }
                     speakers.setOnClickListener {
                         if (authViewModel.authenticated) {
-                            if (event.speakerIds.isEmpty()){
-                                Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                            if (event.speakerIds.isEmpty()) {
+                                Snackbar.make(
+                                    binding.root,
+                                    R.string.mention_anyone,
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
                             } else {
                                 viewModel.loadUsersSpeakers(event.speakerIds)
                                 findNavController().navigate(R.id.listOfSpeakers)
                             }
                         } else {
-                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT)
+                                .show()
                             findNavController().navigate(R.id.authenticationFragment)
                         }
                     }
 
                     author.setOnClickListener {
                         val idAuthor = event.authorId.toString()
-                        findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                        findNavController().navigate(
+                            R.id.userJobFragment,
+                            Bundle().apply { textArg = idAuthor })
                     }
 
                     avatar.setOnClickListener {
                         val idAuthor = event.authorId.toString()
-                        findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                        findNavController().navigate(
+                            R.id.userJobFragment,
+                            Bundle().apply { textArg = idAuthor })
                     }
 
                     geo.setOnClickListener {

@@ -3,7 +3,9 @@ package ru.maxpek.friendslinkup.repository.newPost
 import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.PostDao
-import ru.maxpek.friendslinkup.dto.*
+import ru.maxpek.friendslinkup.dto.Attachment
+import ru.maxpek.friendslinkup.dto.PostCreateRequest
+import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.error.ApiError
@@ -15,7 +17,7 @@ import javax.inject.Inject
 class NewPostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: PostDao
-): NewPostRepository {
+) : NewPostRepository {
 
     override suspend fun loadUsers(): List<UserRequested> {
         val usersList: List<UserRequested>
@@ -31,14 +33,18 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun addPictureToThePost(attachmentType: AttachmentType, image: MultipartBody.Part): Attachment {
+    override suspend fun addPictureToThePost(
+        attachmentType: AttachmentType,
+        image: MultipartBody.Part
+    ): Attachment {
 
         try {
             val response = apiService.addMultimedia(image)
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse = response.body() ?: throw ApiError(response.code(), response.message())
+            val mediaResponse =
+                response.body() ?: throw ApiError(response.code(), response.message())
             val attachment = Attachment(mediaResponse.url, attachmentType)
             return attachment
         } catch (e: IOException) {
@@ -60,23 +66,23 @@ class NewPostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun getPost(id: Int): PostCreateRequest{
+    override suspend fun getPost(id: Int): PostCreateRequest {
         try {
-                val response = apiService.getPost(id)
-                if (!response.isSuccessful) {
-                    throw ApiError(response.code(), response.message())
-                } else {
-                    val body =
-                        response.body() ?: throw ApiError(response.code(), response.message())
-                    return PostCreateRequest(
-                        id = body.id,
-                        content = body.content,
-                        coords = body.coords,
-                        link = body.link,
-                        attachment = body.attachment,
-                        mentionIds = body.mentionIds
-                    )
-                }
+            val response = apiService.getPost(id)
+            if (!response.isSuccessful) {
+                throw ApiError(response.code(), response.message())
+            } else {
+                val body =
+                    response.body() ?: throw ApiError(response.code(), response.message())
+                return PostCreateRequest(
+                    id = body.id,
+                    content = body.content,
+                    coords = body.coords,
+                    link = body.link,
+                    attachment = body.attachment,
+                    mentionIds = body.mentionIds
+                )
+            }
         } catch (e: IOException) {
             throw NetworkError
         }

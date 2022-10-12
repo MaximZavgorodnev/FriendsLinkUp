@@ -11,9 +11,10 @@ import javax.inject.Inject
 
 val listJob = listOf<Job>()
 val user = UserRequested()
+
 class UserWallRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
-): UserWallRepository {
+) : UserWallRepository {
     override val data: MutableLiveData<List<Job>> = MutableLiveData(listJob)
     override val userData: MutableLiveData<UserRequested> = MutableLiveData(user)
 

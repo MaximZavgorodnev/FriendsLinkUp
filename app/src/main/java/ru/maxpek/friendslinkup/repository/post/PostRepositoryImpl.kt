@@ -14,8 +14,8 @@ import ru.maxpek.friendslinkup.error.NetworkError
 import java.io.IOException
 import javax.inject.Inject
 
-
 val emptyList = listOf<UserRequested>()
+
 @OptIn(ExperimentalPagingApi::class)
 class PostRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
@@ -26,14 +26,15 @@ class PostRepositoryImpl @Inject constructor(
     override val data: Flow<PagingData<PostResponse>> =
         Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = {dao.getAll()},
+            pagingSourceFactory = { dao.getAll() },
             remoteMediator = mediator
-        ).flow.map{
+        ).flow.map {
             it.map(PostEntity::toDto)
         }
 
 
-    override val dataUsersMentions: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
+    override val dataUsersMentions: MutableLiveData<List<UserRequested>> =
+        MutableLiveData(emptyList)
 
 
     override suspend fun loadUsersMentions(list: List<Int>) {
@@ -44,7 +45,12 @@ class PostRepositoryImpl @Inject constructor(
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())
                 }
-                usersList.add(response.body()?: throw ApiError(response.code(), response.message()))
+                usersList.add(
+                    response.body() ?: throw ApiError(
+                        response.code(),
+                        response.message()
+                    )
+                )
             }
             dataUsersMentions.postValue(usersList)
         } catch (e: IOException) {
@@ -64,7 +70,7 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun likeById(id:Int): PostResponse {
+    override suspend fun likeById(id: Int): PostResponse {
         try {
             val response = apiService.likeById(id)
             if (!response.isSuccessful) {

@@ -18,7 +18,7 @@ import ru.maxpek.friendslinkup.viewmodel.UserWallViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class UserJobFragment: Fragment() {
+class UserJobFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -26,7 +26,7 @@ class UserJobFragment: Fragment() {
     ): View {
         val binding = FragmentUserWallJobBinding.inflate(inflater, container, false)
         val userWallViewModel: UserWallViewModel by activityViewModels()
-        if (arguments != null){
+        if (arguments != null) {
             arguments?.textArg?.let {
                 userWallViewModel.getUser(it)
                 userWallViewModel.getJobUser(it)

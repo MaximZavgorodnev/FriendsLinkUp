@@ -18,7 +18,7 @@ import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ListOfUsers: DialogFragment() {
+class ListOfUsers : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -34,6 +34,7 @@ class ListOfUsers: DialogFragment() {
             override fun isChecked(id: Int) {
                 newPostViewModel.isChecked(id)
             }
+
             override fun unChecked(id: Int) {
                 newPostViewModel.unChecked(id)
             }
@@ -41,7 +42,7 @@ class ListOfUsers: DialogFragment() {
         binding.list.adapter = adapter
 
         newPostViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

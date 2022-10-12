@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Module
 class ApiModule {
 
-    companion object{
+    companion object {
         private const val BASE_URL = "${BuildConfig.BASE_URL}/api/"
     }
 
@@ -34,7 +34,7 @@ class ApiModule {
     @Provides
     fun provideAuthPrefs(
         @ApplicationContext context: Context
-    ): SharedPreferences =  context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+    ): SharedPreferences = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
 
     @Singleton
     @Provides

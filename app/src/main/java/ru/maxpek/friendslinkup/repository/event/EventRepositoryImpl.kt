@@ -15,21 +15,23 @@ import java.io.IOException
 import javax.inject.Inject
 
 val emptyList = listOf<UserRequested>()
+
 @OptIn(ExperimentalPagingApi::class)
 class EventRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val mediator: EventRemoteMediator,
     private val dao: EventDao
-) : EventRepository{
+) : EventRepository {
     override val data: Flow<PagingData<EventResponse>> =
         Pager(
             config = PagingConfig(pageSize = 10, enablePlaceholders = false),
-            pagingSourceFactory = {dao.getAll()},
+            pagingSourceFactory = { dao.getAll() },
             remoteMediator = mediator
-        ).flow.map{
+        ).flow.map {
             it.map(EventEntity::toDto)
         }
-    override val dataUsersSpeakers: MutableLiveData<List<UserRequested>> = MutableLiveData(emptyList)
+    override val dataUsersSpeakers: MutableLiveData<List<UserRequested>> =
+        MutableLiveData(emptyList)
 
 
     override suspend fun loadUsersSpeakers(list: List<Int>) {
@@ -40,7 +42,12 @@ class EventRepositoryImpl @Inject constructor(
                 if (!response.isSuccessful) {
                     throw ApiError(response.code(), response.message())
                 }
-                usersList.add(response.body()?: throw ApiError(response.code(), response.message()))
+                usersList.add(
+                    response.body() ?: throw ApiError(
+                        response.code(),
+                        response.message()
+                    )
+                )
             }
             dataUsersSpeakers.postValue(usersList)
         } catch (e: IOException) {

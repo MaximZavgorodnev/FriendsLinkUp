@@ -28,12 +28,15 @@ val editedEvent = EventCreateRequest(
     type = TypeEvent.OFFLINE,
     attachment = null,
     link = null,
-    speakerIds = listOf())
+    speakerIds = listOf()
+)
 val speakers = mutableListOf<UserRequested>()
+
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NewEventViewModel @Inject constructor(
-    private val repository: NewEventRepository): ViewModel() {
+    private val repository: NewEventRepository
+) : ViewModel() {
 
     var inJob = false
 
@@ -41,7 +44,7 @@ class NewEventViewModel @Inject constructor(
 
     val data: MutableLiveData<List<UserRequested>> = MutableLiveData()
 
-    val speakersLive : MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
+    val speakersLive: MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -51,7 +54,7 @@ class NewEventViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    fun getEvent(id: Int){
+    fun getEvent(id: Int) {
         speakersLive.postValue(speakers)
         viewModelScope.launch {
             try {
@@ -85,12 +88,12 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun addSpeakersIds(){
+    fun addSpeakersIds() {
         speakersLive.postValue(speakers)
         val listChecked = mutableListOf<Int>()
         val speakersUserList = mutableListOf<UserRequested>()
         data.value?.forEach { user ->
-            if (user.checked){
+            if (user.checked) {
                 listChecked.add(user.id)
                 speakersUserList.add(user)
             }
@@ -99,7 +102,7 @@ class NewEventViewModel @Inject constructor(
         newEvent.value = newEvent.value?.copy(speakerIds = listChecked)
     }
 
-    fun isChecked(id: Int){
+    fun isChecked(id: Int) {
         data.value?.forEach {
             if (it.id == id) {
                 it.checked = true
@@ -107,7 +110,7 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun unChecked(id: Int){
+    fun unChecked(id: Int) {
         data.value?.forEach {
             if (it.id == id) {
                 it.checked = false
@@ -115,7 +118,7 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun addPost(content: String){
+    fun addPost(content: String) {
         newEvent.value = newEvent.value?.copy(content = content)
         val event = newEvent.value!!
         println(event)
@@ -131,22 +134,24 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun addCoords(point: Point){
-        val coordinates = Coordinates(((point.latitude * 1000000.0).roundToInt() /1000000.0).toString(),
-            ((point.longitude * 1000000.0).roundToInt() /1000000.0).toString())
+    fun addCoords(point: Point) {
+        val coordinates = Coordinates(
+            ((point.latitude * 1000000.0).roundToInt() / 1000000.0).toString(),
+            ((point.longitude * 1000000.0).roundToInt() / 1000000.0).toString()
+        )
         newEvent.value = newEvent.value?.copy(coords = coordinates)
         inJob = false
     }
 
-    fun addLink(link: String){
-        if (link != ""){
+    fun addLink(link: String) {
+        if (link != "") {
             newEvent.value = newEvent.value?.copy(link = link)
         } else {
             newEvent.value = newEvent.value?.copy(link = null)
         }
     }
 
-    fun addPictureToThePost(image: MultipartBody.Part){
+    fun addPictureToThePost(image: MultipartBody.Part) {
         viewModelScope.launch {
             try {
                 val attachment = repository.addPictureToTheEvent(AttachmentType.IMAGE, image)
@@ -158,24 +163,24 @@ class NewEventViewModel @Inject constructor(
         }
     }
 
-    fun addDateTime(dateTime: String){
+    fun addDateTime(dateTime: String) {
         newEvent.value = newEvent.value?.copy(datetime = dateTime)
     }
 
-    fun addTypeEvent(){
-        val type = when(newEvent.value?.type){
+    fun addTypeEvent() {
+        val type = when (newEvent.value?.type) {
             TypeEvent.OFFLINE -> TypeEvent.ONLINE
             else -> TypeEvent.OFFLINE
         }
         newEvent.value = newEvent.value?.copy(type = type)
     }
 
-    fun deletePicture(){
+    fun deletePicture() {
         newEvent.value = newEvent.value?.copy(attachment = null)
     }
 
 
-    fun deleteEditPost(){
+    fun deleteEditPost() {
         newEvent.postValue(editedEvent)
         speakers.clear()
         speakersLive.postValue(speakers)

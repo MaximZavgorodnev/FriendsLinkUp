@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 @SuppressLint("NewApi")
 object GoDataTime {
     fun convertDataTime(dateTime: String): String {
-        return if (dateTime == ""){
+        return if (dateTime == "") {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)
@@ -18,7 +18,7 @@ object GoDataTime {
 
     @SuppressLint("SimpleDateFormat")
     fun convertDataTimeJob(dateTime: String): String {
-        return if (dateTime == ""){
+        return if (dateTime == "") {
             ""
         } else {
             val parsedDate = LocalDateTime.parse(dateTime, DateTimeFormatter.ISO_DATE_TIME)

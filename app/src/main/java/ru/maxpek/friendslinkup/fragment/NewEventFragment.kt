@@ -3,13 +3,13 @@ package ru.maxpek.friendslinkup.fragment
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.DatePicker
-import android.widget.PopupMenu
 import android.widget.TimePicker
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
@@ -29,7 +29,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
-import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
 import ru.maxpek.friendslinkup.adapter.ListUsersIdEventAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentNewEventBinding
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
@@ -39,7 +38,6 @@ import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 import ru.maxpek.friendslinkup.viewmodel.NewEventViewModel
 import java.util.*
-import android.app.TimePickerDialog as TimePickerDialog
 
 
 var dayEvent = 0
@@ -52,8 +50,10 @@ var minuteEvent = 0
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
 @SuppressLint("FragmentBackPressedCallback")
-class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-    private val newEventViewModel : NewEventViewModel by activityViewModels()
+class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener,
+    TimePickerDialog.OnTimeSetListener {
+    private val newEventViewModel: NewEventViewModel by activityViewModels()
+
     @SuppressLint("UseRequireInsteadOfGet")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -70,24 +70,25 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         var file: MultipartBody.Part
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
-                newEventViewModel.deleteEditPost()
-                findNavController().navigate(R.id.eventFragment)
-            }.show()
+            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.exit) {
+                    newEventViewModel.deleteEditPost()
+                    findNavController().navigate(R.id.eventFragment)
+                }.show()
         }
 
         if (arguments?.intArg != null) {
             val id = arguments?.intArg
-            id?.let {newEventViewModel.getEvent(it) }
+            id?.let { newEventViewModel.getEvent(it) }
         }
-
-
 
 
         val adapter = ListUsersIdEventAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser(id: Int) {
                 val idAuthor = id.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
         })
 
@@ -105,7 +106,8 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody())
+                            "file", resultFile?.name, resultFile!!.asRequestBody()
+                        )
                         newEventViewModel.addPictureToThePost(file)
                         binding.image.setImageURI(uri)
                     }
@@ -129,15 +131,18 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         }
 
         binding.mentionAdd.setOnClickListener {
-            binding.mentionAdd.isChecked = newEventViewModel.newEvent.value?.speakerIds?.isNotEmpty() ?: false
+            binding.mentionAdd.isChecked =
+                newEventViewModel.newEvent.value?.speakerIds?.isNotEmpty() ?: false
             findNavController().navigate(R.id.action_newEventFragment_to_listOfUsersAddInEvent)
         }
 
         binding.geoAdd.setOnClickListener {
             if (newEventViewModel.newEvent.value?.coords != null) {
                 binding.geoAdd.isChecked = true
-                val point = Point(newEventViewModel.newEvent.value?.coords!!.lat.toDouble(),
-                    newEventViewModel.newEvent.value?.coords!!.long.toDouble() )
+                val point = Point(
+                    newEventViewModel.newEvent.value?.coords!!.lat.toDouble(),
+                    newEventViewModel.newEvent.value?.coords!!.long.toDouble()
+                )
                 newEventViewModel.inJob = true
                 findNavController().navigate(
                     R.id.action_newEventFragment_to_mapsFragment,
@@ -196,7 +201,7 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
         binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
             val date = newEventViewModel.newEvent.value?.datetime
-            if (content ==""|| date == null) {
+            if (content == "" || date == null) {
                 Snackbar.make(binding.root, R.string.content_field, Snackbar.LENGTH_SHORT).show()
             } else {
                 newEventViewModel.addPost(content)
@@ -218,23 +223,24 @@ class NewEventFragment : Fragment(), DatePickerDialog.OnDateSetListener, TimePic
 
         newEventViewModel.dataState.observe(viewLifecycleOwner) { state ->
             if (state.error) {
-                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE).show()
+                Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_INDEFINITE)
+                    .show()
             }
         }
         return binding.root
     }
 
-    private fun getDataCalendar(){
-        if (day == 0){
+    private fun getDataCalendar() {
+        if (day == 0) {
             val cal = Calendar.getInstance()
-            dayEvent =  cal.get(Calendar.DAY_OF_MONTH)
-            monthEvent  = cal.get(Calendar.MONTH)
+            dayEvent = cal.get(Calendar.DAY_OF_MONTH)
+            monthEvent = cal.get(Calendar.MONTH)
             yearEvent = cal.get(Calendar.YEAR)
         }
     }
 
-    private fun getTimeCalendar(){
-        if (day == 0){
+    private fun getTimeCalendar() {
+        if (day == 0) {
             val cal = Calendar.getInstance()
             hourEvent = cal.get(Calendar.HOUR)
             minuteEvent = cal.get(Calendar.MINUTE)

@@ -29,7 +29,7 @@ interface MyWallOnInteractionListener {
     fun loadingTheListOfMentioned(post: PostResponse) {}
 }
 
-class MyPostsAdapter (
+class MyPostsAdapter(
     private val onInteractionListener: MyWallOnInteractionListener,
 ) : PagingDataAdapter<PostResponse, MyWallPostViewHolder>(MyWallPostDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyWallPostViewHolder {
@@ -71,17 +71,18 @@ class MyWallPostViewHolder(
                     AttachmentType.IMAGE -> {
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    AttachmentType.VIDEO ->{
+                    AttachmentType.VIDEO -> {
                         video.visibility = View.VISIBLE
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    AttachmentType.AUDIO ->{}
+                    AttachmentType.AUDIO -> {}
                     null -> {
                         video.visibility = View.GONE
                         backgroundVideo.visibility = View.GONE
                     }
                 }
-                Glide.with(itemView).load(post.attachment?.url).timeout(10_000).into(backgroundVideo)
+                Glide.with(itemView).load(post.attachment?.url).timeout(10_000)
+                    .into(backgroundVideo)
             }
 
 
@@ -123,10 +124,10 @@ class MyWallPostViewHolder(
                 onInteractionListener.onShare(post)
             }
 
-            backgroundVideo.setOnClickListener{
+            backgroundVideo.setOnClickListener {
                 it.findNavController().navigate(
                     R.id.action_feedFragment_to_displayingImagesFragment2,
-                    Bundle().apply { textArg = post.attachment?.url ?: " "})
+                    Bundle().apply { textArg = post.attachment?.url ?: " " })
             }
             mentions.setOnClickListener {
                 onInteractionListener.loadingTheListOfMentioned(post)

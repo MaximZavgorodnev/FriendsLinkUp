@@ -1,6 +1,9 @@
 package ru.maxpek.friendslinkup.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.yandex.mapkit.geometry.Point
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -23,13 +26,16 @@ val editedPost = PostCreateRequest(
     coords = null,
     link = null,
     attachment = null,
-    mentionIds = listOf())
+    mentionIds = listOf()
+)
 
 val mentions = mutableListOf<UserRequested>()
+
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
-    private val repository : NewPostRepository): ViewModel() {
+    private val repository: NewPostRepository
+) : ViewModel() {
 
     var inJob = false
 
@@ -37,7 +43,7 @@ class NewPostViewModel @Inject constructor(
 
     val data: MutableLiveData<List<UserRequested>> = MutableLiveData()
 
-    val mentionsLive : MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
+    val mentionsLive: MutableLiveData<MutableList<UserRequested>> = MutableLiveData()
 
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
@@ -47,7 +53,7 @@ class NewPostViewModel @Inject constructor(
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    fun getPost(id: Int){
+    fun getPost(id: Int) {
 
         mentionsLive.postValue(mentions)
         viewModelScope.launch {
@@ -82,12 +88,12 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addMentionIds(){
+    fun addMentionIds() {
         mentionsLive.postValue(mentions)
         val listChecked = mutableListOf<Int>()
         val mentionsUserList = mutableListOf<UserRequested>()
         data.value?.forEach { user ->
-            if (user.checked){
+            if (user.checked) {
                 listChecked.add(user.id)
                 mentionsUserList.add(user)
             }
@@ -96,7 +102,7 @@ class NewPostViewModel @Inject constructor(
         newPost.value = newPost.value?.copy(mentionIds = listChecked)
     }
 
-    fun isChecked(id: Int){
+    fun isChecked(id: Int) {
         data.value?.forEach {
             if (it.id == id) {
                 it.checked = true
@@ -104,7 +110,7 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun unChecked(id: Int){
+    fun unChecked(id: Int) {
         data.value?.forEach {
             if (it.id == id) {
                 it.checked = false
@@ -112,7 +118,7 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addPost(content: String){
+    fun addPost(content: String) {
         newPost.value = newPost.value?.copy(content = content)
         val post = newPost.value!!
         viewModelScope.launch {
@@ -127,22 +133,24 @@ class NewPostViewModel @Inject constructor(
         }
     }
 
-    fun addCoords(point: Point){
-        val coordinates = Coordinates(((point.latitude * 1000000.0).roundToInt() /1000000.0).toString(),
-            ((point.longitude * 1000000.0).roundToInt() /1000000.0).toString())
+    fun addCoords(point: Point) {
+        val coordinates = Coordinates(
+            ((point.latitude * 1000000.0).roundToInt() / 1000000.0).toString(),
+            ((point.longitude * 1000000.0).roundToInt() / 1000000.0).toString()
+        )
         newPost.value = newPost.value?.copy(coords = coordinates)
         inJob = false
     }
 
-    fun addLink(link: String){
-        if (link != ""){
+    fun addLink(link: String) {
+        if (link != "") {
             newPost.value = newPost.value?.copy(link = link)
         } else {
             newPost.value = newPost.value?.copy(link = null)
         }
     }
 
-    fun addPictureToThePost(image: MultipartBody.Part){
+    fun addPictureToThePost(image: MultipartBody.Part) {
         viewModelScope.launch {
             try {
                 val attachment = repository.addPictureToThePost(AttachmentType.IMAGE, image)
@@ -155,12 +163,12 @@ class NewPostViewModel @Inject constructor(
     }
 
 
-    fun deletePicture(){
+    fun deletePicture() {
         newPost.value = newPost.value?.copy(attachment = null)
     }
 
 
-    fun deleteEditPost(){
+    fun deleteEditPost() {
         newPost.value = editedPost
         mentions.clear()
         mentionsLive.postValue(mentions)

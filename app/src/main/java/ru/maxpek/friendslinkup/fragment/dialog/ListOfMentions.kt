@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class)
-
 package ru.maxpek.friendslinkup.fragment.dialog
 
 import android.os.Bundle
@@ -14,7 +12,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
-import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
 import ru.maxpek.friendslinkup.adapter.UsersListAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
@@ -22,6 +19,7 @@ import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
+@OptIn(ExperimentalCoroutinesApi::class)
 class ListOfMentions : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,17 +30,18 @@ class ListOfMentions : DialogFragment() {
 
         val postViewModel: PostViewModel by activityViewModels()
 
-
         val adapter = UsersListAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser(id: Int) {
                 val idAuthor = id.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
         })
         binding.list.adapter = adapter
 
         postViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

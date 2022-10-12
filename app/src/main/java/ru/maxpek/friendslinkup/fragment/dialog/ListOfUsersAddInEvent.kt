@@ -15,7 +15,6 @@ import ru.maxpek.friendslinkup.adapter.AdapterCallback
 import ru.maxpek.friendslinkup.adapter.ListOfUsersChoiceAdapter
 import ru.maxpek.friendslinkup.databinding.FaragmenListOfUsersBinding
 import ru.maxpek.friendslinkup.viewmodel.NewEventViewModel
-import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 
 
 @ExperimentalCoroutinesApi
@@ -36,6 +35,7 @@ class ListOfUsersAddInEvent : DialogFragment() {
             override fun isChecked(id: Int) {
                 newEventViewModel.isChecked(id)
             }
+
             override fun unChecked(id: Int) {
                 newEventViewModel.unChecked(id)
             }
@@ -43,7 +43,7 @@ class ListOfUsersAddInEvent : DialogFragment() {
         binding.list.adapter = adapter
 
         newEventViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

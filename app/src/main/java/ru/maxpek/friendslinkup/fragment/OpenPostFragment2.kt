@@ -29,7 +29,8 @@ import ru.maxpek.friendslinkup.viewmodel.PostViewModel
 @OptIn(ExperimentalCoroutinesApi::class)
 class OpenPostFragment2 : Fragment() {
     private val authViewModel: AuthViewModel by activityViewModels()
-    private val postViewModel : PostViewModel by activityViewModels()
+    private val postViewModel: PostViewModel by activityViewModels()
+
     @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +56,7 @@ class OpenPostFragment2 : Fragment() {
         postViewModel.dataState.observe(viewLifecycleOwner) { state ->
             binding.progress.isVisible = state.refreshing
 
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
@@ -203,7 +204,6 @@ class OpenPostFragment2 : Fragment() {
                                 ).also { pointArg = it }
                             })
                     }
-
                 }
             }
         }

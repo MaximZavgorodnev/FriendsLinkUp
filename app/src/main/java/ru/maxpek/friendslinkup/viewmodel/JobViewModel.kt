@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.Job
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.myWall.job.MyWallJobRepository
@@ -22,11 +21,12 @@ val jobZero = Job(
     finish = null,
     link = null
 )
+
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class JobViewModel@Inject constructor(
+class JobViewModel @Inject constructor(
     private val repository: MyWallJobRepository
-): ViewModel() {
+) : ViewModel() {
     val data: MutableLiveData<MutableList<Job>> = repository.dateJob
 
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -39,9 +39,9 @@ class JobViewModel@Inject constructor(
 
     private val _editedJob: MutableLiveData<Job> = MutableLiveData(jobZero)
     val editedJob: LiveData<Job>
-    get() = _editedJob
+        get() = _editedJob
 
-    fun getMyJob(){
+    fun getMyJob() {
         viewModelScope.launch {
             try {
                 repository.getMyJob()
@@ -62,11 +62,11 @@ class JobViewModel@Inject constructor(
         }
     }
 
-    fun editJob(job: Job){
+    fun editJob(job: Job) {
         _editedJob.value = job
     }
 
-    fun addJob(){
+    fun addJob() {
         viewModelScope.launch {
             try {
                 val job = _editedJob.value
@@ -89,7 +89,7 @@ class JobViewModel@Inject constructor(
         _editedJob.value = _editedJob.value?.copy(finish = date)
     }
 
-    fun deleteEditJob(){
+    fun deleteEditJob() {
         _editedJob.postValue(jobZero)
     }
 }

@@ -1,26 +1,14 @@
 package ru.maxpek.friendslinkup.dto
 
 
-import android.graphics.Bitmap
-import android.media.Image
-import android.net.Uri
-import android.provider.MediaStore
 import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.enumeration.TypeEvent
-import java.io.File
-import java.nio.file.Files
 
 
-sealed class FeedItem{
+sealed class FeedItem {
     abstract val id: Int
 }
-
-//data class Ad(
-//    override val id: Int,
-//    val url: String,
-//    val image: String,
-//) : FeedItem()
 
 data class PostCreateRequest(
     val id: Int,
@@ -30,7 +18,6 @@ data class PostCreateRequest(
     val attachment: Attachment?,
     val mentionIds: List<Int>,
 )
-
 
 data class PostResponse(
     val id: Int,
@@ -49,7 +36,7 @@ data class PostResponse(
     val attachment: Attachment?,
     val ownerByMe: Boolean = false,
 
-)
+    )
 
 data class EventCreateRequest(
     val id: Int,
@@ -61,7 +48,7 @@ data class EventCreateRequest(
     val link: String?,
     val speakerIds: List<Int>?,
 
-)
+    )
 
 data class EventResponse(
     val id: Int,
@@ -84,7 +71,7 @@ data class EventResponse(
     val ownerByMe: Boolean
 )
 
-data class Job (
+data class Job(
     val id: Int,
     val name: String,
     val position: String,
@@ -93,15 +80,12 @@ data class Job (
     val link: String?,
 )
 
-
-
-
-data class UserResponse (
+data class UserResponse(
     val login: String,
     val password: String,
 )
 
-data class UserRequested (
+data class UserRequested(
     val id: Int = 0,
     val login: String = "",
     val name: String = "",
@@ -109,33 +93,23 @@ data class UserRequested (
     var checked: Boolean = false
 )
 
-data class UserRegistration (
+data class UserRegistration(
     val login: String,
     val password: String,
     val name: String,
     val file: MultipartBody.Part?
 )
 
-
-data class ListIds (
+data class ListIds(
     val list: List<Int>
 )
 
-data class UserPreview(
-    val name: String,
-    val avatar: String
-)
-
-data class ListUserPreview (
-    val list: List<UserPreview>
-)
-
-data class Attachment (
+data class Attachment(
     val url: String,
     val type: AttachmentType,
 )
 
-data class Coordinates (
+data class Coordinates(
     val lat: String,
     val long: String
 )

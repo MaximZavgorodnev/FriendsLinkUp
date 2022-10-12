@@ -15,12 +15,13 @@ interface AdapterCallback {
     fun unChecked(id: Int) {}
 }
 
-class ListOfUsersChoiceAdapter (private val callback: AdapterCallback) :
+class ListOfUsersChoiceAdapter(private val callback: AdapterCallback) :
     ListAdapter<UserRequested, UsersListOfViewHolder>(UsersDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListOfViewHolder {
-        val binding = CardMentionsCheckedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return UsersListOfViewHolder (binding, callback)
+        val binding =
+            CardMentionsCheckedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return UsersListOfViewHolder(binding, callback)
     }
 
     override fun onBindViewHolder(holder: UsersListOfViewHolder, position: Int) {
@@ -30,8 +31,10 @@ class ListOfUsersChoiceAdapter (private val callback: AdapterCallback) :
 }
 
 class UsersListOfViewHolder
-    (private val binding: CardMentionsCheckedBinding,
-     private val callback: AdapterCallback)  : RecyclerView.ViewHolder(binding.root) {
+    (
+    private val binding: CardMentionsCheckedBinding,
+    private val callback: AdapterCallback
+) : RecyclerView.ViewHolder(binding.root) {
 
     fun bind(user: UserRequested) {
         binding.apply {

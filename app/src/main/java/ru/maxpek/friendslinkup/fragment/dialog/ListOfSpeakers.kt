@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -20,7 +19,7 @@ import ru.maxpek.friendslinkup.viewmodel.EventViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class ListOfSpeakers: DialogFragment() {
+class ListOfSpeakers : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -33,13 +32,15 @@ class ListOfSpeakers: DialogFragment() {
         val adapter = UsersListAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser(id: Int) {
                 val idAuthor = id.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
         })
         binding.list.adapter = adapter
 
         eventViewModel.dataState.observe(viewLifecycleOwner) { state ->
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

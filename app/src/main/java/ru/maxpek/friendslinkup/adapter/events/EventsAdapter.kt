@@ -24,18 +24,19 @@ import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
 import ru.maxpek.friendslinkup.util.GoDataTime
 
-interface EventCallback{
+interface EventCallback {
     fun onLike(event: EventResponse) {}
-    fun onParticipateInEvent(event: EventResponse){}
+    fun onParticipateInEvent(event: EventResponse) {}
     fun onEdit(event: EventResponse) {}
     fun onRemove(event: EventResponse) {}
     fun loadingTheListOfSpeakers(event: EventResponse) {}
     fun loadingTheListOfParticipants(event: EventResponse) {}
-    fun goToPageUser(event: EventResponse){}
+    fun goToPageUser(event: EventResponse) {}
 
 }
 
-class EventsAdapter(private val onInteractionListener: EventCallback,
+class EventsAdapter(
+    private val onInteractionListener: EventCallback,
 ) : PagingDataAdapter<EventResponse, EventViewHolder>(EventDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val binding = CardEventBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -52,7 +53,7 @@ class EventsAdapter(private val onInteractionListener: EventCallback,
 class EventViewHolder(
     private val binding: CardEventBinding,
     private val onInteractionListener: EventCallback
-): RecyclerView.ViewHolder(binding.root) {
+) : RecyclerView.ViewHolder(binding.root) {
     @SuppressLint("NewApi", "SetTextI18n")
     fun bind(event: EventResponse) {
         binding.apply {
@@ -73,23 +74,28 @@ class EventViewHolder(
                     AttachmentType.IMAGE -> {
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    AttachmentType.VIDEO ->{
+                    AttachmentType.VIDEO -> {
                         video.visibility = View.GONE
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    AttachmentType.AUDIO ->{}
+                    AttachmentType.AUDIO -> {}
                 }
-                Glide.with(itemView).load(event.attachment.url).timeout(10_000).into(backgroundVideo)
+                Glide.with(itemView).load(event.attachment.url).timeout(10_000)
+                    .into(backgroundVideo)
             }
 
-            when(event.type){
+            when (event.type) {
                 OFFLINE -> type.setImageResource(R.drawable.ic_sensors_off_32)
                 ONLINE -> type.setImageResource(R.drawable.ic_sensors_32)
             }
             author.text = event.author
             published.text = GoDataTime.convertDataTime(event.published)
             dateTime.text = GoDataTime.convertDataTime(event.datetime)
-            content.text = event.content + if(event.link!=null){ "\n"+ event.link} else {""}
+            content.text = event.content + if (event.link != null) {
+                "\n" + event.link
+            } else {
+                ""
+            }
             like.isChecked = event.likedByMe
             like.text = "${event.likeOwnerIds.size}"
             participate.isChecked = event.participatedByMe
@@ -129,10 +135,10 @@ class EventViewHolder(
                 true
             }
 
-            backgroundVideo.setOnClickListener{
+            backgroundVideo.setOnClickListener {
                 it.findNavController().navigate(
                     R.id.action_eventFragment_to_displayingImagesFragment2,
-                    Bundle().apply { textArg = event.attachment?.url ?: " "})
+                    Bundle().apply { textArg = event.attachment?.url ?: " " })
             }
             speakers.setOnClickListener {
                 onInteractionListener.loadingTheListOfSpeakers(event)
@@ -146,7 +152,9 @@ class EventViewHolder(
                 onInteractionListener.goToPageUser(event)
             }
             content.setOnClickListener {
-                it.findNavController().navigate(R.id.action_eventFragment_to_openEventFragment, Bundle().apply { intArg = event.id})
+                it.findNavController().navigate(
+                    R.id.action_eventFragment_to_openEventFragment,
+                    Bundle().apply { intArg = event.id })
             }
 
             geo.setOnClickListener {

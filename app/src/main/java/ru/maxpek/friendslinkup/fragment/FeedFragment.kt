@@ -5,9 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.activity.addCallback
-import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -27,11 +25,8 @@ import ru.maxpek.friendslinkup.databinding.FragmentFeedBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.util.IntArg
-import ru.maxpek.friendslinkup.util.StringArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
-import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
 import ru.maxpek.friendslinkup.viewmodel.PostViewModel
-import kotlin.system.exitProcess
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -46,7 +41,9 @@ class FeedFragment : Fragment() {
         val binding = FragmentFeedBinding.inflate(inflater, container, false)
 
         authViewModel.data.observeForever {
-            if (!authViewModel.authenticated) {binding.fab.visibility = View.GONE} else {
+            if (!authViewModel.authenticated) {
+                binding.fab.visibility = View.GONE
+            } else {
                 binding.fab.visibility = View.VISIBLE
             }
         }
@@ -64,12 +61,17 @@ class FeedFragment : Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
+
             override fun onEdit(post: PostResponse) {
-                findNavController().navigate(R.id.action_feedFragment_to_newPostFragment,Bundle().apply { intArg = post.id })
+                findNavController().navigate(
+                    R.id.action_feedFragment_to_newPostFragment,
+                    Bundle().apply { intArg = post.id })
             }
+
             override fun onRemove(post: PostResponse) {
                 viewModel.removeById(post.id)
             }
+
             override fun onShare(post: PostResponse) {
                 if (authViewModel.authenticated) {
                     val intent = Intent().apply {
@@ -86,10 +88,12 @@ class FeedFragment : Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
+
             override fun loadingTheListOfMentioned(post: PostResponse) {
                 if (authViewModel.authenticated) {
-                    if (post.mentionIds.isEmpty()){
-                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    if (post.mentionIds.isEmpty()) {
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
                         viewModel.loadUsersMentions(post.mentionIds)
                         findNavController().navigate(R.id.action_feedFragment_to_listOfMentions)
@@ -102,7 +106,9 @@ class FeedFragment : Fragment() {
 
             override fun goToPageUser(post: PostResponse) {
                 val idAuthor = post.authorId.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
         })
 
@@ -126,7 +132,7 @@ class FeedFragment : Fragment() {
                     .setAction(R.string.retry_loading) { viewModel.retry() }
                     .show()
             }
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

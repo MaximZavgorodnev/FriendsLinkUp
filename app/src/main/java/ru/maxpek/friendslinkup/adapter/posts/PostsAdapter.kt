@@ -37,7 +37,7 @@ interface OnInteractionListener {
     fun onRemove(post: PostResponse) {}
     fun onShare(post: PostResponse) {}
     fun loadingTheListOfMentioned(post: PostResponse) {}
-    fun goToPageUser(post: PostResponse){}
+    fun goToPageUser(post: PostResponse) {}
 }
 
 class PostsAdapter(
@@ -66,7 +66,7 @@ class PostViewHolder(
             video.visibility = View.GONE
             backgroundVideo.visibility = View.GONE
 
-                Glide.with(itemView)
+            Glide.with(itemView)
                 .load(post.authorAvatar)
                 .error(R.drawable.ic_avatar_loading_error_48)
                 .placeholder(R.drawable.ic_baseline_cruelty_free_48)
@@ -80,22 +80,27 @@ class PostViewHolder(
                     IMAGE -> {
                         backgroundVideo.visibility = View.VISIBLE
                     }
-                    VIDEO ->{
+                    VIDEO -> {
                         video.visibility = View.GONE
                         backgroundVideo.visibility = View.GONE
 
                     }
-                    AUDIO ->{}
+                    AUDIO -> {}
                     null -> {
                         video.visibility = View.GONE
                         backgroundVideo.visibility = View.GONE
                     }
                 }
-                Glide.with(itemView).load(post.attachment?.url).timeout(10_000).into(backgroundVideo)
+                Glide.with(itemView).load(post.attachment?.url).timeout(10_000)
+                    .into(backgroundVideo)
             }
             author.text = post.author
             published.text = GoDataTime.convertDataTime(post.published)
-            content.text = post.content + if(post.link!=null){ "\n"+ post.link} else {""}
+            content.text = post.content + if (post.link != null) {
+                "\n" + post.link
+            } else {
+                ""
+            }
             like.isChecked = post.likedByMe
             like.text = "${post.likeOwnerIds.size}"
             geo.visibility = if (post.coords != null) View.VISIBLE else View.INVISIBLE
@@ -131,9 +136,10 @@ class PostViewHolder(
                 onInteractionListener.onShare(post)
             }
 
-            backgroundVideo.setOnClickListener{
-                it.findNavController().navigate(R.id.action_feedFragment_to_displayingImagesFragment2,
-                    Bundle().apply { textArg = post.attachment?.url ?: " "})
+            backgroundVideo.setOnClickListener {
+                it.findNavController()
+                    .navigate(R.id.action_feedFragment_to_displayingImagesFragment2,
+                        Bundle().apply { textArg = post.attachment?.url ?: " " })
             }
             mentions.setOnClickListener {
                 onInteractionListener.loadingTheListOfMentioned(post)
@@ -143,7 +149,9 @@ class PostViewHolder(
                 onInteractionListener.goToPageUser(post)
             }
             content.setOnClickListener {
-                it.findNavController().navigate(R.id.action_feedFragment_to_openPostFragment2, Bundle().apply { intArg = post.id})
+                it.findNavController().navigate(
+                    R.id.action_feedFragment_to_openPostFragment2,
+                    Bundle().apply { intArg = post.id })
             }
 
             geo.setOnClickListener {

@@ -8,7 +8,6 @@ import android.text.Layout
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.view.ViewGroup
 import android.widget.DatePicker
 import android.widget.EditText
@@ -26,8 +25,6 @@ import ru.maxpek.friendslinkup.dto.Job
 import ru.maxpek.friendslinkup.util.AndroidUtils
 import ru.maxpek.friendslinkup.util.GoDataTime
 import ru.maxpek.friendslinkup.viewmodel.JobViewModel
-import java.text.SimpleDateFormat
-import java.time.LocalDateTime
 import java.util.*
 
 
@@ -38,10 +35,12 @@ var startEndFinished = true
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
+class NewJobFragment : Fragment(), DatePickerDialog.OnDateSetListener {
     private val viewModel: JobViewModel by activityViewModels()
+
     @RequiresApi(Build.VERSION_CODES.O)
-    @SuppressLint("FragmentBackPressedCallback", "UseRequireInsteadOfGet",
+    @SuppressLint(
+        "FragmentBackPressedCallback", "UseRequireInsteadOfGet",
         "ClickableViewAccessibility"
     )
     override fun onCreateView(
@@ -56,19 +55,20 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         )
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
-                viewModel.deleteEditJob()
-                findNavController().navigateUp()
-            }.show()
+            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.exit) {
+                    viewModel.deleteEditJob()
+                    findNavController().navigateUp()
+                }.show()
         }
 
         viewModel.editedJob.observe(viewLifecycleOwner) {
             val start = GoDataTime.convertDataTimeJob(it.start)
             val end = it.finish?.let { it1 -> GoDataTime.convertDataTimeJob(it1) }
-            if (binding.name.text.toString() == ""){
+            if (binding.name.text.toString() == "") {
                 it.name.let(binding.name::setText)
             }
-            if (binding.position.text.toString() ==""){
+            if (binding.position.text.toString() == "") {
                 it.position.let(binding.position::setText)
             }
             start.let(binding.start::setText)
@@ -99,7 +99,7 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         binding.end.setOnTouchListener { v, event ->
             v.isFocusable = true
             startEndFinished = false
-                when (event.action) {
+            when (event.action) {
                 MotionEvent.ACTION_DOWN -> {
                     val layout: Layout = (v as EditText).layout
                     val x: Float = event.x + v.scrollX
@@ -117,16 +117,24 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
 
         binding.enter.setOnClickListener {
             AndroidUtils.hideKeyboard(requireView())
-            if (binding.name.text.toString() =="" || binding.position.text.toString()=="" || binding.start.text.toString() == "") {
+            if (binding.name.text.toString() == "" || binding.position.text.toString() == "" || binding.start.text.toString() == "") {
                 Snackbar.make(binding.root, R.string.first_three, Snackbar.LENGTH_SHORT).show()
             } else {
                 val job = Job(
-                    id = if (viewModel.editedJob.value!!.id == 0) {0} else {viewModel.editedJob.value!!.id},
+                    id = if (viewModel.editedJob.value!!.id == 0) {
+                        0
+                    } else {
+                        viewModel.editedJob.value!!.id
+                    },
                     name = binding.name.text.toString(),
                     position = binding.position.text.toString(),
                     start = viewModel.editedJob.value!!.start,
                     finish = viewModel.editedJob.value!!.finish,
-                    link = if (binding.link.text.toString() == "") {null} else {binding.link.text.toString()}
+                    link = if (binding.link.text.toString() == "") {
+                        null
+                    } else {
+                        binding.link.text.toString()
+                    }
                 )
                 viewModel.editJob(job)
                 viewModel.addJob()
@@ -140,12 +148,12 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         return binding.root
     }
 
-    private fun getDataCalendar(){
-        if (day == 0){
+    private fun getDataCalendar() {
+        if (day == 0) {
             val cal = Calendar.getInstance()
             day = cal.get(Calendar.DAY_OF_MONTH)
             month = cal.get(Calendar.MONTH)
-            year  = cal.get(Calendar.YEAR)
+            year = cal.get(Calendar.YEAR)
         }
     }
 
@@ -157,7 +165,7 @@ class NewJobFragment: Fragment(), DatePickerDialog.OnDateSetListener {
         year = yearOf
         val date = listOf(day, month, year)
         val dateTime = GoDataTime.convertDataInput(date)
-        if (startEndFinished){
+        if (startEndFinished) {
             viewModel.addDateStart(dateTime)
         } else {
             viewModel.addDateFinish(dateTime)

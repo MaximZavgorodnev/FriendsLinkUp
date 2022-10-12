@@ -6,13 +6,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import com.bumptech.glide.Glide
@@ -26,16 +23,16 @@ import ru.maxpek.friendslinkup.adapter.myWall.posts.MyWallOnInteractionListener
 import ru.maxpek.friendslinkup.adapter.posts.PagingLoadStateAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentMyWallPostBinding
 import ru.maxpek.friendslinkup.dto.PostResponse
-import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.viewmodel.AuthViewModel
 import ru.maxpek.friendslinkup.viewmodel.MyWallPostViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MyPostFragment: Fragment() {
+class MyPostFragment : Fragment() {
     private val viewModel: MyWallPostViewModel by activityViewModels()
     private val authViewModel: AuthViewModel by viewModels()
+
     @SuppressLint("ResourceType")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +50,17 @@ class MyPostFragment: Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
+
             override fun onEdit(post: PostResponse) {
-                findNavController().navigate(R.id.newPostFragment,Bundle().apply { intArg = post.id })
+                findNavController().navigate(
+                    R.id.newPostFragment,
+                    Bundle().apply { intArg = post.id })
             }
+
             override fun onRemove(post: PostResponse) {
                 viewModel.removeById(post.id)
             }
+
             override fun onShare(post: PostResponse) {
                 if (authViewModel.authenticated) {
                     val intent = Intent().apply {
@@ -75,10 +77,12 @@ class MyPostFragment: Fragment() {
                     findNavController().navigate(R.id.action_feedFragment_to_authenticationFragment)
                 }
             }
+
             override fun loadingTheListOfMentioned(post: PostResponse) {
                 if (authViewModel.authenticated) {
-                    if (post.mentionIds.isEmpty()){
-                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    if (post.mentionIds.isEmpty()) {
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
                         viewModel.loadUsersMentions(post.mentionIds)
                         findNavController().navigate(R.id.action_feedFragment_to_listOfMentions)

@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
-import ru.maxpek.friendslinkup.error.NetworkError
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.post.PostRepository
 import ru.maxpek.friendslinkup.viewmodel.ActionType.*
@@ -28,7 +27,7 @@ import javax.inject.Inject
 class PostViewModel @Inject constructor(
     private val repositoryPost: PostRepository,
     appAuth: AppAuth
-): ViewModel() {
+) : ViewModel() {
 
     var lastAction: ActionType? = null
     var lastId = 0
@@ -43,15 +42,15 @@ class PostViewModel @Inject constructor(
 
     val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
     val data: Flow<PagingData<PostResponse>> = appAuth
-            .authStateFlow
-            .flatMapLatest { (myId, _) ->
-                val cached = repositoryPost.data.cachedIn(viewModelScope)
-                cached.map { pagingData ->
-                    pagingData.map {
-                        it.copy(ownerByMe = it.authorId.toLong() == myId )
-                    }
+        .authStateFlow
+        .flatMapLatest { (myId, _) ->
+            val cached = repositoryPost.data.cachedIn(viewModelScope)
+            cached.map { pagingData ->
+                pagingData.map {
+                    it.copy(ownerByMe = it.authorId.toLong() == myId)
                 }
             }
+        }
 
     fun loadUsersMentions(mentionIds: List<Int>) {
         viewModelScope.launch {
@@ -106,8 +105,8 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun retry(){
-        if (errorCounter == 3 || errorCounter > 3){
+    fun retry() {
+        if (errorCounter == 3 || errorCounter > 3) {
             _dataState.value = FeedModelState(loading = true)
         } else {
             when (lastAction) {
@@ -121,7 +120,7 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun getPost(id: Int){
+    fun getPost(id: Int) {
         viewModelScope.launch {
             try {
                 _postResponse.postValue(repositoryPost.getPost(id))
@@ -132,28 +131,30 @@ class PostViewModel @Inject constructor(
         }
     }
 
-    fun retryLikeById(){
-        lastId.let{
-            likeById(it)}
+    fun retryLikeById() {
+        lastId.let {
+            likeById(it)
+        }
         errorCounter++
     }
 
-    fun retryDisLikeById(){
-        lastId.let{
-            disLikeById(it)}
+    fun retryDisLikeById() {
+        lastId.let {
+            disLikeById(it)
+        }
         errorCounter++
     }
 
-    fun retryRemove(){
-        lastId.let{
-            removeById(it) }
+    fun retryRemove() {
+        lastId.let {
+            removeById(it)
+        }
         errorCounter++
     }
 }
 
 
-
-enum class ActionType{
+enum class ActionType {
     LIKE,
     DISLIKE,
     REMOVE,

@@ -1,9 +1,7 @@
 package ru.maxpek.friendslinkup.fragment
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.pm.PackageManager
-import android.graphics.PointF
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +12,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.yandex.mapkit.Animation
@@ -30,7 +26,6 @@ import com.yandex.mapkit.mapview.MapView
 import com.yandex.mapkit.user_location.UserLocationLayer
 import com.yandex.mapkit.user_location.UserLocationObjectListener
 import com.yandex.mapkit.user_location.UserLocationView
-
 import com.yandex.runtime.image.ImageProvider
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,7 +49,7 @@ class MapsFragment : Fragment() {
     private lateinit var userLocation: UserLocationLayer
 
     private val objectTapListener = GeoObjectTapListener { geo ->
-        val selectionMetadata : GeoObjectSelectionMetadata =
+        val selectionMetadata: GeoObjectSelectionMetadata =
             geo.geoObject.metadataContainer.getItem(GeoObjectSelectionMetadata::class.java)
 
         binding?.map?.map?.selectGeoObject(selectionMetadata.id, selectionMetadata.layerId)
@@ -69,9 +64,10 @@ class MapsFragment : Fragment() {
 
         override fun onObjectUpdated(view: UserLocationView, event: ObjectEvent) {
             userLocation.cameraPosition()?.target?.let {
-                mapView?.map?.move(CameraPosition(it, 14F, 0F, 0F)
-                    , Animation(Animation.Type.SMOOTH, 5F),
-                    null)
+                mapView?.map?.move(
+                    CameraPosition(it, 14F, 0F, 0F), Animation(Animation.Type.SMOOTH, 5F),
+                    null
+                )
             }
             userLocation.setObjectListener(null)
         }
@@ -89,7 +85,7 @@ class MapsFragment : Fragment() {
             binding?.map?.map?.deselectGeoObject()
 
 
-            if (newPostViewModel.inJob){
+            if (newPostViewModel.inJob) {
                 mapObjects = binding?.map?.map?.mapObjects?.addPlacemark(
                     point,
                     ImageProvider.fromResource(context, R.drawable.search_result)
@@ -98,7 +94,8 @@ class MapsFragment : Fragment() {
                     binding?.root!!, R.string.addGeo,
                     BaseTransientBottomBar.LENGTH_INDEFINITE
                 ).setAction(R.string.add)
-                { newPostViewModel.addCoords(point)
+                {
+                    newPostViewModel.addCoords(point)
                     findNavController().navigateUp()
                 }.show()
             } else if (newEventViewModel.inJob) {
@@ -110,7 +107,8 @@ class MapsFragment : Fragment() {
                     binding?.root!!, R.string.addGeo,
                     BaseTransientBottomBar.LENGTH_INDEFINITE
                 ).setAction(R.string.add)
-                { newEventViewModel.addCoords(point)
+                {
+                    newEventViewModel.addCoords(point)
                     findNavController().navigateUp()
                 }.show()
             }
@@ -147,7 +145,7 @@ class MapsFragment : Fragment() {
             }
         }
 
-    companion object{
+    companion object {
         var Bundle.pointArg: Point by PointArg
 
     }
@@ -188,8 +186,10 @@ class MapsFragment : Fragment() {
                     point,
                     ImageProvider.fromResource(context, R.drawable.search_result)
                 )
-                mapView?.map?.move(CameraPosition(point, 14.0f, 0.0f, 0.0f),
-                    Animation(Animation.Type.SMOOTH, 5F), null)
+                mapView?.map?.move(
+                    CameraPosition(point, 14.0f, 0.0f, 0.0f),
+                    Animation(Animation.Type.SMOOTH, 5F), null
+                )
 
 
             } else {
@@ -206,18 +206,26 @@ class MapsFragment : Fragment() {
         }
 
         binding.plus.setOnClickListener {
-            binding.map.map.move(CameraPosition(binding.map.map.cameraPosition.target,binding.map.map.cameraPosition.zoom+1,
-                0.0f, 0.0f),
+            binding.map.map.move(
+                CameraPosition(
+                    binding.map.map.cameraPosition.target, binding.map.map.cameraPosition.zoom + 1,
+                    0.0f, 0.0f
+                ),
                 Animation(Animation.Type.LINEAR, 0.5F),
-                null)
+                null
+            )
 
         }
 
         binding.minus.setOnClickListener {
-            binding.map.map.move(CameraPosition(binding.map.map.cameraPosition.target,binding.map.map.cameraPosition.zoom-1,
-                0.0f, 0.0f),
+            binding.map.map.move(
+                CameraPosition(
+                    binding.map.map.cameraPosition.target, binding.map.map.cameraPosition.zoom - 1,
+                    0.0f, 0.0f
+                ),
                 Animation(Animation.Type.LINEAR, 0.5F),
-                null)
+                null
+            )
         }
 
         binding.location.setOnClickListener {

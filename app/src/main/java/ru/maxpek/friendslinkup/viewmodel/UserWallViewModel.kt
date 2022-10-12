@@ -16,14 +16,15 @@ import javax.inject.Inject
 @ExperimentalCoroutinesApi
 @HiltViewModel
 class UserWallViewModel @Inject constructor(
-    private val repository: UserWallRepository): ViewModel() {
+    private val repository: UserWallRepository
+) : ViewModel() {
     val data: MutableLiveData<List<Job>> = repository.data
     val userData: MutableLiveData<UserRequested> = repository.userData
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-    fun getJobUser(id: String){
+    fun getJobUser(id: String) {
         viewModelScope.launch {
             try {
                 repository.getJobUser(id)
@@ -33,7 +34,7 @@ class UserWallViewModel @Inject constructor(
         }
     }
 
-    fun getUser(idUser: String){
+    fun getUser(idUser: String) {
         val id = idUser.toInt()
         viewModelScope.launch {
             try {

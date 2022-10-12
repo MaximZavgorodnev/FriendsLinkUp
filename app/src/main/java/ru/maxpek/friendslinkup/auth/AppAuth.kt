@@ -1,25 +1,17 @@
 package ru.maxpek.friendslinkup.auth
 
 import android.content.SharedPreferences
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
-import ru.maxpek.friendslinkup.api.ApiService
-import ru.maxpek.friendslinkup.dto.PushToken
-import ru.maxpek.friendslinkup.error.ApiError
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class AppAuth @Inject constructor(
-    private val prefs: SharedPreferences,
-    private val apiService: ApiService
+    private val prefs: SharedPreferences
 ) {
-    companion object{
+    companion object {
         const val idKey = "id"
         const val tokenKey = "token"
         const val avatar = "avatarUser"
@@ -58,7 +50,6 @@ class AppAuth @Inject constructor(
             putString(name, nameUser)
             apply()
         }
-//        sendPushToken()
     }
 
     @Synchronized
@@ -68,21 +59,12 @@ class AppAuth @Inject constructor(
             clear()
             commit()
         }
-//        sendPushToken()
     }
 
-//    fun sendPushToken(token: String? = null) {
-//        CoroutineScope(Dispatchers.Default).launch {
-//            try {
-//                val pushToken = PushToken(token ?: Firebase.messaging.token.await())
-//                apiService.save(pushToken)
-//            } catch (e: Exception) {
-//                e.printStackTrace()
-//            }
-//        }
-//    }
 
 }
 
-data class AuthState(val id: Long = 0, val token: String? = null,
-                     val avatarUser: String? = null, val nameUser: String? = null)
+data class AuthState(
+    val id: Long = 0, val token: String? = null,
+    val avatarUser: String? = null, val nameUser: String? = null
+)

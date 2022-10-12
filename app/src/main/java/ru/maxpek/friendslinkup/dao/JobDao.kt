@@ -1,6 +1,5 @@
 package ru.maxpek.friendslinkup.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -23,9 +22,6 @@ interface JobDao {
 
     @Query("DELETE FROM JobEntity WHERE id = :id")
     suspend fun removeById(id: Int)
-
-//    @Query("UPDATE JobEntity SET read = 1")
-//    suspend fun update()   Пока что не знаю нужно или нет
 
     @Query("SELECT COUNT() FROM JobEntity")
     suspend fun isSize(): Int

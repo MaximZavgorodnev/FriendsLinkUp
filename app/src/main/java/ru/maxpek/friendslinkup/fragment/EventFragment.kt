@@ -30,7 +30,7 @@ import ru.maxpek.friendslinkup.viewmodel.EventViewModel
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class EventFragment: Fragment() {
+class EventFragment : Fragment() {
 
     private val authViewModel: AuthViewModel by viewModels()
     private val viewModel: EventViewModel by activityViewModels()
@@ -41,7 +41,9 @@ class EventFragment: Fragment() {
     ): View {
         val binding = FragmentEventBinding.inflate(inflater, container, false)
         authViewModel.data.observeForever {
-            if (!authViewModel.authenticated) {binding.fab.visibility = View.GONE} else {
+            if (!authViewModel.authenticated) {
+                binding.fab.visibility = View.GONE
+            } else {
                 binding.fab.visibility = View.VISIBLE
             }
         }
@@ -52,22 +54,30 @@ class EventFragment: Fragment() {
         val adapter = EventsAdapter(object : EventCallback {
             override fun onLike(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    if (!event.likedByMe) viewModel.likeById(event.id) else viewModel.disLikeById(event.id)
+                    if (!event.likedByMe) viewModel.likeById(event.id) else viewModel.disLikeById(
+                        event.id
+                    )
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.authenticationFragment)
                 }
             }
+
             override fun onEdit(event: EventResponse) {
-                findNavController().navigate(R.id.action_eventFragment_to_newEventFragment,Bundle().apply { intArg = event.id })
+                findNavController().navigate(
+                    R.id.action_eventFragment_to_newEventFragment,
+                    Bundle().apply { intArg = event.id })
             }
+
             override fun onRemove(event: EventResponse) {
                 viewModel.removeById(event.id)
             }
+
             override fun loadingTheListOfSpeakers(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    if (event.speakerIds.isEmpty()){
-                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    if (event.speakerIds.isEmpty()) {
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
                         viewModel.loadUsersSpeakers(event.speakerIds)
                         findNavController().navigate(R.id.action_eventFragment_to_listOfSpeakers)
@@ -80,12 +90,16 @@ class EventFragment: Fragment() {
 
             override fun goToPageUser(event: EventResponse) {
                 val idAuthor = event.authorId.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
 
-            override fun onParticipateInEvent(event: EventResponse){
+            override fun onParticipateInEvent(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.doNotParticipateInEvent(event.id)
+                    if (!event.participatedByMe) viewModel.participateInEvent(event.id) else viewModel.doNotParticipateInEvent(
+                        event.id
+                    )
                 } else {
                     Snackbar.make(binding.root, R.string.To_continue, Snackbar.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.authenticationFragment)
@@ -94,8 +108,9 @@ class EventFragment: Fragment() {
 
             override fun loadingTheListOfParticipants(event: EventResponse) {
                 if (authViewModel.authenticated) {
-                    if (event.participantsIds.isEmpty()){
-                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT).show()
+                    if (event.participantsIds.isEmpty()) {
+                        Snackbar.make(binding.root, R.string.mention_anyone, Snackbar.LENGTH_SHORT)
+                            .show()
                     } else {
                         viewModel.goToUserParticipateInEvent(event.participantsIds)
                         findNavController().navigate(R.id.action_eventFragment_to_listOfSpeakers)
@@ -127,7 +142,7 @@ class EventFragment: Fragment() {
                     .setAction(R.string.retry_loading) { viewModel.retry() }
                     .show()
             }
-            if (state.loading){
+            if (state.loading) {
                 Snackbar.make(binding.root, R.string.problem_loading, Snackbar.LENGTH_SHORT).show()
             }
         }

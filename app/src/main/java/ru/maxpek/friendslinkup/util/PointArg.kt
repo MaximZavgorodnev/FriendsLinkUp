@@ -8,7 +8,7 @@ import kotlin.reflect.KProperty
 object PointArg : ReadWriteProperty<Bundle?, Point?> {
     override fun getValue(thisRef: Bundle?, property: KProperty<*>): Point {
         val arrayDouble = thisRef?.getDoubleArray(property.name)
-        return if (arrayDouble != null) Point(arrayDouble[0]  , arrayDouble[1] ) else{
+        return if (arrayDouble != null) Point(arrayDouble[0], arrayDouble[1]) else {
             Point(59.945933, 30.320045)
         }
 

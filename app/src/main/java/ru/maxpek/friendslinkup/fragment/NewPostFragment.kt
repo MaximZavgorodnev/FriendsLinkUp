@@ -2,29 +2,20 @@ package ru.maxpek.friendslinkup.fragment
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
-import android.content.RestrictionsManager.RESULT_ERROR
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.telecom.Connection
-import android.telecom.RemoteConnection
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.PopupMenu
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.net.toFile
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
-import androidx.media.MediaBrowserServiceCompat.RESULT_ERROR
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.github.dhaval2404.imagepicker.ImagePicker
-import com.github.dhaval2404.imagepicker.ImagePicker.Companion.RESULT_ERROR
 import com.github.dhaval2404.imagepicker.ImagePicker.Companion.getError
 import com.github.dhaval2404.imagepicker.constant.ImageProvider
 import com.google.android.material.snackbar.Snackbar
@@ -37,14 +28,10 @@ import ru.maxpek.friendslinkup.R
 import ru.maxpek.friendslinkup.adapter.AdapterUsersIdCallback
 import ru.maxpek.friendslinkup.adapter.ListUsersIdAdapter
 import ru.maxpek.friendslinkup.databinding.FragmentNewPostBinding
-import ru.maxpek.friendslinkup.dto.Coordinates
 import ru.maxpek.friendslinkup.fragment.DisplayingImagesFragment.Companion.textArg
 import ru.maxpek.friendslinkup.fragment.FeedFragment.Companion.intArg
 import ru.maxpek.friendslinkup.fragment.MapsFragment.Companion.pointArg
-import ru.maxpek.friendslinkup.util.ArrayInt
-import ru.maxpek.friendslinkup.util.PointArg
 import ru.maxpek.friendslinkup.viewmodel.NewPostViewModel
-import java.io.File
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -62,28 +49,29 @@ class NewPostFragment : Fragment() {
             false
         )
 
-        val newPostViewModel : NewPostViewModel by activityViewModels()
+        val newPostViewModel: NewPostViewModel by activityViewModels()
         var file: MultipartBody.Part
 
         requireActivity().onBackPressedDispatcher.addCallback(this) {
-                Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT).setAction(R.string.exit) {
+            Snackbar.make(binding.root, R.string.be_lost, Snackbar.LENGTH_SHORT)
+                .setAction(R.string.exit) {
                     newPostViewModel.deleteEditPost()
                     findNavController().navigate(R.id.feedFragment)
                 }.show()
-            }
+        }
 
         if (arguments?.intArg != null) {
             val id = arguments?.intArg
-            id?.let {newPostViewModel.getPost(it) }
+            id?.let { newPostViewModel.getPost(it) }
         }
-
-
 
 
         val adapter = ListUsersIdAdapter(object : AdapterUsersIdCallback {
             override fun goToPageUser(id: Int) {
                 val idAuthor = id.toString()
-                findNavController().navigate(R.id.userJobFragment,Bundle().apply { textArg = idAuthor })
+                findNavController().navigate(
+                    R.id.userJobFragment,
+                    Bundle().apply { textArg = idAuthor })
             }
         })
 
@@ -101,7 +89,8 @@ class NewPostFragment : Fragment() {
                         val uri: Uri? = it.data?.data
                         val resultFile = uri?.toFile()
                         file = MultipartBody.Part.createFormData(
-                            "file", resultFile?.name, resultFile!!.asRequestBody())
+                            "file", resultFile?.name, resultFile!!.asRequestBody()
+                        )
                         newPostViewModel.addPictureToThePost(file)
                         binding.image.setImageURI(uri)
                     }
@@ -126,15 +115,18 @@ class NewPostFragment : Fragment() {
         }
 
         binding.mentionAdd.setOnClickListener {
-            binding.mentionAdd.isChecked = newPostViewModel.newPost.value?.mentionIds?.isNotEmpty() ?: false
+            binding.mentionAdd.isChecked =
+                newPostViewModel.newPost.value?.mentionIds?.isNotEmpty() ?: false
             findNavController().navigate(R.id.action_newPostFragment_to_listOfUsers)
         }
 
         binding.geoAdd.setOnClickListener {
             if (newPostViewModel.newPost.value?.coords != null) {
                 binding.geoAdd.isChecked = true
-                val point = Point(newPostViewModel.newPost.value?.coords!!.lat.toDouble(),
-                    newPostViewModel.newPost.value?.coords!!.long.toDouble() )
+                val point = Point(
+                    newPostViewModel.newPost.value?.coords!!.lat.toDouble(),
+                    newPostViewModel.newPost.value?.coords!!.long.toDouble()
+                )
                 newPostViewModel.inJob = true
                 findNavController().navigate(R.id.action_newPostFragment_to_mapsFragment,
                     Bundle().apply { pointArg = point })
@@ -189,7 +181,7 @@ class NewPostFragment : Fragment() {
 
         binding.ok.setOnClickListener {
             val content = binding.edit.text.toString()
-            if (content =="") {
+            if (content == "") {
                 Snackbar.make(binding.root, R.string.content_field, Snackbar.LENGTH_SHORT).show()
             } else {
                 newPostViewModel.addPost(content)
@@ -206,8 +198,6 @@ class NewPostFragment : Fragment() {
                 Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT).show()
             }
         }
-
-
 
         return binding.root
     }

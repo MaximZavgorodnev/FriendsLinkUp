@@ -9,6 +9,7 @@ import ru.maxpek.friendslinkup.entity.PostEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 
 private val gson = Gson()
+
 @Dao
 interface PostDao {
     @Query("SELECT * FROM PostEntity ORDER BY id DESC")
@@ -26,9 +27,6 @@ interface PostDao {
     @Query("DELETE FROM PostEntity WHERE id = :id")
     suspend fun removeById(id: Int)
 
-//    @Query("UPDATE PostEntity SET read = 1")
-//    suspend fun update()
-
     @Query("SELECT COUNT() FROM PostEntity")
     suspend fun isSize(): Int
 
@@ -39,6 +37,7 @@ interface PostDao {
 class Converters {
     @TypeConverter
     fun toAttachmentType(value: String) = enumValueOf<AttachmentType>(value)
+
     @TypeConverter
     fun fromAttachmentType(value: AttachmentType) = value.name
 }
@@ -50,8 +49,8 @@ class CoordinatesConverter {
         return if (coordinates == null) {
             null
         } else {
-                gson.toJson(coordinates)
-            }
+            gson.toJson(coordinates)
+        }
     }
 
     @TypeConverter

@@ -1,8 +1,6 @@
 package ru.maxpek.friendslinkup.repository.myWall.job
 
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
 import ru.maxpek.friendslinkup.dto.Job
 
 interface MyWallJobRepository {

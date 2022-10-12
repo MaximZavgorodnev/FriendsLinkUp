@@ -3,7 +3,9 @@ package ru.maxpek.friendslinkup.repository.newEvent
 import okhttp3.MultipartBody
 import ru.maxpek.friendslinkup.api.ApiService
 import ru.maxpek.friendslinkup.dao.EventDao
-import ru.maxpek.friendslinkup.dto.*
+import ru.maxpek.friendslinkup.dto.Attachment
+import ru.maxpek.friendslinkup.dto.EventCreateRequest
+import ru.maxpek.friendslinkup.dto.UserRequested
 import ru.maxpek.friendslinkup.entity.EventEntity
 import ru.maxpek.friendslinkup.enumeration.AttachmentType
 import ru.maxpek.friendslinkup.error.ApiError
@@ -15,7 +17,7 @@ import javax.inject.Inject
 class NewEventRepositoryImpl @Inject constructor(
     private val apiService: ApiService,
     private val dao: EventDao
-): NewEventRepository{
+) : NewEventRepository {
     override suspend fun loadUsers(): List<UserRequested> {
         val usersList: List<UserRequested>
         try {
@@ -39,7 +41,8 @@ class NewEventRepositoryImpl @Inject constructor(
             if (!response.isSuccessful) {
                 throw ApiError(response.code(), response.message())
             }
-            val mediaResponse = response.body() ?: throw ApiError(response.code(), response.message())
+            val mediaResponse =
+                response.body() ?: throw ApiError(response.code(), response.message())
             val attachment = Attachment(mediaResponse.url, attachmentType)
             return attachment
         } catch (e: IOException) {

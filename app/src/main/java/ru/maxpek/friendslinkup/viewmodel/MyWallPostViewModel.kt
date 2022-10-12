@@ -16,10 +16,8 @@ import kotlinx.coroutines.launch
 import ru.maxpek.friendslinkup.auth.AppAuth
 import ru.maxpek.friendslinkup.dto.PostResponse
 import ru.maxpek.friendslinkup.dto.UserRequested
-import ru.maxpek.friendslinkup.dto.UserResponse
 import ru.maxpek.friendslinkup.model.FeedModelState
 import ru.maxpek.friendslinkup.repository.myWall.post.MyWallPostRepository
-import ru.maxpek.friendslinkup.repository.post.PostRepository
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
@@ -27,39 +25,24 @@ import javax.inject.Inject
 class MyWallPostViewModel @Inject constructor(
     private val repositoryPost: MyWallPostRepository,
     appAuth: AppAuth
-): ViewModel() {
-//    val user: UserResponse = appAuth.
+) : ViewModel() {
     var user = UserRequested()
-    var lastAction: ActionType? = null
+    private var lastAction: ActionType? = null
     var lastId = 0
     private val _dataState = MutableLiveData<FeedModelState>()
     val dataState: LiveData<FeedModelState>
         get() = _dataState
 
-
-
-//    val dataUserMentions: LiveData<List<UserRequested>> = repositoryPost.dataUsersMentions
     val data: Flow<PagingData<PostResponse>> = appAuth
         .authStateFlow
         .flatMapLatest { (myId, _) ->
             val cached = repositoryPost.data.cachedIn(viewModelScope)
             cached.map { pagingData ->
                 pagingData.map {
-                    it.copy(ownerByMe = it.authorId.toLong() == myId )
+                    it.copy(ownerByMe = it.authorId.toLong() == myId)
                 }
             }
         }
-
-    fun getUser(id: Int): UserRequested {
-        viewModelScope.launch {
-            try {
-                user = repositoryPost.getUser(id)
-            } catch (e: Exception) {
-                _dataState.value = FeedModelState(error = true)
-            }
-        }
-        return  user
-    }
 
     fun loadUsersMentions(mentionIds: List<Int>) {
         viewModelScope.launch {
@@ -109,7 +92,7 @@ class MyWallPostViewModel @Inject constructor(
         }
     }
 
-    fun removeAll(){
+    fun removeAll() {
         viewModelScope.launch {
             try {
                 repositoryPost.removeAll()
@@ -119,8 +102,8 @@ class MyWallPostViewModel @Inject constructor(
         }
     }
 
-    fun retry(){
-        when (lastAction){
+    fun retry() {
+        when (lastAction) {
             ActionType.LIKE -> retryLikeById()
             ActionType.DISLIKE -> retryDisLikeById()
             ActionType.REMOVE -> retryRemove()
@@ -130,18 +113,20 @@ class MyWallPostViewModel @Inject constructor(
         }
     }
 
-    fun retryLikeById(){
-        lastId.let{
-            likeById(it)}
+    fun retryLikeById() {
+        lastId.let {
+            likeById(it)
+        }
     }
 
-    fun retryDisLikeById(){
-        lastId.let{
-            disLikeById(it)}
+    fun retryDisLikeById() {
+        lastId.let {
+            disLikeById(it)
+        }
     }
 
-    fun retryRemove(){
-        lastId.let{
+    fun retryRemove() {
+        lastId.let {
             removeById(it)
         }
     }
