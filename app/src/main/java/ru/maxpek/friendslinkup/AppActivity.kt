@@ -115,16 +115,16 @@ class AppActivity : AppCompatActivity() {
         binding.drawer.isOpen
         return when (item.itemId) {
             R.id.signin -> {
-                findNavController(R.id.frame).navigate(R.id.action_feedFragment_to_authenticationFragment)
+                findNavController(R.id.frame).navigate(R.id.authenticationFragment)
                 true
             }
             R.id.signup -> {
-                findNavController(R.id.frame).navigate(R.id.action_feedFragment_to_registrationFragment)
+                findNavController(R.id.frame).navigate(R.id.registrationFragment)
                 true
             }
             R.id.signout -> {
                 appAuth.removeAuth()
-                findNavController(R.id.frame).navigateUp()
+                findNavController(R.id.frame).navigate(R.id.feedFragment)
                 true
             }
             android.R.id.home -> {

@@ -95,6 +95,10 @@ class MyPostFragment : Fragment() {
 
         })
 
+        if (!authViewModel.authenticated) {
+            viewModel.removeAll()
+        }
+
         binding.list.adapter = adapter.withLoadStateHeaderAndFooter(
             header = PagingLoadStateAdapter(object : PagingLoadStateAdapter.OnInteractionListener {
                 override fun onRetry() {

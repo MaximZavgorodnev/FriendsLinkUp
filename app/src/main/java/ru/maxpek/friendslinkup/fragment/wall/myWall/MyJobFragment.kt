@@ -43,6 +43,10 @@ class MyJobFragment : Fragment() {
             }
         })
 
+        if (!authViewModel.authenticated) {
+            viewModel.deleteEditJob()
+        }
+
         authViewModel.data.observe(viewLifecycleOwner) {
             binding.nameUser.text = it.nameUser
             Glide.with(this@MyJobFragment)
